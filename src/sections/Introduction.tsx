@@ -30,7 +30,9 @@ export default function Introduction() {
   }, [wordIndex]);
 
   return (
-    <section ref={scrollTarget} className="relative h-[180vh]">
+    <section
+       ref={scrollTarget}
+      className="relative h-[140vh] px-6">
       <div className="sticky top-0 flex h-screen items-start justify-center pt-20">
         <div className="container">
           <div className="flex justify-center mb-8">

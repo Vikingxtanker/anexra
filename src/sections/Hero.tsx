@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-40 pb-16 px-6">
+    <section className="relative overflow-hidden pt-40 pb-6 px-2">
       {/* Background Video */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -8,7 +8,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover scale-110 opacity-[0.45]"
+          className="w-full h-full object-cover object-[80%_center] md:object-center md:scale-110 scale-150 opacity-[0.45]"
         >
           <source src="/hero_background.mp4" type="video/mp4" />
         </video>

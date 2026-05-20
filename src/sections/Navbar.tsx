@@ -6,9 +6,11 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#" },
-  { label: "Services", href: "#services" },
+  { label: "Solutions", href: "#solutions" },
   { label: "Education", href: "#education" },
+  { label: "Healthcare Services", href: "#healthcare-services" },
   { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -28,19 +30,19 @@ export default function Navbar() {
             <img
               src="/anexra-wordmark.svg"
               alt="Anexra"
-              className="hidden md:block h-11 w-auto"
+              className="hidden lg:block h-11 w-auto"
             />
 
             {/* Mobile Logo */}
             <img
               src="/anexra-logomark.svg"
               alt="Anexra"
-              className="block md:hidden h-10 w-10"
+              className="block lg:hidden h-10 w-10"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -53,7 +55,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             
 
             <Link
@@ -68,7 +70,7 @@ export default function Navbar() {
           {/* Mobile Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden text-[#564740] transition-all duration-300"
+            className="lg:hidden text-[#564740] transition-all duration-300"
           >
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -76,7 +78,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
             menuOpen
               ? "max-h-[500px] opacity-100 mt-4"
               : "max-h-0 opacity-0"
