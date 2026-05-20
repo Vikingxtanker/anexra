@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
-const text = `Hospitals are overwhelmed with chronic care patients, missed follow-ups, fragmented communication, and growing operational pressure. Anexra helps healthcare providers streamline patient management, strengthen continuity of care, and deliver smarter long-term support through next-generation assistance systems.`;
+const text = `Smarter chronic care, seamless patient follow-ups, and connected long-term healthcare support.`;
 
 const words = text.split(" ");
 
@@ -34,7 +34,7 @@ export default function Introduction() {
       <div className="sticky top-0 flex min-h-screen items-center py-24">
         <div className="container">
           <div className="flex justify-center">
-            <div className="border border-white/15 px-4 py-1.5 rounded-full text-sm uppercase tracking-widest text-white/60">
+            <div className="border border-white/15 px-4 py-1.5 rounded-full text-sm uppercase tracking-widest text-[#4c1711]">
               Introducing Anexra
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function Introduction() {
                   key={index}
                   animate={{
                     color:
-                      index <= currentWord
+                      index < currentWord
                         ? "#4c1711"
                         : "rgba(76, 23, 17,0.18)",
                   }}

@@ -1,8 +1,23 @@
 export default function Hero() {
   return (
     <section className="relative overflow-hidden pt-40 pb-28 px-6">
-      
-      <div className="max-w-6xl mx-auto text-center">
+      {/* Background Video */}
+<div className="absolute inset-0 overflow-hidden">
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="w-full h-full object-cover scale-110 opacity-[0.45]"
+  >
+    <source src="/hero_background.mp4" type="video/mp4" />
+  </video>
+
+  {/* Soft Overlay */}
+  <div className="absolute inset-0 bg-[#f4efee]/20 backdrop-blur-[1px]" />
+</div>
+
+      <div className="relative z-10 max-w-6xl mx-auto text-center">
         
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#aa6f73]/15 border border-[#aa6f73]/20 mb-8">
@@ -43,9 +58,9 @@ export default function Hero() {
       </div>
 
       {/* Background Glow Effects */}
-      <div className="absolute top-20 left-[-120px] w-[300px] h-[300px] bg-[#fcdfe4] rounded-full blur-3xl opacity-30"></div>
+      <div className="absolute top-20 left-[-120px] w-[300px] h-[300px] bg-[#fcdfe4] rounded-full blur-3xl opacity-30 pointer-events-none"></div>
 
-      <div className="absolute bottom-10 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20"></div>
+      <div className="absolute bottom-10 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none"></div>
     </section>
   );
 }
