@@ -1,30 +1,30 @@
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-40 pb-28 px-6">
+    <section className="relative overflow-hidden pt-40 pb-16 px-6">
       {/* Background Video */}
-<div className="absolute inset-0 overflow-hidden">
-  <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    className="w-full h-full object-cover scale-110 opacity-[0.45]"
-  >
-    <source src="/hero_background.mp4" type="video/mp4" />
-  </video>
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover scale-110 opacity-[0.45]"
+        >
+          <source src="/hero_background.mp4" type="video/mp4" />
+        </video>
 
-  {/* Soft Overlay */}
-  <div className="absolute inset-0 bg-[#f4efee]/20 backdrop-blur-[1px]" />
-</div>
+        {/* Soft Overlay */}
+        <div className="absolute inset-0 bg-[#f4efee]/20 backdrop-blur-[1px]" />
+      </div>
 
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#aa6f73]/15 border border-[#aa6f73]/20 mb-8">
+        {/* <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#aa6f73]/15 border border-[#aa6f73]/20 mb-8">
           <span className="text-sm font-medium text-[#aa6f73]">
             Empowering Clinical Pharmacists
           </span>
-        </div>
+        </div> */}
 
         {/* Heading */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.9] sm:leading-[0.95] text-[#4c1711] max-w-5xl mx-auto">
