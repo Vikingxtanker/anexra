@@ -91,7 +91,7 @@ const solutions = [
 
 export default function Solutions() {
   return (
-    <section className="relative -mt-32 md:-mt-40 py-16 md:py-20 px-6">
+    <section className="relative py-16 md:py-20 px-6">
       {/* Background Glow */}
       <div className="absolute top-20 left-[-100px] w-[260px] h-[260px] bg-[#f7d9dd] rounded-full blur-3xl opacity-30 pointer-events-none"></div>
 
