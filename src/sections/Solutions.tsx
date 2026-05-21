@@ -263,7 +263,20 @@ export default function Solutions() {
             >
               <Link
                 href={solution.href}
-                className="group relative overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)] w-[74vw] h-[78vh]"
+                className="
+                group relative overflow-hidden
+                rounded-[32px]
+                border border-white/20
+                bg-white/30
+                backdrop-blur-xl
+                shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+
+                w-[88vw]
+                h-[82svh]
+
+                min-h-[420px]
+                max-h-[900px]
+                "
               >
                 {/* Image */}
                 <div
