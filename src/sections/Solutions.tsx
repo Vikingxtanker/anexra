@@ -3,6 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useRef } from "react";
+
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const solutions = [
   {
@@ -61,7 +68,7 @@ const solutions = [
       "Strategic healthcare and pharmaceutical industry collaboration.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1581091012184-5c8b1e5802d2?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Medication Adherence",
@@ -90,23 +97,56 @@ const solutions = [
 ];
 
 export default function Solutions() {
+  const mobileSectionRef = useRef<HTMLDivElement>(null);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (
+      !mobileTrackRef.current ||
+      !mobileSectionRef.current
+    )
+      return;
+
+    // Mobile only
+    if (window.innerWidth >= 768) return;
+
+    const totalWidth =
+      mobileTrackRef.current.scrollWidth -
+      window.innerWidth;
+
+    const tween = gsap.to(mobileTrackRef.current, {
+      x: -totalWidth,
+      ease: "none",
+      scrollTrigger: {
+        trigger: mobileSectionRef.current,
+        start: "top top",
+        end: () => `+=${totalWidth}`,
+        scrub: 1,
+        pin: true,
+        pinSpacing: true,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+      },
+    });
+
+    return () => {
+      tween.kill();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <section className="relative py-16 md:py-20 px-6">
+    <section className="relative py-16 md:py-20 overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-20 left-[-100px] w-[260px] h-[260px] bg-[#f7d9dd] rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+      <div className="absolute top-20 left-[-100px] w-[260px] h-[260px] bg-[#f7d9dd] rounded-full blur-3xl opacity-30 pointer-events-none" />
 
-      <div className="absolute bottom-0 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none"></div>
+      <div className="absolute bottom-0 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* Section Header */}
+      {/* DESKTOP + TABLET */}
+      <div className="max-w-7xl mx-auto relative z-10 px-6">
+
+        {/* Header */}
         <div className="text-center mb-20">
-          {/* <div className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#aa6f73]/15 border border-[#aa6f73]/20 mb-8">
-            <span className="text-sm font-medium tracking-widest text-[#aa6f73] uppercase">
-              Our Solutions
-            </span>
-          </div> */}
-
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight leading-[0.95] text-[#4c1711] max-w-5xl mx-auto">
             Our Solutions
           </h2>
@@ -115,7 +155,6 @@ export default function Solutions() {
         {/* Desktop Bento Grid */}
         <div className="hidden lg:grid grid-cols-4 auto-rows-[260px] gap-6">
           {solutions.map((solution, index) => {
-
             return (
               <Link
                 key={index}
@@ -126,7 +165,7 @@ export default function Solutions() {
                     : "col-span-1 row-span-1"
                 }`}
               >
-                {/* Background Image */}
+                {/* Image */}
                 <div
                   className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
                   style={{
@@ -167,93 +206,95 @@ export default function Solutions() {
           })}
         </div>
 
-        {/* Tablet + Mobile Horizontal Scroll */}
         {/* Tablet Layout */}
-<div className="hidden md:grid lg:hidden grid-cols-2 gap-5">
-  {solutions.map((solution, index) => {
-    return (
-      <Link
-        key={index}
-        href={solution.href}
-        className="group relative h-[420px] overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)]"
-      >
-        {/* Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-          style={{
-            backgroundImage: `url(${solution.image})`,
-          }}
-        />
+        <div className="hidden md:grid lg:hidden grid-cols-2 gap-5">
+          {solutions.map((solution, index) => {
+            return (
+              <Link
+                key={index}
+                href={solution.href}
+                className="group relative h-[420px] overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)]"
+              >
+                {/* Image */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
+                  style={{
+                    backgroundImage: `url(${solution.image})`,
+                  }}
+                />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
 
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col justify-end p-7">
-          <h3 className="text-3xl font-semibold text-white leading-tight">
-            {solution.title}
-          </h3>
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col justify-end p-7">
+                  <h3 className="text-3xl font-semibold text-white leading-tight">
+                    {solution.title}
+                  </h3>
 
-          <p className="mt-4 text-white/80 text-sm leading-relaxed">
-            {solution.description}
-          </p>
+                  <p className="mt-4 text-white/80 text-sm leading-relaxed">
+                    {solution.description}
+                  </p>
 
-          <div className="mt-6 flex items-center gap-2 text-sm font-medium text-white">
-            Explore Solution
-            <ArrowUpRight className="w-4 h-4" />
-          </div>
+                  <div className="mt-6 flex items-center gap-2 text-sm font-medium text-white">
+                    Explore Solution
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
-      </Link>
-    );
-  })}
-</div>
+      </div>
 
-{/* Mobile Horizontal Bento Scroll */}
-<div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth">
-  <div className="flex gap-4 pr-6">
-    {solutions.map((solution, index) => {
-      return (
-        <Link
-          key={index}
-          href={solution.href}
-          className={`group relative overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)] shrink-0 ${
-            solution.large
-              ? "w-[85vw] h-[420px]"
-              : "w-[70vw] h-[320px]"
-          }`}
+      {/* MOBILE GSAP HORIZONTAL SCROLL */}
+      <div
+        ref={mobileSectionRef}
+        className="md:hidden relative h-screen overflow-hidden"
+      >
+        <div
+          ref={mobileTrackRef}
+          className="flex flex-nowrap h-screen"
         >
-          {/* Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-            style={{
-              backgroundImage: `url(${solution.image})`,
-            }}
-          />
+          {solutions.map((solution, index) => (
+            <div
+              key={index}
+              className="w-screen h-screen flex-shrink-0 flex items-center justify-center px-4"
+            >
+              <Link
+                href={solution.href}
+                className="group relative overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)] w-[74vw] h-[78vh]"
+              >
+                {/* Image */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
+                  style={{
+                    backgroundImage: `url(${solution.image})`,
+                  }}
+                />
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
 
-          {/* Content */}
-          <div className="relative z-10 h-full flex flex-col justify-end p-6">
-            <h3 className="text-2xl font-semibold text-white leading-tight">
-              {solution.title}
-            </h3>
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col justify-end p-6">
+                  <h3 className="text-2xl font-semibold text-white leading-tight">
+                    {solution.title}
+                  </h3>
 
-            <p className="mt-3 text-white/80 text-sm leading-relaxed">
-              {solution.description}
-            </p>
+                  <p className="mt-3 text-white/80 text-sm leading-relaxed">
+                    {solution.description}
+                  </p>
 
-            <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
-              Explore Solution
-              <ArrowUpRight className="w-4 h-4" />
+                  <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
+                    Explore Solution
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </Link>
             </div>
-          </div>
-        </Link>
-      );
-    })}
-  </div>
-</div>
-
+          ))}
+        </div>
       </div>
     </section>
   );
