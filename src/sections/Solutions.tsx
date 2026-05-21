@@ -209,8 +209,8 @@ export default function Solutions() {
 </div>
 
 {/* Mobile Horizontal Bento Scroll */}
-<div className="md:hidden overflow-x-auto scrollbar-hide scroll-smooth">
-  <div className="flex gap-4 w-max pr-6">
+<div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth">
+  <div className="flex gap-4 pr-6">
     {solutions.map((solution, index) => {
       return (
         <Link
