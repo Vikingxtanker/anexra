@@ -195,7 +195,7 @@ export default function Solutions() {
                       </p>
 
                       <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
-                        Explore Solution
+                        Explore More
                         <ArrowUpRight className="w-4 h-4" />
                       </div>
                     </motion.div>
@@ -237,7 +237,7 @@ export default function Solutions() {
                   </p>
 
                   <div className="mt-6 flex items-center gap-2 text-sm font-medium text-white">
-                    Explore Solution
+                    Explore More
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default function Solutions() {
                   </p>
 
                   <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
-                    Explore Solution
+                    Explore More
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
