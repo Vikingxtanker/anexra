@@ -19,31 +19,33 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-  const sections = document.querySelectorAll(
-    "[data-theme='dark']"
-  );
+    const handleScroll = () => {
+      const darkSections = document.querySelectorAll(
+        "[data-theme='dark']"
+      );
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setDarkMode(true);
-        } else {
-          setDarkMode(false);
+      let isDark = false;
+
+      darkSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+
+        // Detect navbar overlap area
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          isDark = true;
         }
       });
-    },
-    {
-      threshold: 0.4,
-    }
-  );
 
-  sections.forEach((section) =>
-    observer.observe(section)
-  );
+      setDarkMode(isDark);
+    };
 
-  return () => observer.disconnect();
-}, []);
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4">

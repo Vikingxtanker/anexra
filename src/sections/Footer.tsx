@@ -15,6 +15,7 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer
+    data-theme="dark"
     className="
         relative
         overflow-hidden
