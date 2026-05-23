@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -16,26 +16,84 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+  const sections = document.querySelectorAll(
+    "[data-theme='dark']"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setDarkMode(true);
+        } else {
+          setDarkMode(false);
+        }
+      });
+    },
+    {
+      threshold: 0.4,
+    }
+  );
+
+  sections.forEach((section) =>
+    observer.observe(section)
+  );
+
+  return () => observer.disconnect();
+}, []);
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4">
       
       {/* Main Navbar Container */}
       <div className="max-w-7xl mx-auto">
-        <nav className="bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/10 rounded-full px-6 lg:px-8 h-20 flex items-center justify-between shadow-[0_8px_30px_rgba(76,23,17,0.08)]">
+        <nav
+  className={`
+    rounded-full
+    px-6
+    lg:px-8
+    h-20
+    flex
+    items-center
+    justify-between
+
+    transition-all
+    duration-500
+
+    shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+
+    ${
+      darkMode
+        ? "bg-black/30 backdrop-blur-2xl border border-white/15"
+        : "bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/10"
+    }
+  `}
+>
           
           {/* Logo */}
           <Link href="/" className="flex items-center">
             
             {/* Desktop Logo */}
             <img
-              src="/anexra-wordmark.svg"
+              src={
+                darkMode
+                ? "/anexra-wordmark-white.svg"
+                : "/anexra-wordmark.svg"
+              }
               alt="Anexra"
               className="hidden lg:block h-11 w-auto"
             />
 
             {/* Mobile Logo */}
             <img
-              src="/anexra-logomark.svg"
+              src={
+                darkMode
+                ? "/anexra-logomark-white.svg"
+                : "/anexra-logomark.svg"
+              }
               alt="Anexra"
               className="block lg:hidden h-10 w-10"
             />
@@ -47,7 +105,18 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-[#564740] text-sm font-medium hover:text-[#aa6f73] transition-all duration-300"
+                className={`
+  text-sm
+  font-medium
+  transition-all
+  duration-300
+
+  ${
+    darkMode
+      ? "text-white/80 hover:text-white"
+      : "text-[#564740] hover:text-[#aa6f73]"
+  }
+`}
               >
                 {link.label}
               </Link>
@@ -70,7 +139,17 @@ export default function Navbar() {
           {/* Mobile Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden text-[#564740] transition-all duration-300"
+            className={`
+  lg:hidden
+  transition-all
+  duration-300
+
+  ${
+    darkMode
+      ? "text-white"
+      : "text-[#564740]"
+  }
+`}
           >
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
