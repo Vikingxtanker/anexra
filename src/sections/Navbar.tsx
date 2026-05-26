@@ -165,7 +165,7 @@ export default function Navbar() {
               : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-[#f4efee]/20 backdrop-blur-xl border border-[#aa6f73]/10 rounded-3xl p-6 flex flex-col gap-5 shadow-[0_8px_30px_rgba(76,23,17,0.08)]">
+          <div className="bg-[#f4efee]/5 backdrop-blur-xl border border-[#aa6f73]/10 rounded-3xl p-6 flex flex-col gap-5 shadow-[0_8px_30px_rgba(76,23,17,0.08)]">
             
             {navLinks.map((link) => (
               <Link
