@@ -1,0 +1,9 @@
+sections/education/
+├── EducationHero.tsx
+├── DegreeCards.tsx
+├── EducationFeatures.tsx
+├── SemesterNavigation.tsx
+├── FeaturedNotes.tsx
+├── Stats.tsx
+├── Testimonials.tsx
+└── CTA.tsx

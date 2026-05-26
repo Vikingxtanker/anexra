@@ -1,0 +1,181 @@
+import Link from "next/link";
+
+const degrees = [
+  {
+    title: "D.Pharm",
+    description:
+      "Foundational pharmacy education focused on practical and community healthcare.",
+    semesters: "2 Years",
+    href: "#",
+  },
+  {
+    title: "B.Pharm",
+    description:
+      "Comprehensive pharmaceutical sciences with industry and research exposure.",
+    semesters: "8 Semesters",
+    href: "#",
+  },
+  {
+    title: "Pharm.D",
+    description:
+      "Advanced clinical pharmacy education centered around patient care and hospitals.",
+    semesters: "6 Years",
+    href: "#",
+  },
+];
+
+export default function DegreeCards() {
+  return (
+    <section className="relative min-h-screen px-4 sm:px-6 py-24 overflow-hidden">
+{/* Background Video */}
+<div className="absolute inset-0 overflow-hidden">
+
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="
+      w-full h-full object-cover
+      object-center
+      scale-105
+      opacity-[0.45]
+    "
+  >
+    <source src="/girl_studying.webm" type="video/webm" />
+  </video>
+
+</div>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-[#f8f5f4]/30 backdrop-blur-[2px]" />
+
+      {/* Section Heading */}
+      <div className="relative z-10 max-w-6xl mx-auto text-center">
+
+        <h2
+          className="
+            text-4xl sm:text-5xl md:text-6xl
+            font-semibold tracking-tight
+            text-[#4c1711]
+          "
+        >
+          Choose Your Program
+        </h2>
+
+        <p
+          className="
+            mt-6
+            text-base sm:text-lg
+            text-[#564740]/80
+            max-w-2xl mx-auto
+            leading-relaxed
+          "
+        >
+          Structured academic resources designed specifically
+          for pharmacy students.
+        </p>
+      </div>
+
+      {/* Cards */}
+      <div
+        className="
+          relative z-10
+          mt-16
+          max-w-6xl mx-auto
+          grid grid-cols-1
+          md:grid-cols-2
+          lg:grid-cols-3
+          gap-8
+          items-center
+        "
+      >
+        {degrees.map((degree) => (
+          <Link key={degree.title} href={degree.href}>
+
+            <div
+              className="
+                group
+                h-full
+                rounded-[32px]
+                p-8
+                bg-[#f4efee]/10
+                backdrop-blur
+                border border-[#aa6f73]/10
+                shadow-xl shadow-[#aa6f73]/5
+                transition-all duration-500
+                hover:-translate-y-2
+                hover:border-[#aa6f73]/30
+                hover:shadow-2xl hover:shadow-[#aa6f73]/10
+                cursor-pointer
+              "
+            >
+
+              {/* Title */}
+              <h3
+                className="
+                  mt-8
+                  text-3xl
+                  font-semibold
+                  text-[#4c1711]
+                "
+              >
+                {degree.title}
+              </h3>
+
+              {/* Description */}
+              <p
+                className="
+                  mt-4
+                  text-[#564740]/80
+                  leading-relaxed
+                  text-base
+                "
+              >
+                {degree.description}
+              </p>
+
+              {/* Bottom Row */}
+              <div className="mt-8 flex items-center justify-between">
+
+                {/* Duration */}
+                <span
+                  className="
+                    text-sm
+                    px-4 py-2
+                    rounded-full
+                    bg-white/40
+                    border border-white/20
+                    text-[#4c1711]
+                    backdrop-blur-md
+                  "
+                >
+                  {degree.semesters}
+                </span>
+
+                {/* Explore */}
+                <div
+                  className="
+                    flex items-center gap-2
+                    text-[#aa6f73]
+                    font-medium
+                    group-hover:gap-3
+                    transition-all duration-300
+                  "
+                >
+                  Explore
+                  <span>→</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Glow Effects */}
+      <div className="absolute top-20 left-[-120px] w-[300px] h-[300px] bg-[#fcdfe4] rounded-full blur-3xl opacity-30 pointer-events-none" />
+
+      <div className="absolute bottom-10 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none" />
+    </section>
+  );
+}
