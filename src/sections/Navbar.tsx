@@ -69,8 +69,8 @@ export default function Navbar() {
 
     ${
       darkMode
-        ? "bg-black/30 backdrop-blur-2xl border border-white/15"
-        : "bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/10"
+        ? "bg-black/30 backdrop-blur-2xl border border-white/25"
+        : "bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/20"
     }
   `}
 >
