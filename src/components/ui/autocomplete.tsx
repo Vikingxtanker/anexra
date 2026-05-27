@@ -54,7 +54,7 @@ export function AutocompleteInput({
           className,
         )}
         data-slot="autocomplete-input"
-        render={<Input nativeInput size={sizeValue} />}
+        render={<Input />}
         {...props}
       />
       {showTrigger && (
@@ -236,7 +236,10 @@ export function AutocompleteList({
   ...props
 }: AutocompletePrimitive.List.Props): React.ReactElement {
   return (
-    <ScrollArea scrollbarGutter scrollFade>
+    <ScrollArea 
+      // scrollbarGutter 
+      // scrollFade
+    >
       <AutocompletePrimitive.List
         className={cn(
           "not-empty:scroll-py-1 not-empty:p-1 in-data-has-overflow-y:pe-3",
