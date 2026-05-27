@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Solutions", href: "/solutions" },
   { label: "Education", href: "/education" },
   { label: "Healthcare Services", href: "/healthcare-services" },
+  { label: "Career Connect", href: "/career-connect" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
