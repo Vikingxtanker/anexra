@@ -1,5 +1,17 @@
 import Link from "next/link";
 
+import {
+  Menu,
+  MenuItem,
+  MenuPopup,
+  MenuSub,
+  MenuSubPopup,
+  MenuSubTrigger,
+  MenuTrigger,
+} from "@/components/ui/menu";
+
+import { pharmacyPrograms } from "@/data/pharmacy-programs";
+
 const degrees = [
   {
     title: "D.Pharm",
@@ -148,26 +160,109 @@ export default function DegreeCards() {
                   {degree.semesters}
                 </span>
 
-                {/* Explore */}
-                <Link
-                href={degree.href}
+                <Menu>
+  <MenuTrigger
+    className="
+      px-4 py-2
+      rounded-full
+      bg-[#a15e63]
+      text-[#f4efee]
+      border border-white/20
+
+      flex items-center gap-2
+
+      font-medium
+
+      hover:gap-3
+      hover:-translate-y-1
+      hover:bg-[#8c4f54]
+
+      transition-all duration-300
+    "
+  >
+    Click for More
+    <span>→</span>
+  </MenuTrigger>
+
+  <MenuPopup
+    className="
+      backdrop-blur-2xl
+      bg-[#8c4f54]/50
+      border border-white/10
+      shadow-[0_20px_60px_rgba(0,0,0,0.35)]
+    "
+  >
+    {(() => {
+      const program =
+        pharmacyPrograms[
+          degree.title as keyof typeof pharmacyPrograms
+        ];
+
+      if (!program) return null;
+
+      const sections =
+        "years" in program
+          ? program.years
+          : "semesters" in program
+          ? program.semesters
+          : {};
+
+      return Object.entries(sections).map(
+        ([sectionName, sectionData]: any) => (
+          <MenuSub key={sectionName}>
+
+            {/* Year / Semester */}
+            <MenuSubTrigger
+              className="
+                text-white
+                hover:bg-white/10
+                focus:bg-white/10
+              "
+            >
+              {sectionName}
+            </MenuSubTrigger>
+
+            {/* Subjects Popup */}
+            <MenuSubPopup
+              className="
+                backdrop-blur-2xl
+                bg-[#8c4f54]/50
+                border border-white/10
+                shadow-[0_20px_60px_rgba(0,0,0,0.35)]
+              "
+            >
+              {"subjects" in sectionData &&
+              sectionData.subjects.length > 0 ? (
+                sectionData.subjects.map((subject: any) => (
+                  <MenuItem
+                    key={subject.slug}
+                    className="
+                      text-white
+                      hover:bg-white/10
+                      focus:bg-white/10
+                    "
+                  >
+                    {subject.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem
                   className="
-                  px-4 py-2
-                  rounded-full
-                  bg-[#a15e63]
-                  text-[#f4efee]
-                  border border-white/20
-                    flex items-center gap-2
-                    font-medium
-                    hover:gap-3
-                    hover:-translate-y-1
-                    hover:bg-[#8c4f54]
-                    transition-all duration-300
+                    text-white/50
+                    cursor-default
                   "
                 >
-                  Explore
-                  <span>→</span>
-                </Link>
+                  Content Coming Soon
+                </MenuItem>
+              )}
+            </MenuSubPopup>
+
+          </MenuSub>
+        )
+      );
+    })()}
+  </MenuPopup>
+</Menu>
               </div>
             </div>
         ))}
