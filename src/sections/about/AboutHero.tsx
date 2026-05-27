@@ -19,9 +19,7 @@ export default function AboutHero() {
                 max-w-5xl
             "
             >
-            Next-Gen Assistance
-            <br />
-                for Modern Healthcare
+            About Anexra
             </h1>
 
             {/* Subtext */}
@@ -34,9 +32,7 @@ export default function AboutHero() {
                 leading-relaxed
             "
             >
-            Anexra combines technology, diagnostics, preventive wellness,
-            and patient-centered care to create a smarter healthcare
-            ecosystem for the future.
+            Next-Gen Assistance for Modern Healthcare
             </p>
 
             {/* CTA Buttons */}
