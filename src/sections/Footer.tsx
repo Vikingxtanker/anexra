@@ -35,12 +35,6 @@ export default function Footer() {
     >
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#120c0b]/95 via-[#1a120f]/90 to-[#120c0b]/95" />
-
-      {/* Glow Effects */}
-      <div className="absolute top-[-120px] left-[-120px] w-[300px] h-[300px] bg-[#aa6f73]/10 blur-3xl rounded-full pointer-events-none" />
-
-      <div className="absolute bottom-[-140px] right-[-120px] w-[320px] h-[320px] bg-[#f7d9dd]/5 blur-3xl rounded-full pointer-events-none" />
-
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
 

@@ -93,9 +93,6 @@ export default function Stats() {
               "
             >
 
-              {/* Card Glow */}
-              <div className="absolute top-[-40px] right-[-40px] w-[120px] h-[120px] bg-[#aa6f73]/10 blur-3xl rounded-full pointer-events-none" />
-
               {/* Number */}
               <h3
                 className="

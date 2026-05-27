@@ -48,12 +48,13 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4">
+    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
       
       {/* Main Navbar Container */}
       <div className="max-w-7xl mx-auto">
         <nav
   className={`
+    isolate
     rounded-full
     px-6
     lg:px-8
@@ -65,12 +66,32 @@ export default function Navbar() {
     transition-all
     duration-500
 
+    relative
+    overflow-hidden
+
     shadow-[0_8px_30px_rgba(76,23,17,0.08)]
 
+    bg-[#f4efee]/15
+
+    glass-navbar
+    isolate
+
     ${
-      darkMode
-        ? "bg-black/30 backdrop-blur-2xl border border-white/25"
-        : "bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/20"
+      // darkMode
+      //   ? "bg-black/30 backdrop-blur-2xl border border-white/25"
+      //   : "bg-[#f4efee]/10 backdrop-blur border border-[#aa6f73]/20"
+      
+          darkMode
+        ? `
+            bg-black/30
+            border border-white/25            shadow-[0_8px_32px_rgba(0,0,0,0.45)]
+          `
+        : `
+            bg-white/20
+            border border-white/20
+            shadow-[0_8px_32px_rgba(76,23,17,0.10)]
+          `
+      
     }
   `}
 >
@@ -108,16 +129,17 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 className={`
-  text-sm
-  font-medium
+  text-base
+  md:text-[1rem]
+  lg:text-[1rem]
+  xl:text-[1rem]
+  font-semibold
+  tracking-tight
   transition-all
   duration-300
 
-  ${
-    darkMode
-      ? "text-white/80 hover:text-white"
-      : "text-[#564740] hover:text-[#aa6f73]"
-  }
+  ${darkMode ? "text-white/80" : "text-[#564740]"}
+  ${darkMode ? "hover:text-white" : "hover:text-[#aa6f73]"}
 `}
               >
                 {link.label}
@@ -165,14 +187,36 @@ export default function Navbar() {
               : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-[#f4efee]/5 backdrop-blur-xl border border-[#aa6f73]/10 rounded-3xl p-6 flex flex-col gap-5 shadow-[0_8px_30px_rgba(76,23,17,0.08)]">
+          <div className="
+
+          rounded-3xl 
+          p-6 
+          flex 
+          flex-col 
+          gap-5 
+          shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+          glass-navbar
+          isolate
+
+          ">
             
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-[#564740] text-base font-medium hover:text-[#aa6f73] transition-all"
+                className='
+                  text-lg
+                  md:text-x1
+                  font-semibold
+                  tracking-tight 
+                  transition-all
+                  duration-300
+                '
+                style={{
+                   color: darkMode ? "#f4efee" : "#564740",
+                }}
+
               >
                 {link.label}
               </Link>

@@ -37,7 +37,9 @@ export default function DegreeCards() {
     playsInline
     className="
       w-full h-full object-cover
-      object-center
+      object-[25%_center]
+      md:object-center
+      lg:object-center
       scale-105
       opacity-[0.45]
     "
@@ -91,11 +93,9 @@ export default function DegreeCards() {
         "
       >
         {degrees.map((degree) => (
-          <Link key={degree.title} href={degree.href}>
-
             <div
+            key={degree.title}
               className="
-                group
                 h-full
                 rounded-[32px]
                 p-8
@@ -103,11 +103,6 @@ export default function DegreeCards() {
                 backdrop-blur
                 border border-[#aa6f73]/10
                 shadow-xl shadow-[#aa6f73]/5
-                transition-all duration-500
-                hover:-translate-y-2
-                hover:border-[#aa6f73]/30
-                hover:shadow-2xl hover:shadow-[#aa6f73]/10
-                cursor-pointer
               "
             >
 
@@ -154,28 +149,30 @@ export default function DegreeCards() {
                 </span>
 
                 {/* Explore */}
-                <div
+                <Link
+                href={degree.href}
                   className="
+                  px-4 py-2
+                  rounded-full
+                  bg-[#a15e63]
+                  text-[#f4efee]
+                  border border-white/20
                     flex items-center gap-2
-                    text-[#aa6f73]
                     font-medium
-                    group-hover:gap-3
+                    hover:gap-3
+                    hover:-translate-y-1
+                    hover:bg-[#8c4f54]
                     transition-all duration-300
                   "
                 >
                   Explore
                   <span>→</span>
-                </div>
+                </Link>
               </div>
             </div>
-          </Link>
         ))}
       </div>
 
-      {/* Glow Effects */}
-      <div className="absolute top-20 left-[-120px] w-[300px] h-[300px] bg-[#fcdfe4] rounded-full blur-3xl opacity-30 pointer-events-none" />
-
-      <div className="absolute bottom-10 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none" />
     </section>
   );
 }

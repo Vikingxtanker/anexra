@@ -61,11 +61,20 @@ export default function EducationFeatures() {
         });
 
         // Heading animation
+        // tl.to(headingRef.current, {
+        //   x: "-30vw",
+        //   scale: 0.5,
+        //   ease: "none",
+        //   duration: 1,
+        // });
         tl.to(headingRef.current, {
-          x: "-30vw",
-          scale: 0.5,
-          ease: "none",
-          duration: 1,
+        x: window.innerWidth >= 768 && window.innerWidth < 1024
+          ? "-22vw"
+          : "-30vw",
+
+        scale: 0.5,
+        ease: "none",
+        duration: 1,
         });
 
         // Cards wrapper reveal
@@ -112,18 +121,41 @@ export default function EducationFeatures() {
       ref={sectionRef}
       className="relative bg-[#f4efee] overflow-hidden"
     >
-      {/* Background Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-[#aa6f73]/20 blur-3xl rounded-full pointer-events-none" />
-
-      <div className="absolute bottom-[-150px] right-[-100px] w-[340px] h-[340px] bg-[#f7d9dd]/40 blur-3xl rounded-full pointer-events-none" />
 
       {/* DESKTOP */}
-      <div className="hidden md:block relative h-[100svh] w-full">
+      <div className="
+            hidden md:block 
+            relative
+            min-h-screen 
+            h-[100dvh] 
+            w-full
+          "
+          
+          style={{
+            minHeight: "max(800px, 100dvh)",
+          }}
 
-        <div className="relative mx-auto h-full w-full max-w-7xl">
+          >
+
+        <div className="
+              relative 
+              mx-auto 
+              h-full 
+              w-full 
+              max-w-7xl
+              
+              px-6
+              lg:px-10
+            ">
 
           {/* Heading */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="
+                absolute 
+                inset-0 
+                flex 
+                items-center 
+                justify-center pointer-events-none
+              ">
             <h2
               ref={headingRef}
               className="
@@ -134,9 +166,11 @@ export default function EducationFeatures() {
                 text-center
                 will-change-transform
 
-                text-7xl
-                lg:text-[9rem]
-                xl:text-[11rem]
+                text-6xl
+                md:text-[6.5rem]
+                lg:text-[7rem]
+                xl:text-[9rem]
+                2xl:text-[11rem]
               "
             >
               What
@@ -151,7 +185,8 @@ export default function EducationFeatures() {
             className="
               absolute
               top-1/2
-              right-0
+              md:right-10
+              lg:right-0
               -translate-y-1/2
 
               w-[42vw]
@@ -159,7 +194,9 @@ export default function EducationFeatures() {
 
               flex
               flex-col
-              gap-6
+              gap-3
+              lg:gap-4
+              xl:gap-6
             "
           >
             {points.map((point, index) => (
@@ -174,8 +211,14 @@ export default function EducationFeatures() {
                   backdrop-blur
                   border border-[#aa6f73]/10
 
-                  px-8
-                  py-7
+                  px-5
+                  py-4
+
+                  lg:px-6
+                  lg:py-5
+
+                  xl:px-8
+                  xl:py-7
 
                   shadow-[0_8px_30px_rgba(76,23,17,0.05)]
                 "
@@ -183,7 +226,11 @@ export default function EducationFeatures() {
                 <p
                   className="
                     text-[#4c1711]
-                    text-2xl
+
+                    text-lg
+                    lg:text-x1
+                    xl:text-2x1
+
                     font-medium
                     tracking-tight
                     leading-snug

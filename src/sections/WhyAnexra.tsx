@@ -114,11 +114,6 @@ export default function WhyAnexra() {
       ref={sectionRef}
       className="relative bg-[#f4efee] overflow-hidden"
     >
-      {/* Background Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-[#aa6f73]/20 blur-3xl rounded-full pointer-events-none" />
-
-      <div className="absolute bottom-[-150px] right-[-100px] w-[340px] h-[340px] bg-[#f7d9dd]/40 blur-3xl rounded-full pointer-events-none" />
-
       {/* DESKTOP */}
       <div className="hidden md:block relative h-[100svh] w-full">
 

@@ -56,7 +56,13 @@ export default function VisionMission() {
       data-theme="dark"
       className="
         relative
-        min-h-screen pb-24
+
+        pt-20
+        md:pt-0
+
+        min-h-screen 
+        pb-24
+        
         overflow-hidden
         bg-[#0f0a09]
       "
@@ -84,12 +90,6 @@ export default function VisionMission() {
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-[#4c1711]/30 to-black/60" />
-
-      {/* Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[300px] h-[300px] bg-[#aa6f73]/20 rounded-full blur-3xl" />
-
-      <div className="absolute bottom-[-150px] right-[-120px] w-[340px] h-[340px] bg-[#f7d9dd]/10 rounded-full blur-3xl" />
-
       {/* Content */}
       <div
         className="
@@ -154,8 +154,9 @@ export default function VisionMission() {
               <span
                 className="
                   text-white/60
-                  text-xs
-                  md:text-sm
+                  text-sm
+                  md:text-base
+                  lg:text-lg
                   uppercase
                   tracking-[0.3em]
                   font-medium
@@ -176,7 +177,7 @@ export default function VisionMission() {
 
                 max-w-[90%]
 
-                mt-20
+                mt-4
 
                 font-medium
                 tracking-tight
@@ -223,8 +224,9 @@ export default function VisionMission() {
               <span
                 className="
                   text-white/60
-                  text-xs
-                  md:text-sm
+                  text-sm
+                  md:text-base
+                  lg:text-lg
                   uppercase
                   tracking-[0.3em]
                   font-medium
@@ -245,7 +247,7 @@ export default function VisionMission() {
 
                 max-w-[90%]
 
-                mt-20
+                mt-4
 
                 font-medium
                 tracking-tight

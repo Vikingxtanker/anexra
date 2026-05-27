@@ -137,11 +137,6 @@ export default function Solutions() {
 
   return (
     <section className="relative py-16 md:py-20 overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute top-20 left-[-100px] w-[260px] h-[260px] bg-[#f7d9dd] rounded-full blur-3xl opacity-30 pointer-events-none" />
-
-      <div className="absolute bottom-0 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none" />
-
       {/* DESKTOP + TABLET */}
       <div className="max-w-7xl mx-auto relative z-10 px-6">
 

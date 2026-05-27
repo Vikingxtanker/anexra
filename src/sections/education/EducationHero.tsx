@@ -59,11 +59,6 @@ export default function Hero() {
         </p>
 
       </div>
-
-      {/* Glow Effects */}
-      <div className="absolute top-20 left-[-120px] w-[300px] h-[300px] bg-[#fcdfe4] rounded-full blur-3xl opacity-30 pointer-events-none" />
-
-      <div className="absolute bottom-10 right-[-120px] w-[300px] h-[300px] bg-[#aa6f73] rounded-full blur-3xl opacity-20 pointer-events-none" />
     </section>
   );
 }
