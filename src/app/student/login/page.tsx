@@ -162,8 +162,6 @@ setLoading(true);
     "/student/dashboard"
   );
 
-  router.refresh();
-
 } catch (error) {
   setErrorTitle(
     "Unexpected Error"
