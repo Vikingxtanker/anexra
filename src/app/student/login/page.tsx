@@ -12,7 +12,7 @@ import { z } from "zod";
 
 import { Eye, EyeOff } from "lucide-react";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 import { Input } from "@/components/ui/input";
 
@@ -49,6 +49,8 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function StudentLoginPage() {
 const router = useRouter();
+
+const supabase = createClient();
 
 const [showPassword, setShowPassword] =
 useState(false);
@@ -154,13 +156,13 @@ setLoading(true);
 
   setLoading(false);
 
-  router.refresh();
-
   console.log("LOGIN SUCCESS");
 
   router.push(
     "/student/dashboard"
   );
+
+  router.refresh();
 
 } catch (error) {
   setErrorTitle(
