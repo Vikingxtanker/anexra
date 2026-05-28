@@ -83,11 +83,15 @@ values: LoginSchema
 try {
 setLoading(true);
 
-  const { error } =
+  const { data, error } =
     await supabase.auth.signInWithPassword({
       email: values.email.trim(),
       password: values.password,
     });
+
+    
+    console.log("LOGIN DATA:", data);
+    console.log("LOGIN ERROR:", error);
 
   if (error) {
     // INVALID CREDENTIALS
@@ -151,6 +155,8 @@ setLoading(true);
   setLoading(false);
 
   router.refresh();
+
+  console.log("LOGIN SUCCESS");
 
   router.push(
     "/student/dashboard"
