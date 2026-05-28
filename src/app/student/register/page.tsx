@@ -146,6 +146,13 @@ export default function StudentRegisterPage() {
   const [emailSent, setEmailSent] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
 
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+
+  const [errorTitle, setErrorTitle] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+
   async function onSubmit(values: StudentRegisterSchema) {
   try {
   // STEP 1 — CREATE AUTH USER
@@ -160,9 +167,82 @@ export default function StudentRegisterPage() {
 
 
   if (error) {
-    console.error(error.message);
-    return;
+  // RATE LIMIT
+  if (
+  error.message.includes("rate limit") ||
+  error.message.includes("over_email_send_rate_limit")
+  ) {
+  setErrorTitle("Too Many Requests");
+
+  setErrorMessage(
+    "Too many verification emails were sent recently. Please wait a few minutes before trying again."
+  );
+
+  setErrorDialogOpen(true);
+
+  return;
+
   }
+
+  // USER ALREADY EXISTS
+  if (
+  error.message.includes("User already registered")
+  ) {
+  setErrorTitle("Account Already Exists");
+
+  setErrorMessage(
+    "An account with this email address already exists. Please login instead."
+  );
+
+  setErrorDialogOpen(true);
+
+  return;
+
+  }
+
+  // INVALID EMAIL
+  if (
+  error.message.includes("Invalid email")
+  ) {
+  setErrorTitle("Invalid Email");
+
+  setErrorMessage(
+    "Please enter a valid email address."
+  );
+
+  setErrorDialogOpen(true);
+
+  return;
+
+  }
+
+  // WEAK PASSWORD
+  if (
+  error.message.includes("Password")
+  ) {
+  setErrorTitle("Weak Password");
+
+  setErrorMessage(
+    "Your password does not meet security requirements."
+  );
+
+  setErrorDialogOpen(true);
+
+  return;
+
+  }
+
+  // DEFAULT ERROR
+  setErrorTitle("Registration Failed");
+
+  setErrorMessage(error.message);
+
+  setErrorDialogOpen(true);
+
+  return;
+  }
+
+
 
   const user = data.user;
 
@@ -193,10 +273,14 @@ export default function StudentRegisterPage() {
       role: "student",
     });
 
-  if (profileError) {
-    console.error(profileError.message);
-    return;
-  }
+  setErrorTitle("Profile Creation Failed");
+
+  setErrorMessage(
+  "Your account was created, but we could not save your profile details. Please contact support."
+  );
+
+  setErrorDialogOpen(true);
+
 
   setRegisteredEmail(values.email);
   setEmailSent(true);
@@ -205,7 +289,14 @@ export default function StudentRegisterPage() {
 
 
   } catch (error) {
-  console.error(error);
+  setErrorTitle("Unexpected Error");
+
+  setErrorMessage(
+  "Something went wrong. Please try again later."
+  );
+
+  setErrorDialogOpen(true);
+
   }
   }
 
@@ -218,6 +309,37 @@ export default function StudentRegisterPage() {
         }}
         >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+
+        <AlertDialog
+        open={errorDialogOpen}
+
+        >
+
+          <AlertDialogContent className="border border-red-500/20 bg-[#1A1A1A]/95 text-white backdrop-blur-2xl">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-2xl font-bold text-red-400">
+                {errorTitle}
+              </AlertDialogTitle>
+
+          <AlertDialogDescription className="pt-4 text-gray-300">
+            {errorMessage}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogAction
+            onClick={() =>
+              setErrorDialogOpen(false)
+            }
+            className="bg-red-500 hover:bg-red-600"
+          >
+            Close
+          </AlertDialogAction>
+        </AlertDialogFooter>
+
+          </AlertDialogContent>
+        </AlertDialog>
+
 
         <div className="relative z-10 w-full max-w-3xl overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-2xl">
 
