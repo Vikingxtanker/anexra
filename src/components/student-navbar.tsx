@@ -94,7 +94,7 @@ export default function StudentNavbar() {
     pathname === "/student/register";
 
   return (
-    <header className="w-full z-50 px-4 py-4 isolate">
+    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
       <div className="max-w-7xl mx-auto">
         <nav
           className="
