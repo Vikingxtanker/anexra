@@ -170,6 +170,11 @@ export default function StudentRegisterPage() {
   },
   });
 
+  console.log("SIGNUP DATA:", data);
+
+  console.log("SIGNUP ERROR:", error);
+
+
 
   if (error) {
   // RATE LIMIT
@@ -259,15 +264,16 @@ export default function StudentRegisterPage() {
 
 
 
-  const user = data.user!;
-
-  if (!user?.id) {
+  if (
+  !data.user ||
+  !data.user.id
+  ) {
   setErrorTitle(
   "Registration Failed"
   );
 
   setErrorMessage(
-  "Could not create authentication user."
+  "Supabase could not create the authentication account."
   );
 
   setErrorDialogOpen(true);
@@ -276,6 +282,9 @@ export default function StudentRegisterPage() {
 
   return;
   }
+
+  const user = data.user;
+
 
 
   // STEP 2 — INSERT PROFILE DATA
