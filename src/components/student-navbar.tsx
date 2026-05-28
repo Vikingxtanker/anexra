@@ -41,8 +41,6 @@ export default function StudentNavbar() {
     await supabase.auth.signOut();
 
     router.push("/student/login");
-
-    router.refresh();
     };
 
   return (

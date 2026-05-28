@@ -9,6 +9,10 @@ export default function StudentLayout({
     <>
       <StudentNavbar />
 
+      <main className="pt-32">
+        {children}
+      </main>
+
       {children}
     </>
   );
