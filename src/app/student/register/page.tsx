@@ -261,13 +261,24 @@ export default function StudentRegisterPage() {
 
   const user = data.user;
 
-  if (!user) {
-    console.error("User creation failed");
-    setLoading(false);
-    return;
+  if (!data.user?.id) {
+  setErrorTitle(
+  "Registration Failed"
+  );
+
+  setErrorMessage(
+  "Could not create authentication user."
+  );
+
+  setErrorDialogOpen(true);
+
+  setLoading(false);
+
+  return;
   }
 
   // STEP 2 — INSERT PROFILE DATA
+
   const { error: profileError } = await supabase
     .from("profiles")
     .insert({
