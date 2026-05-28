@@ -5,66 +5,78 @@ import type { NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function proxy(
-request: NextRequest
+  request: NextRequest
 ) {
-const response =
-NextResponse.next();
+  let response = NextResponse.next({
+    request,
+  });
 
-const supabase =
-createServerClient(
-process.env.NEXT_PUBLIC_SUPABASE_URL!,
-process.env
-.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-{
-cookies: {
-getAll() {
-return request.cookies.getAll();
-},
+  const supabase =
+    createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
 
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(
-          ({
-            name,
-            value,
-            options,
-          }) => {
-            response.cookies.set(
-              name,
-              value,
-              options
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(
+              ({ name, value, options }) =>
+                request.cookies.set(
+                  name,
+                  value
+                )
             );
-          }
-        );
-      },
-    },
+
+            response =
+              NextResponse.next({
+                request,
+              });
+
+            cookiesToSet.forEach(
+              ({
+                name,
+                value,
+                options,
+              }) =>
+                response.cookies.set(
+                  name,
+                  value,
+                  options
+                )
+            );
+          },
+        },
+      }
+    );
+
+  const {
+    data: { user },
+  } =
+    await supabase.auth.getUser();
+
+  // PROTECT DASHBOARD
+  if (
+    request.nextUrl.pathname.startsWith(
+      "/student/dashboard"
+    ) &&
+    !user
+  ) {
+    return NextResponse.redirect(
+      new URL(
+        "/student/login",
+        request.url
+      )
+    );
   }
-);
 
-const {
-data: { user },
-} =
-await supabase.auth.getUser();
-
-// PROTECT DASHBOARD
-if (
-request.nextUrl.pathname.startsWith(
-"/student/dashboard"
-) &&
-!user
-) {
-return NextResponse.redirect(
-new URL(
-"/student/login",
-request.url
-)
-);
-}
-
-return response;
+  return response;
 }
 
 export const config = {
-matcher: [
-"/student/dashboard/:path*",
-],
+  matcher: [
+    "/student/dashboard/:path*",
+  ],
 };
