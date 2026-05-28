@@ -166,8 +166,20 @@ export default function StudentRegisterPage() {
   password: values.password,
 
   options: {
-  emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    emailRedirectTo:
+      `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+
+    data: {
+      first_name: values.firstName,
+      last_name: values.lastName,
+      mobile_number: values.mobileNumber,
+      college_name: values.collegeName,
+      degree: values.degree,
+      semester: values.semester,
+      role: "student",
+    },
   },
+
   });
 
   console.log("SIGNUP DATA:", data);
@@ -284,46 +296,6 @@ export default function StudentRegisterPage() {
   }
 
   const user = data.user;
-
-
-
-  // STEP 2 — INSERT PROFILE DATA
-
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .insert({
-      id: user.id,
-
-      first_name: values.firstName,
-      last_name: values.lastName,
-
-      email: values.email,
-
-      mobile_number: values.mobileNumber,
-
-      college_name: values.collegeName,
-
-      degree: values.degree,
-
-      semester: values.semester,
-
-      role: "student",
-    });
-
-  if (profileError) {
-  setErrorTitle("Profile Creation Failed");
-
-  setErrorMessage(
-  "Your account was created, but we could not save your profile details. Please contact support."
-  );
-
-  setErrorDialogOpen(true);
-
-  setLoading(false);
-
-  return;
-  }
-
 
 
   setRegisteredEmail(values.email);
