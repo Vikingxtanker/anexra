@@ -32,6 +32,17 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
+import {
+AlertDialog,
+AlertDialogAction,
+AlertDialogContent,
+AlertDialogDescription,
+AlertDialogFooter,
+AlertDialogHeader,
+AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+
 export default function StudentRegisterPage() {
   const degrees = ["D.Pharm", "B.Pharm", "Pharm.D", "M.Pharm"];
 
@@ -222,28 +233,45 @@ export default function StudentRegisterPage() {
         </div>
 
         <div className="p-8">
-          {emailSent && (
+          <AlertDialog open={emailSent}>
+            <AlertDialogContent className="border border-white/20 bg-[#1A1A1A]/95 text-white backdrop-blur-2xl">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-2xl font-bold text-green-400">
+                  Verification Email Sent
+                </AlertDialogTitle>
 
-            <div className="mb-6 rounded-2xl border border-green-500/30 bg-green-500/10 p-5 backdrop-blur-md">
-              <h3 className="text-lg font-semibold text-green-300">
-                Verification Email Sent
-              </h3>
+            <AlertDialogDescription className="space-y-4 pt-4 text-gray-300">
+              <p>
+                We’ve sent a verification link to:
+              </p>
 
-          <p className="mt-2 text-sm text-green-100">
-            We’ve sent a verification link to:
-          </p>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
+                {registeredEmail}
+              </div>
 
-          <p className="mt-1 font-medium text-white">
-            {registeredEmail}
-          </p>
+              <p>
+                Please check your inbox and click the verification
+                link to activate your ANEXRA student account.
+              </p>
 
-          <p className="mt-3 text-sm text-green-100">
-            Please check your inbox and click the verification link
-            to activate your ANEXRA student account.
-          </p>
+              <p className="text-sm text-gray-500">
+                If you don’t see the email, check your spam folder.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
 
-            </div>
-          )}
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() => setEmailSent(false)}
+              className="bg-[#4c1711] hover:bg-[#2a0d09]"
+            >
+              Okay
+            </AlertDialogAction>
+          </AlertDialogFooter>
+
+            </AlertDialogContent>
+          </AlertDialog>
+
 
           <p className="text-sm text-red-500 mb-6">
             * Indicates required fields
