@@ -12,8 +12,6 @@ export default function StudentLayout({
       <main className="pt-32">
         {children}
       </main>
-
-      {children}
     </>
   );
 }
