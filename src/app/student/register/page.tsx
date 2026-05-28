@@ -259,9 +259,9 @@ export default function StudentRegisterPage() {
 
 
 
-  const user = data.user;
+  const user = data.user!;
 
-  if (!data.user?.id) {
+  if (!user?.id) {
   setErrorTitle(
   "Registration Failed"
   );
@@ -276,6 +276,7 @@ export default function StudentRegisterPage() {
 
   return;
   }
+
 
   // STEP 2 — INSERT PROFILE DATA
 
