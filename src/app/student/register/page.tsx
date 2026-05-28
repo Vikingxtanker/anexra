@@ -152,8 +152,11 @@ export default function StudentRegisterPage() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
 
   async function onSubmit(values: StudentRegisterSchema) {
+    setLoading(true);
   try {
   // STEP 1 — CREATE AUTH USER
   const { data, error } = await supabase.auth.signUp({
@@ -180,6 +183,8 @@ export default function StudentRegisterPage() {
 
   setErrorDialogOpen(true);
 
+  setLoading(false);
+
   return;
 
   }
@@ -195,6 +200,8 @@ export default function StudentRegisterPage() {
   );
 
   setErrorDialogOpen(true);
+
+  setLoading(false);
 
   return;
 
@@ -212,6 +219,8 @@ export default function StudentRegisterPage() {
 
   setErrorDialogOpen(true);
 
+  setLoading(false);
+
   return;
 
   }
@@ -228,6 +237,8 @@ export default function StudentRegisterPage() {
 
   setErrorDialogOpen(true);
 
+  setLoading(false);
+
   return;
 
   }
@@ -239,6 +250,8 @@ export default function StudentRegisterPage() {
 
   setErrorDialogOpen(true);
 
+  setLoading(false);
+
   return;
   }
 
@@ -248,6 +261,7 @@ export default function StudentRegisterPage() {
 
   if (!user) {
     console.error("User creation failed");
+    setLoading(false);
     return;
   }
 
@@ -273,6 +287,7 @@ export default function StudentRegisterPage() {
       role: "student",
     });
 
+  if (profileError) {
   setErrorTitle("Profile Creation Failed");
 
   setErrorMessage(
@@ -281,9 +296,17 @@ export default function StudentRegisterPage() {
 
   setErrorDialogOpen(true);
 
+  setLoading(false);
+
+  return;
+  }
+
+
 
   setRegisteredEmail(values.email);
   setEmailSent(true);
+
+  setLoading(false);
 
   form.reset();
 
@@ -296,6 +319,8 @@ export default function StudentRegisterPage() {
   );
 
   setErrorDialogOpen(true);
+
+  setLoading(false);
 
   }
   }
@@ -766,11 +791,16 @@ export default function StudentRegisterPage() {
 
             <div className="md:col-span-2 pt-2">
               <Button
-                type="submit"
-                className="h-12 w-full rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8]"
+              type="submit"
+              disabled={loading}
+              className="h-12 w-full rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-50"
+
               >
-                Create Student Account
-              </Button>
+
+              {loading
+              ? "Creating Account..."
+              : "Create Student Account"} </Button>
+
             </div>
           </form>
 
