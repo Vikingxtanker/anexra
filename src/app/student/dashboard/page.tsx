@@ -2,56 +2,104 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function StudentDashboardPage() {
   try {
-    const supabase =
-      await createClient();
+    const supabase = await createClient();
 
     const {
       data: { user },
       error,
-    } =
-      await supabase.auth.getUser();
+    } = await supabase.auth.getUser();
 
-    console.log(
-      "DASHBOARD USER:",
-      user
-    );
-
-    console.log(
-      "DASHBOARD ERROR:",
-      error
-    );
-
-    if (!user) {
-      redirect(
-        "/student/login"
-      );
+    // USER NOT LOGGED IN
+    if (error || !user) {
+      redirect("/student/login");
     }
 
     return (
-      <div className="min-h-screen bg-black text-white p-10">
-        <h1 className="text-4xl font-bold">
-          Dashboard Working
-        </h1>
+      <div className="min-h-screen bg-[#0F172A] text-white">
+        <div className="mx-auto max-w-7xl px-6 py-10">
+          {/* HEADER */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold">
+                Student Dashboard
+              </h1>
 
-        <p className="mt-4">
-          Logged in as:
-        </p>
+              <p className="mt-2 text-gray-400">
+                Welcome to ANEXRA Education Portal.
+              </p>
+            </div>
 
-        <p className="text-green-400">
-          {user.email}
-        </p>
+            {/* LOGOUT */}
+            <form
+              action="/auth/signout"
+              method="post"
+            >
+              <button
+                className="rounded-xl bg-red-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </form>
+          </div>
+
+          {/* USER CARD */}
+          <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+            <p className="text-sm text-gray-400">
+              Logged in as
+            </p>
+
+            <p className="mt-2 text-lg font-semibold text-white">
+              {user.email}
+            </p>
+          </div>
+
+          {/* DASHBOARD GRID */}
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:bg-white/10">
+              <h2 className="text-xl font-semibold">
+                Courses
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-400">
+                Access your enrolled courses.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:bg-white/10">
+              <h2 className="text-xl font-semibold">
+                Notes
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-400">
+                View study materials and PDFs.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition hover:bg-white/10">
+              <h2 className="text-xl font-semibold">
+                Profile
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-400">
+                Manage your student profile.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   } catch (err) {
     console.error(
-      "DASHBOARD CRASH:",
+      "DASHBOARD ERROR:",
       err
     );
 
     return (
-      <div className="p-10 text-red-500">
+      <div className="flex min-h-screen items-center justify-center bg-black text-red-500">
         Dashboard crashed.
       </div>
     );
