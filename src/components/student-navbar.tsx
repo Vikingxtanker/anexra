@@ -17,15 +17,15 @@ const navLinks = [
   },
   {
     label: "Courses",
-    href: "/student/courses",
+    href: "#",
   },
   {
     label: "Notes",
-    href: "/student/notes",
+    href: "#",
   },
   {
     label: "Profile",
-    href: "/student/profile",
+    href: "#",
   },
 ];
 
