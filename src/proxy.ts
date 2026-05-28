@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 import { createServerClient } from "@supabase/ssr";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 let response = NextResponse.next({
 request,
 });
@@ -46,7 +46,7 @@ request.nextUrl.pathname.startsWith("/student/dashboard") &&
 !user
 ) {
 return NextResponse.redirect(
-new URL("/student/register", request.url)
+new URL("/student/login", request.url)
 );
 }
 
