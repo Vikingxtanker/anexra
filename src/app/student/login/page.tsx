@@ -150,6 +150,8 @@ setLoading(true);
 
   setLoading(false);
 
+  router.refresh();
+
   router.push(
     "/student/dashboard"
   );
