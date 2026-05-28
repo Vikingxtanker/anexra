@@ -306,11 +306,23 @@ export default function StudentRegisterPage() {
 
 
   setRegisteredEmail(values.email);
+
+  if (data.session) {
+  setErrorTitle("Account Created");
+
+  setErrorMessage(
+  "Your student account has been created successfully. You can now login."
+  );
+
+  setErrorDialogOpen(true);
+  } else {
   setEmailSent(true);
+  }
 
   setLoading(false);
 
   form.reset();
+
 
 
   } catch (error) {
@@ -488,6 +500,11 @@ export default function StudentRegisterPage() {
 
                   <Input
                     {...field}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value.trim()
+                      )
+                    }
                     type="email"
                     placeholder="Enter email address"
                     className="h-11 rounded-xl border-white/20 bg-white/80 backdrop-blur-md"

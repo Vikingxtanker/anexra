@@ -85,7 +85,7 @@ setLoading(true);
 
   const { error } =
     await supabase.auth.signInWithPassword({
-      email: values.email,
+      email: values.email.trim(),
       password: values.password,
     });
 
@@ -236,6 +236,11 @@ backgroundImage:
 
               <Input
                 {...field}
+                onChange={(e) =>
+                field.onChange(
+                    e.target.value.trim()
+                )
+                }
                 type="email"
                 placeholder="Enter email address"
                 className="h-11 rounded-xl border-white/20 bg-white/80 backdrop-blur-md"
