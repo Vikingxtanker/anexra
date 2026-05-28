@@ -121,7 +121,7 @@ export default function StudentNavbar() {
             href={
               loggedIn
                 ? "/student/dashboard"
-                : "/student/login"
+                : "/"
             }
             className="flex items-center"
           >

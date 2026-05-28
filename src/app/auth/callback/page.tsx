@@ -10,105 +10,132 @@ export default function AuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleAuth = async () => {
-      try {
-        // IMPORTANT:
-        // This exchanges the auth code
-        // and restores session properly
-        await supabase.auth.getSession();
-
-        const {
-          data: { user },
-          error: userError,
-        } = await supabase.auth.getUser();
-
-        // NO USER FOUND
-        if (userError || !user) {
-          router.replace("/student/login");
-          return;
-        }
-
-        // CHECK IF PROFILE EXISTS
-        const {
-          data: existingProfile,
-          error: profileFetchError,
-        } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (profileFetchError) {
-          console.error(
-            "PROFILE FETCH ERROR:",
-            profileFetchError
-          );
-        }
-
-        // CREATE PROFILE ONLY IF MISSING
-        if (!existingProfile) {
+    const handleAuthCallback =
+      async () => {
+        try {
+          // IMPORTANT:
+          // waits for supabase to recover session
           const {
-            error: insertError,
-          } = await supabase
-            .from("profiles")
-            .insert({
-              id: user.id,
+            data: {
+              session,
+            },
+            error: sessionError,
+          } =
+            await supabase.auth.getSession();
 
-              first_name:
-                user.user_metadata.first_name,
+          console.log(
+            "SESSION:",
+            session
+          );
 
-              last_name:
-                user.user_metadata.last_name,
+          console.log(
+            "SESSION ERROR:",
+            sessionError
+          );
 
-              email: user.email,
-
-              mobile_number:
-                user.user_metadata.mobile_number,
-
-              college_name:
-                user.user_metadata.college_name,
-
-              degree:
-                user.user_metadata.degree,
-
-              semester:
-                user.user_metadata.semester,
-
-              role:
-                user.user_metadata.role ||
-                "student",
-            });
-
-          if (insertError) {
-            console.error(
-              "PROFILE INSERT ERROR:",
-              insertError
-            );
-
+          // NO SESSION
+          if (
+            sessionError ||
+            !session?.user
+          ) {
             router.replace(
               "/student/login"
             );
 
             return;
           }
+
+          const user =
+            session.user;
+
+          // CHECK EXISTING PROFILE
+          const {
+            data:
+              existingProfile,
+          } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("id", user.id)
+            .maybeSingle();
+
+          // CREATE PROFILE
+          if (!existingProfile) {
+            const {
+              error:
+                insertError,
+            } = await supabase
+              .from("profiles")
+              .insert({
+                id: user.id,
+
+                first_name:
+                  user.user_metadata
+                    .first_name,
+
+                last_name:
+                  user.user_metadata
+                    .last_name,
+
+                email: user.email,
+
+                mobile_number:
+                  user.user_metadata
+                    .mobile_number,
+
+                college_name:
+                  user.user_metadata
+                    .college_name,
+
+                degree:
+                  user.user_metadata
+                    .degree,
+
+                semester:
+                  user.user_metadata
+                    .semester,
+
+                role:
+                  user.user_metadata
+                    .role ||
+                  "student",
+              });
+
+            console.log(
+              "INSERT ERROR:",
+              insertError
+            );
+
+            if (insertError) {
+              router.replace(
+                "/student/login"
+              );
+
+              return;
+            }
+          }
+
+          router.replace(
+            "/student/dashboard"
+          );
+
+        } catch (error) {
+          console.error(
+            "CALLBACK ERROR:",
+            error
+          );
+
+          router.replace(
+            "/student/login"
+          );
         }
+      };
 
-        // SUCCESS
-        router.replace(
-          "/student/dashboard"
-        );
+    // slight delay lets supabase
+    // restore hash session
+    setTimeout(() => {
+      handleAuthCallback();
+    }, 1000);
 
-      } catch (error) {
-        console.error(
-          "AUTH CALLBACK ERROR:",
-          error
-        );
-
-        router.replace("/student/login");
-      }
-    };
-
-    handleAuth();
   }, [router]);
 
   return (
