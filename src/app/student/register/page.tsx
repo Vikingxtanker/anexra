@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { supabase } from "@/lib/supabase";
 
 import { Controller, useForm } from "react-hook-form";
@@ -806,10 +808,15 @@ export default function StudentRegisterPage() {
 
           <p className="mt-6 text-center text-sm text-gray-500">
             Already have an account?{" "}
-            <span className="font-medium text-[#2563EB] cursor-pointer hover:underline">
+
+            <Link
+              href="/student/login"
+              className="font-medium text-[#2563EB] hover:underline"
+            >
               Login
-            </span>
+            </Link>
           </p>
+
         </div>
       </div>
     </div>
