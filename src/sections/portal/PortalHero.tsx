@@ -19,31 +19,31 @@ const portals = [
     title: "Student Portal",
     description: "Courses, learning resources, and academic tools.",
     icon: GraduationCap,
-    href: "/portal/student",
+    href: "/student/dashboard",
   },
   {
     title: "Patient Portal",
     description: "Appointments, reports, and healthcare tracking.",
     icon: UserRound,
-    href: "/portal/patient",
+    href: "/patient",
   },
   {
     title: "Doctor Portal",
     description: "Consultations, patient records, and workflows.",
     icon: Stethoscope,
-    href: "/portal/doctor",
+    href: "/doctor",
   },
   {
     title: "Employee Portal",
     description: "Internal operations, tasks, and communication.",
     icon: Briefcase,
-    href: "/portal/employee",
+    href: "/employee",
   },
   {
     title: "Admin Portal",
     description: "Platform management and system controls.",
     icon: ShieldCheck,
-    href: "/portal/admin",
+    href: "/admin",
   },
 ];
 

@@ -4,6 +4,8 @@ import "./globals.css";
 
 import SmoothScroll from "@/components/SmoothScroll";
 
+import { Toaster } from "sonner";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -25,6 +27,7 @@ export default function RootLayout({
       <body className="antialiased bg-[#f4efee] text-[#4c1711]">
         <SmoothScroll />
         {children}
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

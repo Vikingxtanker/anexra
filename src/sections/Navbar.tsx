@@ -226,10 +226,10 @@ export default function Navbar() {
             <div className="flex flex-col gap-3 pt-4">
 
               <Link
-                href="#contact"
+                href="/portal"
                 className="w-full text-center px-6 py-3 rounded-full bg-[#aa6f73] text-white text-sm font-semibold hover:bg-[#4c1711] transition-all duration-300"
               >
-                Partner With Us
+                Select Portal
               </Link>
 
             </div>
