@@ -11,7 +11,7 @@ data: { user },
 
 // SERVER-SIDE PROTECTION
 if (!user) {
-redirect("/student/register");
+redirect("/student/login");
 }
 
 return ( <div className="min-h-screen bg-[#0F172A] text-white"> <div className="mx-auto max-w-7xl px-6 py-10"> <div className="flex items-center justify-between"> <div> <h1 className="text-4xl font-bold">
