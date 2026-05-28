@@ -1,0 +1,45 @@
+/anexra
+│
+├── Public Website
+│   ├── /
+│   ├── /about
+│   ├── /solutions
+│   ├── /career-connect
+│   ├── /education
+│   └── /contact
+│
+├── Student Portal
+│   ├── /student/register
+│   ├── /student/login
+│   ├── /student/dashboard
+│   ├── /student/courses
+│   ├── /student/notes
+│   └── /student/profile
+│
+├── Employee Portal
+│   ├── /employee/login
+│   ├── /employee/dashboard
+│   ├── /employee/patients
+│   ├── /employee/reports
+│   └── /employee/meetings
+│
+├── Admin Portal
+│   ├── /admin/login
+│   ├── /admin/dashboard
+│   ├── /admin/uploads
+│   ├── /admin/users
+│   └── /admin/subscriptions
+│
+├── Patient Portal
+│   ├── /patient/login
+│   ├── /patient/dashboard
+│   ├── /patient/reports
+│   └── /patient/appointments
+│
+└── Doctor Portal
+    ├── /doctor/login
+    ├── /doctor/dashboard
+    ├── /doctor/prescriptions
+    └── /doctor/patient-monitoring
+
+student, employee, admin, patient, doctor

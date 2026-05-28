@@ -1,0 +1,142 @@
+# Recommended Folder Structure
+
+```txt id="t7axqg"
+src/
+├── app/
+│   ├── portal/
+│   │   └── page.tsx
+│
+├── sections/
+│   ├── portal/
+│   │   ├── PortalHero.tsx
+│   │   ├── PortalGrid.tsx
+│   │   └── PortalInfo.tsx
+```
+
+---
+
+# Recommended Page Structure
+
+## 1. PortalHero
+
+Top section.
+
+Example:
+
+* Heading:
+  `"Access Your ANEXRA Portal"`
+* Subheading:
+  `"Choose your workspace to continue."`
+
+Could include:
+
+* gradient background
+* animated blobs
+* healthcare/tech visual
+
+---
+
+## 2. PortalGrid (Main Section)
+
+This is the important part.
+
+Use responsive cards:
+
+```txt id="0f7l4v"
+┌──────────────┐
+│ 👨‍⚕️ Doctor    │
+│ Manage care │
+│ [ Enter ]   │
+└──────────────┘
+```
+
+Cards for:
+
+* Student
+* Patient
+* Doctor
+* Employee
+* Admin
+
+---
+
+# Suggested Data Structure
+
+Inside `PortalGrid.tsx`:
+
+```tsx
+const portals = [
+  {
+    title: "Student Portal",
+    description: "Access courses and academic resources.",
+    href: "/portal/student",
+  },
+  {
+    title: "Doctor Portal",
+    description: "Manage consultations and patients.",
+    href: "/portal/doctor",
+  },
+];
+```
+
+Then map them.
+
+That makes scaling much easier.
+
+---
+
+# Recommended URL Architecture
+
+```txt id="ff1z0x"
+/portal
+/portal/student
+/portal/student/login
+/portal/student/dashboard
+
+/portal/doctor
+/portal/doctor/login
+/portal/doctor/dashboard
+```
+
+---
+
+# Important Recommendation
+
+Do NOT directly put login forms on `/portal`.
+
+`/portal` should feel like:
+
+* a gateway
+* access hub
+* workspace selector
+
+Then each role gets its own branded login page.
+
+That feels far more premium.
+
+---
+
+# Design Recommendation
+
+Your portal page should visually differ from the public pages.
+
+Public website:
+
+* informational
+* marketing-oriented
+
+Portal page:
+
+* app-like
+* futuristic
+* dashboard aesthetic
+
+You can use:
+
+* darker gradients
+* glassmorphism
+* floating cards
+* animated hover effects
+* subtle grid background
+
+This separation improves perceived professionalism a lot.

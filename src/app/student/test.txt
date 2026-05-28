@@ -1,0 +1,309 @@
+Now your next step is to connect your Supabase backend with your Next.js frontend.
+
+You should proceed in this exact order.
+
+---
+
+# Phase 1 — Connect Supabase to Next.js
+
+---
+
+# Step 1 — Install Supabase SDK
+
+Inside your project terminal:
+
+```bash
+npm install @supabase/supabase-js
+```
+
+---
+
+# Step 2 — Get Supabase API Keys
+
+In Supabase:
+
+## Go to:
+
+```txt
+Project Settings → API
+```
+
+Copy:
+
+* Project URL
+* anon public key
+
+---
+
+# Step 3 — Create Environment Variables
+
+Create:
+
+```txt
+.env.local
+```
+
+Add:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
+
+---
+
+# Step 4 — Create Supabase Client
+
+Create:
+
+```txt
+src/lib/supabase.ts
+```
+
+Add:
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient(
+supabaseUrl,
+supabaseAnonKey
+);
+
+---
+
+# Step 5 — Create Student Register Page
+
+Create:
+
+```txt
+src/app/student/register/page.tsx
+```
+
+This is your first real frontend page.
+
+---
+
+# Step 6 — Build Registration Form
+
+Fields:
+
+* first name
+* last name
+* email
+* password
+* mobile number
+* college
+* degree
+* semester
+
+---
+
+# Step 7 — Signup Logic
+
+This is VERY important.
+
+Registration happens in TWO steps.
+
+---
+
+## Step A — Create Auth User
+
+Using:
+
+```ts
+supabase.auth.signUp()
+```
+
+---
+
+## Step B — Insert Into Profiles Table
+
+Using:
+
+```ts
+supabase.from("profiles").insert()
+```
+
+---
+
+# Full Registration Flow
+
+```txt
+User submits form
+↓
+Supabase creates auth account
+↓
+Get user ID
+↓
+Insert profile data
+↓
+Redirect to dashboard
+```
+
+---
+
+# IMPORTANT
+
+Do NOT store passwords manually in database.
+
+Supabase Auth handles:
+
+* hashing
+* security
+* sessions
+* tokens
+
+Never create:
+
+```txt
+password column
+```
+
+inside your profiles table.
+
+---
+
+# Step 8 — Enable Email Confirmation
+
+Inside Supabase:
+
+## Authentication → Providers → Email
+
+Enable:
+
+```txt
+Confirm email
+```
+
+This is important for:
+
+* security
+* fake account prevention
+
+---
+
+# Step 9 — Create Login Page
+
+Create:
+
+```txt
+src/app/student/login/page.tsx
+```
+
+Use:
+
+```ts
+supabase.auth.signInWithPassword()
+```
+
+---
+
+# Step 10 — Create Dashboard Protection
+
+VERY important.
+
+Students should NOT access:
+
+```txt
+/student/dashboard
+```
+
+without login.
+
+---
+
+# Proper Protection Logic
+
+When dashboard loads:
+
+```txt
+Check session
+↓
+If no session
+↓
+Redirect login
+```
+
+---
+
+# Step 11 — Create Student Dashboard
+
+Initially simple.
+
+Display:
+
+* student name
+* degree
+* semester
+* navigation cards
+
+Example:
+
+```txt
+Courses
+Notes
+Profile
+```
+
+---
+
+# Step 12 — Build Notes System
+
+After auth works:
+
+* create storage bucket
+* upload PDFs
+* display notes based on degree + semester
+
+---
+
+# Recommended Immediate Folder Structure
+
+```txt
+src/
+
+├── app/
+│   └── student/
+│       ├── register/
+│       ├── login/
+│       ├── dashboard/
+│       ├── courses/
+│       ├── notes/
+│       └── profile/
+│
+├── lib/
+│   └── supabase.ts
+```
+
+---
+
+# MOST IMPORTANT THING RIGHT NOW
+
+Your current goal is ONLY this:
+
+## MVP Goal
+
+```txt
+Student registers
+↓
+Student logs in
+↓
+Student enters dashboard
+↓
+Student views protected notes
+```
+
+Do NOT build:
+
+* AI
+* subscriptions
+* advanced dashboards
+* doctor portals
+* patient systems
+
+yet.
+
+Finish authentication properly first.

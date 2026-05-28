@@ -8,7 +8,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
   { label: "Education", href: "/education" },
-  { label: "Healthcare Services", href: "/healthcare-services" },
+  // { label: "Healthcare Services", href: "/healthcare-services" },
   { label: "Career Connect", href: "/career-connect" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -153,10 +153,10 @@ export default function Navbar() {
             
 
             <Link
-              href="#contact"
+              href="/portal"
               className="px-6 py-3 rounded-full bg-[#aa6f73] text-white text-sm font-semibold hover:bg-[#4c1711] hover:scale-105 transition-all duration-300"
             >
-              Partner With Us
+              Select Portal
             </Link>
 
           </div>

@@ -1,0 +1,374 @@
+Your current architecture is good for Phase 1 of ANEXRA.
+
+You should now design Supabase like a scalable SaaS backend from the beginning — even if you only have students initially.
+
+---
+
+# Recommended ANEXRA Student System Architecture
+
+## Frontend Routes
+
+```txt id="h23zxe"
+/student/login
+/student/register
+/student/dashboard
+/student/courses
+/student/notes
+/student/profile
+```
+
+Add `/student/register` too.
+
+---
+
+# Step 1 — Create Supabase Project
+
+Go to:
+
+[Supabase](https://supabase.com?utm_source=chatgpt.com)
+
+Create:
+
+* Organization → ANEXRA
+* Project → anexra-main
+
+Choose:
+
+* Region closest to India
+* Strong DB password
+
+---
+
+# Step 2 — Enable Authentication
+
+Inside Supabase:
+
+## Authentication → Providers
+
+Enable:
+
+* Email
+
+Disable for now:
+
+* Google
+* GitHub
+* OTP
+
+Keep it simple initially.
+
+---
+
+# Step 3 — Create Database Structure
+
+Go to:
+
+SQL Editor → New Query
+
+Run this:
+
+create table profiles (
+id uuid references auth.users on delete cascade primary key,
+full_name text,
+email text unique,
+role text default 'student',
+college_name text,
+degree text,
+semester text,
+created_at timestamp with time zone default timezone('utc', now())
+);
+
+alter table profiles enable row level security;
+
+This becomes your master user table.
+
+---
+
+# Why This Structure is Important
+
+Later you can add:
+
+* doctor
+* patient
+* admin
+* faculty
+
+without rebuilding auth.
+
+---
+
+# Step 4 — Auto Create Student Profile After Signup
+
+Create trigger:
+
+create function public.handle_new_user()
+returns trigger
+set search_path = public
+as $$
+begin
+insert into public.profiles (
+id,
+email
+)
+values (
+new.id,
+new.email
+);
+
+return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_user();
+
+Now every signup automatically creates:
+
+* student profile
+* linked account
+
+---
+
+# Step 5 — Create Courses Table
+
+create table courses (
+id bigint generated always as identity primary key,
+title text,
+description text,
+semester text,
+degree text,
+created_at timestamp with time zone default timezone('utc', now())
+);
+
+alter table courses enable row level security;
+
+---
+
+# Step 6 — Create Notes Table
+
+This will hold your PDFs.
+
+create table notes (
+id bigint generated always as identity primary key,
+title text,
+degree text,
+semester text,
+subject text,
+pdf_url text,
+created_at timestamp with time zone default timezone('utc', now())
+);
+
+alter table notes enable row level security;
+
+---
+
+# Step 7 — Setup Storage Bucket
+
+Go to:
+
+Storage → New Bucket
+
+Create:
+
+```txt id="w2w5ob"
+student-notes
+```
+
+IMPORTANT:
+
+* Make bucket PRIVATE
+* NOT public
+
+This is critical.
+
+---
+
+# Step 8 — Setup Row Level Security (RLS)
+
+## Profiles Policy
+
+Allow users to see only their own profile.
+
+Run:
+
+create policy "Users can view own profile"
+on profiles
+for select
+using (auth.uid() = id);
+
+create policy "Users can update own profile"
+on profiles
+for update
+using (auth.uid() = id);
+
+---
+
+# Step 9 — Notes Access Policy
+
+Initially allow authenticated students.
+
+create policy "Authenticated users can view notes"
+on notes
+for select
+to authenticated
+using (true);
+
+Later you can restrict:
+
+* by semester
+* by degree
+* by subscription
+
+---
+
+# Step 10 — Recommended Future Structure
+
+You should think ahead now.
+
+---
+
+# Recommended Final Tables
+
+## profiles
+
+Main users table
+
+## courses
+
+Course listings
+
+## notes
+
+PDF metadata
+
+## enrollments
+
+Which student enrolled in which course
+
+## progress
+
+Track completed videos/modules
+
+## subscriptions
+
+Paid access later
+
+## announcements
+
+Dashboard notifications
+
+---
+
+# Step 11 — Install Supabase in Next.js
+
+Inside your project:
+
+```bash
+npm install @supabase/supabase-js
+```
+
+---
+
+# Step 12 — Create Supabase Client
+
+Create:
+
+```txt id="x6qmbj"
+src/lib/supabase.ts
+```
+
+Add:
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+export const supabase = createClient(
+supabaseUrl,
+supabaseAnonKey
+)
+
+---
+
+# Step 13 — Environment Variables
+
+Create:
+
+```txt id="vq5fzi"
+.env.local
+```
+
+Add:
+
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+
+Find them in:
+
+* Project Settings
+* API
+
+---
+
+# Step 14 — Student Flow
+
+## Registration
+
+```txt id="4k0f5v"
+Student registers
+↓
+Auth account created
+↓
+Profile row auto-created
+↓
+Redirect to dashboard
+```
+
+---
+
+# Step 15 — Suggested Folder Structure
+
+For your current architecture:
+
+```txt id="ysn9iv"
+src/app/student/
+
+├── login/
+├── register/
+├── dashboard/
+├── courses/
+├── notes/
+├── profile/
+```
+
+Perfect for Next.js App Router.
+
+---
+
+# Important Recommendation
+
+Do NOT build:
+
+* separate database for students
+* separate auth system later
+
+Keep everything unified from day 1.
+
+Your future structure should eventually become:
+
+```txt id="x86v7m"
+/student/*
+/doctor/*
+/patient/*
+/admin/*
+```
+
+all powered by:
+
+* one auth system
+* one profiles table
+* role-based permissions
+
+That is proper SaaS architecture.
