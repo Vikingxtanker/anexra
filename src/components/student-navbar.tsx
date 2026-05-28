@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
 import { Menu, X } from "lucide-react";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -33,19 +33,68 @@ export default function StudentNavbar() {
   const [menuOpen, setMenuOpen] =
     useState(false);
 
-    const router = useRouter();
+  const [loggedIn, setLoggedIn] =
+    useState(false);
 
-    const handleLogout = async () => {
-    const supabase = createClient();
+  const [loading, setLoading] =
+    useState(true);
 
+  const router = useRouter();
+
+  const pathname = usePathname();
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setLoggedIn(!!session);
+
+      setLoading(false);
+    };
+
+    checkUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setLoggedIn(!!session);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
     await supabase.auth.signOut();
 
-    router.push("/student/login");
-    };
+    setLoggedIn(false);
+
+    router.replace("/student/login");
+
+    router.refresh();
+  };
+
+  const handleAuthButton = () => {
+    if (loggedIn) {
+      handleLogout();
+    } else {
+      router.push("/student/login");
+    }
+  };
+
+  const isAuthPage =
+    pathname === "/student/login" ||
+    pathname === "/student/register";
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
-
       <div className="max-w-7xl mx-auto">
         <nav
           className="
@@ -67,10 +116,13 @@ export default function StudentNavbar() {
             shadow-[0_8px_32px_rgba(76,23,17,0.10)]
           "
         >
-
           {/* Logo */}
           <Link
-            href="/student/dashboard"
+            href={
+              loggedIn
+                ? "/student/dashboard"
+                : "/student/login"
+            }
             className="flex items-center"
           >
             <img
@@ -87,49 +139,51 @@ export default function StudentNavbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
+          {!isAuthPage && loggedIn && (
+            <div className="hidden lg:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="
+                    text-base
+                    font-semibold
+                    tracking-tight
+                    text-[#564740]
+                    hover:text-[#aa6f73]
+                    transition-all
+                    duration-300
+                  "
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Desktop Auth Button */}
+          {!loading && (
+            <div className="hidden lg:flex items-center gap-4">
+              <button
+                onClick={handleAuthButton}
                 className="
-                  text-base
+                  px-6
+                  py-3
+                  rounded-full
+                  bg-[#aa6f73]
+                  text-white
+                  text-sm
                   font-semibold
-                  tracking-tight
-                  text-[#564740]
-                  hover:text-[#aa6f73]
+                  hover:bg-[#4c1711]
+                  hover:scale-105
                   transition-all
                   duration-300
                 "
               >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Desktop Logout */}
-          <div className="hidden lg:flex items-center gap-4">
-
-            <button
-            onClick={handleLogout}
-            className="
-                px-6
-                py-3
-                rounded-full
-                bg-[#aa6f73]
-                text-white
-                text-sm
-                font-semibold
-                hover:bg-[#4c1711]
-                hover:scale-105
-                transition-all
-                duration-300
-            "
-            >
-            Logout
-            </button>
-
-          </div>
+                {loggedIn ? "Logout" : "Login"}
+              </button>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -171,51 +225,54 @@ export default function StudentNavbar() {
               shadow-[0_8px_30px_rgba(76,23,17,0.08)]
             "
           >
+            {!isAuthPage &&
+              loggedIn &&
+              navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() =>
+                    setMenuOpen(false)
+                  }
+                  className="
+                    text-lg
+                    font-semibold
+                    tracking-tight
+                    text-[#564740]
+                    hover:text-[#aa6f73]
+                    transition-all
+                    duration-300
+                  "
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() =>
-                  setMenuOpen(false)
-                }
-                className="
-                  text-lg
-                  font-semibold
-                  tracking-tight
-                  text-[#564740]
-                  hover:text-[#aa6f73]
-                  transition-all
-                  duration-300
-                "
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <div className="pt-4">
-
-              <button
-                    onClick={handleLogout}
-                    className="
-                        w-full
-                        text-center
-                        px-6
-                        py-3
-                        rounded-full
-                        bg-[#aa6f73]
-                        text-white
-                        text-sm
-                        font-semibold
-                        hover:bg-[#4c1711]
-                        transition-all
-                        duration-300
-                    "
-                    >
-                    Logout
+            {!loading && (
+              <div className="pt-4">
+                <button
+                  onClick={handleAuthButton}
+                  className="
+                    w-full
+                    text-center
+                    px-6
+                    py-3
+                    rounded-full
+                    bg-[#aa6f73]
+                    text-white
+                    text-sm
+                    font-semibold
+                    hover:bg-[#4c1711]
+                    transition-all
+                    duration-300
+                  "
+                >
+                  {loggedIn
+                    ? "Logout"
+                    : "Login"}
                 </button>
-
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
