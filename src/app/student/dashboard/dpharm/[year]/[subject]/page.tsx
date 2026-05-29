@@ -1,0 +1,146 @@
+import { FileText } from "lucide-react";
+import { pharmacyPrograms } from "@/data/pharmacy-programs";
+
+import { subjectResources } from "@/data/subject-resources";
+import Link from "next/link";
+
+interface PageProps {
+  params: Promise<{
+    year: string;
+    subject: string;
+  }>;
+}
+
+export default async function SubjectPage({
+  params,
+}: PageProps) {
+  const { year, subject } = await params;
+
+  const yearMap: Record<string, string> = {
+    "1st-year": "1st Year",
+    "2nd-year": "2nd Year",
+  };
+
+  const yearName = yearMap[year];
+
+  const subjects =
+    pharmacyPrograms["D.Pharm"].years[
+      yearName as keyof typeof pharmacyPrograms["D.Pharm"]["years"]
+    ]?.subjects ?? [];
+
+  const currentSubject = subjects.find(
+    (s) => s.slug === subject
+  );
+
+  if (!currentSubject) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <h1 className="text-2xl font-bold text-[#4c1711]">
+          Subject Not Found
+        </h1>
+      </div>
+    );
+  }
+
+  const chapters =
+    subjectResources[
+        subject as keyof typeof subjectResources
+    ]?.notes ?? [];
+
+  return (
+    <section className="min-h-screen bg-gradient-to-br from-[#f4efee] via-white to-[#f4efee] px-6 py-12">
+      <div className="mx-auto max-w-7xl">
+        {/* Subject Header */}
+        <div className="mb-12">
+          <div className="inline-flex items-center rounded-full bg-[#4c1711]/10 px-4 py-2 text-sm font-medium text-[#4c1711]">
+            D.Pharm • {yearName}
+          </div>
+
+          <h1 className="mt-4 text-4xl font-bold text-[#4c1711]">
+            {currentSubject.name}
+          </h1>
+
+          <p className="mt-2 text-lg text-[#87565b]">
+            Access notes, videos, question banks and learning
+            resources.
+          </p>
+        </div>
+
+        <div className="mb-12">
+  <h2 className="mb-6 text-2xl font-bold text-[#4c1711]">
+    Notes
+  </h2>
+
+  <p className="mb-6 text-[#87565b]">
+    {chapters.length} chapter{chapters.length !== 1 ? "s" : ""} available
+    </p>
+
+  <div className="grid gap-6">
+
+    {chapters.length === 0 && (
+    <div className="rounded-2xl border border-dashed p-8 text-center">
+        <p className="text-[#87565b]">
+        Notes will be added soon.
+        </p>
+    </div>
+    )}
+
+        {chapters.map((chapter) => (
+        <Link
+            key={chapter.title}
+            href={`/student/dashboard/dpharm/${year}/${subject}/${chapter.slug}`}
+        >
+            <div
+            className="
+                flex items-center justify-between
+                rounded-2xl
+                border border-white/40
+                bg-white/50
+                p-6
+                backdrop-blur-xl
+                shadow-[0_8px_32px_rgba(76,23,17,0.08)]
+                transition-all duration-300
+                hover:-translate-y-1
+            "
+            >
+            <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4c1711]/10">
+                <FileText className="h-6 w-6 text-[#4c1711]" />
+                </div>
+
+                <div>
+                <h3 className="font-semibold text-[#4c1711]">
+                    {chapter.title}
+                </h3>
+
+                <p className="text-sm text-[#87565b]">
+                    PDF Notes
+                </p>
+                </div>
+            </div>
+
+            <span className="font-medium text-[#4c1711]">
+                Open →
+            </span>
+            </div>
+        </Link>
+        ))}
+    </div>
+    </div>
+
+        {/* Coming Soon */}
+        <div className="mt-16 rounded-3xl border border-dashed border-[#87565b]/30 bg-white/30 p-8 text-center backdrop-blur-md">
+          <h3 className="text-xl font-semibold text-[#4c1711]">
+            More Resources Coming Soon
+          </h3>
+
+          <p className="mt-2 text-[#87565b]">
+            Premium notes, full video courses, question banks,
+            and chapter-wise study materials will be available
+            here.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

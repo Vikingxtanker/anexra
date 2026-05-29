@@ -7,6 +7,12 @@ import { pharmacyPrograms } from "@/data/pharmacy-programs";
 export default function DashboardHero() {
   const programs = Object.entries(pharmacyPrograms);
 
+  const degreeSlugs: Record<string, string> = {
+    "D.Pharm": "dpharm",
+    "B.Pharm": "bpharm",
+    "Pharm.D": "pharmd",
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
       {/* Background Blur Effects */}
@@ -45,9 +51,7 @@ export default function DashboardHero() {
           {programs.map(([degree, details]) => (
             <Link
               key={degree}
-              href={`/student/dashboard/${encodeURIComponent(
-                degree
-              )}`}
+              href={`/student/dashboard/${degreeSlugs[degree]}`}
             >
               <div
                 className="
