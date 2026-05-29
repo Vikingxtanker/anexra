@@ -103,7 +103,7 @@ setLoading(true);
       )
     ) {
       setErrorTitle(
-        "Invalid Credentials / User not Registered"
+        "Invalid Credentials / Not Registered"
       );
 
       setErrorMessage(
