@@ -242,7 +242,16 @@ export default function DegreeCards() {
                       focus:bg-white/10
                     "
                   >
-                    {subject.name}
+                    <Link
+                      href={`/student/dashboard?degree=${encodeURIComponent(
+                        degree.title
+                      )}&section=${encodeURIComponent(
+                        sectionName
+                      )}&subject=${subject.slug}`}
+                      className="block w-full"
+                    >
+                      {subject.name}
+                    </Link>
                   </MenuItem>
                 ))
               ) : (
