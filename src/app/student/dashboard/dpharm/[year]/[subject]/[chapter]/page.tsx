@@ -3,6 +3,8 @@ import { notFound, redirect } from "next/navigation";
 import { subjectResources } from "@/data/subject-resources";
 import { createClient } from "@/lib/supabase/server";
 
+import PdfViewer from "@/components/PdfViewer";
+
 interface PageProps {
   params: Promise<{
     year: string;
@@ -35,7 +37,6 @@ export default async function ChapterPage({
 
   const supabase = await createClient();
 
-  // Optional: require login
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -48,7 +49,7 @@ export default async function ChapterPage({
     .from("education-resources")
     .createSignedUrl(
       chapterData.storagePath,
-      60 * 60 // 1 hour
+      60 * 60
     );
 
   if (error || !data?.signedUrl) {
@@ -71,7 +72,6 @@ export default async function ChapterPage({
   return (
     <section
       className="
-        relative
         min-h-screen
         bg-[#f4efee]
         px-4
@@ -88,11 +88,42 @@ export default async function ChapterPage({
           PDF Notes Viewer
         </p>
 
-        <div className="overflow-hidden rounded-2xl border bg-white shadow-lg">
-          <iframe
-            src={data.signedUrl}
-            className="h-[85vh] w-full"
-            title={chapterData.title}
+        <div className="relative overflow-hidden rounded-2xl border bg-white shadow-lg">
+
+          {/* Watermark */}
+          <div
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              z-[9999]
+              overflow-hidden
+            "
+          >
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div
+                key={i}
+                className="
+                  absolute
+                  rotate-[-30deg]
+                  text-black/15
+                  font-bold
+                  text-xl
+                  whitespace-nowrap
+                "
+                style={{
+                  top: `${(i % 5) * 20}%`,
+                  left: `${Math.floor(i / 5) * 25}%`,
+                }}
+              >
+                ANEXRA • {user.email}
+              </div>
+            ))}
+          </div>
+
+          <PdfViewer
+            pdfUrl={data.signedUrl}
+            watermark={`ANEXRA • ${user.email} • ${new Date().toLocaleDateString()}`}
           />
         </div>
       </div>
