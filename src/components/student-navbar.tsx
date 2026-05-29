@@ -53,10 +53,14 @@ export default function StudentNavbar() {
   useEffect(() => {
     const checkUser = async () => {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
 
-      setLoggedIn(!!session);
+      console.log("NAVBAR USER:", user);
+      console.log("NAVBAR USER ERROR:", error);
+
+      setLoggedIn(!!user);
 
       setLoading(false);
     };
@@ -66,11 +70,15 @@ export default function StudentNavbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      (
+      async (
         _event: AuthChangeEvent,
         session: Session | null
       ) => {
-        setLoggedIn(!!session);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        setLoggedIn(!!user);
       }
     );
 
@@ -100,6 +108,10 @@ export default function StudentNavbar() {
   const isAuthPage =
     pathname === "/student/login" ||
     pathname === "/student/register";
+
+  console.log("LOGGED IN:", loggedIn);
+  console.log("LOADING:", loading);
+  console.log("PATHNAME:", pathname);
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
