@@ -16,6 +16,9 @@ interface PageProps {
 export default async function ChapterPage({
   params,
 }: PageProps) {
+  
+  const today = new Date().toLocaleDateString();
+
   const { subject, chapter } = await params;
 
   const subjectData =
@@ -123,7 +126,7 @@ export default async function ChapterPage({
 
           <PdfViewer
             pdfUrl={data.signedUrl}
-            watermark={`ANEXRA • ${user.email} • ${new Date().toLocaleDateString()}`}
+            watermark={`ANEXRA • ${user.email} • ${today}`}
           />
         </div>
       </div>

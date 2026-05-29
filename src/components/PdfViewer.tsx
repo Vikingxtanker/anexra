@@ -1,11 +1,19 @@
 "use client";
 
-import { Document, Page, pdfjs } from "react-pdf";
+import {
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+
+import {
+  Document,
+  Page,
+  pdfjs,
+} from "react-pdf";
 
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-
-import { useEffect, useState, useRef } from "react";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -18,16 +26,19 @@ interface PdfViewerProps {
 function WatermarkedPage({
   pageNumber,
   watermark,
+  width,
 }: {
   pageNumber: number;
   watermark: string;
+  width: number;
 }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef =
+    useRef<HTMLCanvasElement | null>(null);
 
   return (
     <Page
       pageNumber={pageNumber}
-      width={900}
+      width={width}
       renderTextLayer={false}
       renderAnnotationLayer={false}
       canvasRef={canvasRef}
@@ -36,9 +47,15 @@ function WatermarkedPage({
 
         if (!canvas) return;
 
-        const ctx = canvas.getContext("2d");
+        const ctx =
+          canvas.getContext("2d");
 
         if (!ctx) return;
+
+        const fontSize =
+          canvas.width < 500
+            ? 16
+            : 36;
 
         ctx.save();
 
@@ -47,10 +64,11 @@ function WatermarkedPage({
           canvas.height / 2
         );
 
-        ctx.rotate((-30 * Math.PI) / 180);
+        ctx.rotate(
+          (-30 * Math.PI) / 180
+        );
 
-        ctx.font =
-          "bold 40px Arial";
+        ctx.font = `bold ${fontSize}px Arial`;
 
         ctx.fillStyle =
           "rgba(0,0,0,0.12)";
@@ -75,6 +93,12 @@ export default function PdfViewer({
 }: PdfViewerProps) {
   const [numPages, setNumPages] =
     useState(0);
+
+  const [pageWidth, setPageWidth] =
+    useState(900);
+
+  const containerRef =
+    useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const disableContextMenu = (
@@ -112,11 +136,52 @@ export default function PdfViewer({
     };
   }, []);
 
+  useEffect(() => {
+    const updateWidth = () => {
+      if (!containerRef.current)
+        return;
+
+      const width =
+        containerRef.current
+          .clientWidth - 32;
+
+      setPageWidth(
+        Math.min(width, 900)
+      );
+    };
+
+    updateWidth();
+
+    window.addEventListener(
+      "resize",
+      updateWidth
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        updateWidth
+      );
+    };
+  }, []);
+
   return (
-    <div className="bg-[#f8f8f8] p-6 select-none">
+    <div
+      ref={containerRef}
+      className="
+        w-full
+        bg-[#f8f8f8]
+        p-2
+        sm:p-4
+        md:p-6
+        select-none
+      "
+    >
       <Document
         file={pdfUrl}
-        onLoadSuccess={({ numPages }) =>
+        onLoadSuccess={({
+          numPages,
+        }) =>
           setNumPages(numPages)
         }
         loading={
@@ -130,12 +195,21 @@ export default function PdfViewer({
           (_, index) => (
             <div
               key={index}
-              className="mb-8 flex justify-center"
+              className="
+                mb-8
+                flex
+                justify-center
+              "
             >
               <WatermarkedPage
-                pageNumber={index + 1}
-                watermark={watermark}
-                />
+                pageNumber={
+                  index + 1
+                }
+                watermark={
+                  watermark
+                }
+                width={pageWidth}
+              />
             </div>
           )
         )}
