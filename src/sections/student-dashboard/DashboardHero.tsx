@@ -8,7 +8,7 @@ export default function DashboardHero() {
   const programs = Object.entries(pharmacyPrograms);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f4efee] via-white to-[#f4efee] px-6 py-16">
+    <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
       {/* Background Blur Effects */}
       <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-[#c79da1]/20 blur-3xl" />
 
