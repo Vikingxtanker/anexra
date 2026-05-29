@@ -348,7 +348,18 @@ export default function StudentRegisterPage() {
 
   return (
     <div
-        className="relative min-h-screen flex items-center justify-center px-4 py-10 bg-cover bg-center bg-no-repeat"
+        className="
+          relative 
+          min-h-screen 
+          flex 
+          justify-center 
+          px-4 
+          pt-32
+          pb-10 
+          bg-cover 
+          bg-center 
+          bg-no-repeat
+        "
         style={{
             backgroundImage: "url('/backgrounds/registration_gradient.webp')",
         }}
