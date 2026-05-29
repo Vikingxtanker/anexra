@@ -10,11 +10,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
 
-import type {
-  AuthChangeEvent,
-  Session,
-} from "@supabase/supabase-js";
-
 const navLinks = [
   {
     label: "Dashboard",
@@ -83,17 +78,16 @@ export default function StudentNavbar() {
     console.log("LOGOUT CLICKED");
 
     try {
-      const { error } =
+      const timeout = setTimeout(() => {
+        console.log("SIGNOUT TIMED OUT");
+      }, 5000);
+
+      const result =
         await supabase.auth.signOut();
 
-      console.log(
-        "SIGNOUT ERROR:",
-        error
-      );
+      clearTimeout(timeout);
 
-      console.log(
-        "SIGNOUT COMPLETE"
-      );
+      console.log("SIGNOUT RESULT:", result);
 
       window.location.assign(
         "/student/login"
