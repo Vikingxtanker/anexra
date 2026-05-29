@@ -4,155 +4,40 @@ import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
 
+  const supabase = createClient();
+
   useEffect(() => {
 
-    console.log(
-      "CURRENT URL:",
-      window.location.href
-    );
+    const handleAuthCallback = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
 
-    console.log(
-      "SEARCH:",
-      window.location.search
-    );
-
-    console.log(
-      "HASH:",
-      window.location.hash
-    );
-
-    const handleAuthCallback =
-      async () => {
-        try {
-          // IMPORTANT:
-          // waits for supabase to recover session
-          const {
-            data: {
-              session,
-            },
-            error: sessionError,
-          } =
-            await supabase.auth.getSession();
-
-          console.log(
-            "SESSION:",
-            session
-          );
-
-          console.log(
-            "SESSION ERROR:",
-            sessionError
-          );
-
-          const {
-            data: { user: authUser },
-            error: authUserError,
-          } = await supabase.auth.getUser();
-
-          console.log("AUTH USER:", authUser);
-          console.log("USER ERROR:", authUserError);
-
-          // NO SESSION
-          if (
-            sessionError ||
-            !session?.user
-          ) {
-            router.replace(
-              "/student/login"
-            );
-
-            return;
-          }
-
-          const user =
-            session.user;
-
-          // CHECK EXISTING PROFILE
-          const {
-            data:
-              existingProfile,
-          } = await supabase
-            .from("profiles")
-            .select("id")
-            .eq("id", user.id)
-            .maybeSingle();
-
-          // CREATE PROFILE
-          if (!existingProfile) {
-            const {
-              error:
-                insertError,
-            } = await supabase
-              .from("profiles")
-              .insert({
-                id: user.id,
-
-                first_name:
-                  user.user_metadata
-                    .first_name,
-
-                last_name:
-                  user.user_metadata
-                    .last_name,
-
-                email: user.email,
-
-                mobile_number:
-                  user.user_metadata
-                    .mobile_number,
-
-                college_name:
-                  user.user_metadata
-                    .college_name,
-
-                degree:
-                  user.user_metadata
-                    .degree,
-
-                semester:
-                  user.user_metadata
-                    .semester,
-
-                role:
-                  user.user_metadata
-                    .role ||
-                  "student",
-              });
-
-            console.log(
-              "INSERT ERROR:",
-              insertError
-            );
-
-            if (insertError) {
-              router.replace(
-                "/student/login"
-              );
-
-              return;
-            }
-          }
-
-          router.replace(
-            "/student/dashboard"
-          );
-
-        } catch (error) {
-          console.error(
-            "CALLBACK ERROR:",
-            error
-          );
-
-          router.replace(
-            "/student/login"
-          );
+        if (error || !session) {
+          router.replace("/student/login");
+          return;
         }
-      };
+
+        router.replace("/student/dashboard");
+
+      } catch (error) {
+        console.error(
+          "CALLBACK ERROR:",
+          error
+        );
+
+        router.replace(
+          "/student/login"
+        );
+      }
+    };
 
     // slight delay lets supabase
     // restore hash session

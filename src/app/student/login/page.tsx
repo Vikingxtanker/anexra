@@ -157,13 +157,10 @@ setLoading(true);
   setLoading(false);
 
   console.log("LOGIN SUCCESS");
-  
-  console.log("BEFORE PUSH");
 
-  window.location.href = 
-    "/student/dashboard";
-
-  console.log("AFTER PUSH");
+  router.replace(
+    "/student/dashboard"
+  )
 
 } catch (error) {
   setErrorTitle(

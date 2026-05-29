@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +46,9 @@ AlertDialogTitle,
 
 
 export default function StudentRegisterPage() {
+
+  const supabase = createClient();
+
   const degrees = ["D.Pharm", "B.Pharm", "Pharm.D", "M.Pharm"];
 
   const dPharmYears = ["1st Year", "2nd Year"];
