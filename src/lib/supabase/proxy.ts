@@ -47,15 +47,42 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  const protectedRoutes = ["/student/dashboard"];
+  const protectedRoutes = [
+    "/student/dashboard",
+  ];
 
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
-  );
+  const authRoutes = [
+    "/student/login",
+    "/student/register",
+  ];
 
+  const isProtectedRoute =
+    protectedRoutes.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
+
+  const isAuthRoute =
+    authRoutes.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
+
+  // NOT LOGGED IN
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/student/login";
+
+    url.pathname =
+      "/student/login";
+
+    return NextResponse.redirect(url);
+  }
+
+  // ALREADY LOGGED IN
+  if (isAuthRoute && user) {
+    const url = request.nextUrl.clone();
+
+    url.pathname =
+      "/student/dashboard";
+
     return NextResponse.redirect(url);
   }
 

@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { createClient } from "@/lib/supabase/client";
 
 import { Controller, useForm } from "react-hook-form";
@@ -32,7 +35,6 @@ import {
 } from "@/components/ui/field";
 
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
 import {
 AlertDialog,
@@ -46,6 +48,8 @@ AlertDialogTitle,
 
 
 export default function StudentRegisterPage() {
+
+  const router = useRouter();
 
   const supabase = createClient();
 
@@ -158,6 +162,20 @@ export default function StudentRegisterPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        router.replace("/student/dashboard");
+      }
+    };
+
+    checkSession();
+  }, [router]);
 
 
   async function onSubmit(values: StudentRegisterSchema) {

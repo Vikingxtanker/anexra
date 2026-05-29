@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
@@ -66,6 +68,22 @@ useState("");
 
 const [errorMessage, setErrorMessage] =
 useState("");
+
+useEffect(() => {
+  const checkSession = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      router.replace(
+        "/student/dashboard"
+      );
+    }
+  };
+
+  checkSession();
+}, []);
 
 const form = useForm<LoginSchema>({
 resolver: zodResolver(loginSchema),
