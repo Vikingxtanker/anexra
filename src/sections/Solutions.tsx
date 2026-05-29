@@ -92,7 +92,7 @@ const solutions = [
       "Annual wellness programs focused on prevention and early intervention.",
     href: "/solutions/preventive-wellness",
     image:
-      "/images/solutions/patient-counseling",
+      "/images/solutions/patient-counseling.webp",
   },
 ];
 
