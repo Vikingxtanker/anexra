@@ -10,6 +10,22 @@ export default function AuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
+
+    console.log(
+      "CURRENT URL:",
+      window.location.href
+    );
+
+    console.log(
+      "SEARCH:",
+      window.location.search
+    );
+
+    console.log(
+      "HASH:",
+      window.location.hash
+    );
+
     const handleAuthCallback =
       async () => {
         try {
@@ -32,6 +48,14 @@ export default function AuthCallbackPage() {
             "SESSION ERROR:",
             sessionError
           );
+
+          const {
+            data: { user: authUser },
+            error: authUserError,
+          } = await supabase.auth.getUser();
+
+          console.log("AUTH USER:", authUser);
+          console.log("USER ERROR:", authUserError);
 
           // NO SESSION
           if (
