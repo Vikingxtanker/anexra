@@ -74,30 +74,14 @@ export default function StudentNavbar() {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     console.log("LOGOUT CLICKED");
 
-    try {
-      const timeout = setTimeout(() => {
-        console.log("SIGNOUT TIMED OUT");
-      }, 5000);
+    supabase.auth.signOut();
 
-      const result =
-        await supabase.auth.signOut();
-
-      clearTimeout(timeout);
-
-      console.log("SIGNOUT RESULT:", result);
-
-      window.location.assign(
-        "/student/login"
-      );
-    } catch (err) {
-      console.error(
-        "SIGNOUT CRASH:",
-        err
-      );
-    }
+    window.location.assign(
+      "/student/login"
+    );
   };
 
   const handleAuthButton = () => {
