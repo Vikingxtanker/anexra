@@ -10,6 +10,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
 
+import type {
+  AuthChangeEvent,
+  Session,
+} from "@supabase/supabase-js";
+
 const navLinks = [
   {
     label: "Dashboard",
@@ -98,6 +103,14 @@ export default function StudentNavbar() {
         "SIGNOUT CRASH:",
         err
       );
+    }
+  };
+
+  const handleAuthButton = () => {
+    if (loggedIn) {
+      handleLogout();
+    } else {
+      router.push("/student/login");
     }
   };
 
