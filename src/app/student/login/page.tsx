@@ -52,7 +52,7 @@ type LoginSchema = z.infer<typeof loginSchema>;
 export default function StudentLoginPage() {
 const router = useRouter();
 
-const supabase = createClient();
+const [supabase] = useState(() => createClient());
 
 const [showPassword, setShowPassword] =
 useState(false);
@@ -83,7 +83,7 @@ useEffect(() => {
   };
 
   checkSession();
-}, []);
+}, [router, supabase]);
 
 const form = useForm<LoginSchema>({
 resolver: zodResolver(loginSchema),
@@ -98,10 +98,13 @@ defaultValues: {
 });
 
 async function onSubmit(
-values: LoginSchema
+  values: LoginSchema
 ) {
-try {
-setLoading(true);
+
+  if (loading) return;
+
+  try {
+    setLoading(true);
 
   const { data, error } =
     await supabase.auth.signInWithPassword({
@@ -172,13 +175,17 @@ setLoading(true);
     return;
   }
 
-  setLoading(false);
-
   console.log("LOGIN SUCCESS");
 
-  router.replace(
-    "/student/dashboard"
-  )
+  setTimeout(() => {
+    router.replace(
+      "/student/dashboard"
+    );
+
+    router.refresh();
+  }, 300);
+
+  setLoading(false);
 
 } catch (error) {
   setErrorTitle(

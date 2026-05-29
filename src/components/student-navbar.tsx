@@ -48,24 +48,17 @@ export default function StudentNavbar() {
 
   const pathname = usePathname();
 
-  const supabase = createClient();
+  const [supabase] = useState(() =>
+    createClient()
+  );
 
   useEffect(() => {
     const checkUser = async () => {
       const {
         data: { user },
-        error,
       } = await supabase.auth.getUser();
 
-      if (
-        error &&
-        error.name !== "AuthSessionMissingError"
-      ) {
-        console.error(error);
-      }
-
       setLoggedIn(!!user);
-
       setLoading(false);
     };
 
@@ -74,10 +67,7 @@ export default function StudentNavbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      async (
-        _event: AuthChangeEvent,
-        session: Session | null
-      ) => {
+      async () => {
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -86,19 +76,15 @@ export default function StudentNavbar() {
       }
     );
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
 
     setLoggedIn(false);
 
-    router.replace("/student/login");
-
-    router.refresh();
+    window.location.href = "/student/login";
   };
 
   const handleAuthButton = () => {
