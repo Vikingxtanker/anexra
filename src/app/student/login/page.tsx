@@ -103,11 +103,11 @@ setLoading(true);
       )
     ) {
       setErrorTitle(
-        "Invalid Credentials"
+        "Invalid Credentials / User not Registered"
       );
 
       setErrorMessage(
-        "Incorrect email or password. Please try again."
+        "Invalid email or password. If you don't have an account yet, please register first."
       );
 
       setErrorDialogOpen(true);
