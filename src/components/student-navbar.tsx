@@ -142,11 +142,7 @@ export default function StudentNavbar() {
         >
           {/* Logo */}
           <Link
-            href={
-              loggedIn
-                ? "/student/dashboard"
-                : "/"
-            }
+            href="/"
             className="flex items-center"
           >
             <img
