@@ -20,6 +20,8 @@ import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
 
+import { Loader2 } from "lucide-react";
+
 import {
 Field,
 FieldError,
@@ -60,6 +62,9 @@ useState(false);
 const [loading, setLoading] =
 useState(false);
 
+const [redirecting, setRedirecting] =
+  useState(false);
+
 const [errorDialogOpen, setErrorDialogOpen] =
 useState(false);
 
@@ -84,6 +89,12 @@ useEffect(() => {
 
   checkSession();
 }, [router, supabase]);
+
+useEffect(() => {
+  router.prefetch(
+    "/student/dashboard"
+  );
+}, [router]);
 
 const form = useForm<LoginSchema>({
 resolver: zodResolver(loginSchema),
@@ -177,15 +188,13 @@ async function onSubmit(
 
   console.log("LOGIN SUCCESS");
 
-  setTimeout(() => {
-    router.replace(
-      "/student/dashboard"
-    );
+  setRedirecting(true);
 
-    router.refresh();
-  }, 300);
+  router.replace(
+    "/student/dashboard"
+  );
 
-  setLoading(false);
+  router.refresh();
 
 } catch (error) {
   setErrorTitle(
@@ -204,6 +213,44 @@ async function onSubmit(
 }
 
 return (
+
+  <>
+  {redirecting && (
+    <div
+      className="
+        fixed
+        inset-0
+        z-[9999]
+        flex
+        items-center
+        justify-center
+        bg-black/60
+        backdrop-blur-md
+      "
+    >
+      <div
+        className="
+          rounded-2xl
+          border
+          border-white/20
+          bg-white/10
+          px-8
+          py-6
+          text-white
+          backdrop-blur-xl
+        "
+      >
+        <div className="flex items-center gap-3">
+          <Loader2 className="h-5 w-5 animate-spin" />
+
+          <span>
+            Redirecting to dashboard...
+          </span>
+        </div>
+      </div>
+    </div>
+  )}
+
 <div
 className="relative min-h-screen flex items-center justify-center px-4 py-10 bg-cover bg-center bg-no-repeat"
 style={{
@@ -341,11 +388,24 @@ backgroundImage:
         <Button
           type="submit"
           disabled={loading}
-          className="h-12 w-full rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-50"
+          className="
+            h-12
+            w-full
+            rounded-xl
+            bg-[#2563EB]
+            hover:bg-[#1D4ED8]
+            disabled:opacity-70
+            disabled:cursor-not-allowed
+          "
         >
-          {loading
-            ? "Logging In..."
-            : "Login"}
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Logging In...
+            </>
+          ) : (
+            "Login"
+          )}
         </Button>
       </form>
 
@@ -366,6 +426,6 @@ backgroundImage:
     </div>
   </div>
 </div>
-
+</>
 );
 }
