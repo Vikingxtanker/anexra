@@ -80,7 +80,11 @@ export default function StudentNavbar() {
   }, [supabase]);
 
   const handleLogout = async () => {
+    console.log("LOGOUT CLICKED");
+
     await supabase.auth.signOut();
+
+    console.log("SIGNOUT COMPLETE");
 
     setLoggedIn(false);
 
@@ -173,6 +177,8 @@ export default function StudentNavbar() {
               <button
                 onClick={handleAuthButton}
                 className="
+                  relative
+                  z-[9999]
                   px-6
                   py-3
                   rounded-full
@@ -259,6 +265,8 @@ export default function StudentNavbar() {
                 <button
                   onClick={handleAuthButton}
                   className="
+                    relative
+                    z-[9999]
                     w-full
                     text-center
                     px-6
