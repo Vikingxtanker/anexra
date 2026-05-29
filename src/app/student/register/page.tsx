@@ -160,6 +160,16 @@ export default function StudentRegisterPage() {
   async function onSubmit(values: StudentRegisterSchema) {
     setLoading(true);
   try {
+
+    console.log(
+      "SITE URL ENV:",
+      process.env.NEXT_PUBLIC_SITE_URL
+    );
+
+    console.log(
+      "EMAIL REDIRECT:",
+      `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    );
   // STEP 1 — CREATE AUTH USER
   const { data, error } = await supabase.auth.signUp({
   email: values.email,
