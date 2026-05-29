@@ -6,9 +6,14 @@ import Link from "next/link";
 
 import { Menu, X } from "lucide-react";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
+
+import type {
+  AuthChangeEvent,
+  Session,
+} from "@supabase/supabase-js";
 
 const navLinks = [
   {
@@ -39,8 +44,6 @@ export default function StudentNavbar() {
   const [loading, setLoading] =
     useState(true);
 
-  const router = useRouter();
-
   const pathname = usePathname();
 
   const [supabase] = useState(() =>
@@ -62,12 +65,11 @@ export default function StudentNavbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      async () => {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        setLoggedIn(!!user);
+      (
+        _: AuthChangeEvent,
+        session: Session | null
+      ) => {
+        setLoggedIn(!!session?.user);
       }
     );
 
@@ -76,8 +78,11 @@ export default function StudentNavbar() {
 
   const handleLogout = () => {
     console.log("LOGOUT CLICKED");
+    setMenuOpen(false);
 
-    supabase.auth.signOut();
+    void supabase.auth.signOut();
+
+    setLoggedIn(false);
 
     window.location.assign(
       "/student/login"
@@ -88,7 +93,7 @@ export default function StudentNavbar() {
     if (loggedIn) {
       handleLogout();
     } else {
-      router.push("/student/login");
+      window.location.assign("/student/login");
     }
   };
 
