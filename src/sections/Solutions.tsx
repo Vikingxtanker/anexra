@@ -18,7 +18,7 @@ const solutions = [
       "Personalized medication management and patient-centered pharmaceutical care.",
     href: "/solutions/clinical-pharmacist-led-care",
     image:
-      "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmacist-led-care.webp",
     large: true,
   },
   {
@@ -27,7 +27,7 @@ const solutions = [
       "Continuous healthcare coordination for long-term patient outcomes.",
     href: "/solutions/chronic-care-management",
     image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/chronic-care-management.webp",
   },
   {
     title: "Clinical Education",
@@ -35,7 +35,7 @@ const solutions = [
       "Healthcare awareness programs and professional education initiatives.",
     href: "/solutions/clinical-education",
     image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmacy-education.webp",
   },
   {
     title: "Remote Monitoring",
@@ -43,7 +43,7 @@ const solutions = [
       "Digital patient monitoring for proactive healthcare interventions.",
     href: "/solutions/remote-monitoring",
     image:
-      "https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/remote-patient-monitoring.webp",
     large: true,
   },
   {
@@ -52,7 +52,7 @@ const solutions = [
       "Optimized medication therapy management for safer treatment plans.",
     href: "/solutions/medication-therapy",
     image:
-      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/medication-therapy-management.webp",
   },
   {
     title: "Insurance Support",
@@ -60,7 +60,7 @@ const solutions = [
       "Care navigation and insurance assistance for better accessibility.",
     href: "/solutions/insurance-support",
     image:
-      "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/insurance-support.webp",
   },
   {
     title: "Pharmaceutical Company",
@@ -68,7 +68,7 @@ const solutions = [
       "Strategic healthcare and pharmaceutical industry collaboration.",
     href: "/solutions/pharmaceutical-company",
     image:
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmaceutical-company.webp",
   },
   {
     title: "Medication Adherence",
@@ -76,7 +76,7 @@ const solutions = [
       "Improving patient adherence through reminders and care tracking.",
     href: "/solutions/medication-adherence",
     image:
-      "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/medication-adherence.webp",
   },
   {
     title: "Medical Tourism",
@@ -84,7 +84,7 @@ const solutions = [
       "Global healthcare coordination and international patient assistance.",
     href: "/solutions/medical-tourism",
     image:
-      "https://images.unsplash.com/photo-1527613426441-4da17471b66d?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/medical-tourism.webp",
   },
   {
     title: "Preventive Wellness",
@@ -92,7 +92,7 @@ const solutions = [
       "Annual wellness programs focused on prevention and early intervention.",
     href: "/solutions/preventive-wellness",
     image:
-      "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/patient-counseling",
   },
 ];
 
