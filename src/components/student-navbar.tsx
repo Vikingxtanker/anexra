@@ -10,6 +10,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
 
+import type {
+  AuthChangeEvent,
+  Session,
+} from "@supabase/supabase-js";
+
 const navLinks = [
   {
     label: "Dashboard",
@@ -61,7 +66,10 @@ export default function StudentNavbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (
+        _event: AuthChangeEvent,
+        session: Session | null
+      ) => {
         setLoggedIn(!!session);
       }
     );
