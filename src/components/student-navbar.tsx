@@ -57,8 +57,12 @@ export default function StudentNavbar() {
         error,
       } = await supabase.auth.getUser();
 
-      console.log("NAVBAR USER:", user);
-      console.log("NAVBAR USER ERROR:", error);
+      if (
+        error &&
+        error.name !== "AuthSessionMissingError"
+      ) {
+        console.error(error);
+      }
 
       setLoggedIn(!!user);
 
