@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { subjectResources } from "@/data/subject-resources";
 import { createClient } from "@/lib/supabase/server";
@@ -35,20 +35,50 @@ export default async function ChapterPage({
 
   const supabase = await createClient();
 
-  const { data } = supabase.storage
+  // Optional: require login
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/student/login");
+  }
+
+  const { data, error } = await supabase.storage
     .from("education-resources")
-    .getPublicUrl(chapterData.storagePath);
+    .createSignedUrl(
+      chapterData.storagePath,
+      60 * 60 // 1 hour
+    );
+
+  if (error || !data?.signedUrl) {
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-[#f4efee] px-6">
+        <div className="rounded-2xl bg-white p-8 shadow-lg text-center">
+          <h1 className="text-2xl font-bold text-red-600">
+            Unable to load PDF
+          </h1>
+
+          <p className="mt-3 text-[#87565b]">
+            {error?.message ??
+              "Something went wrong while loading this file."}
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="
-            relative 
-            min-h-screen 
-            justify-center 
-            bg-[#f4efee] 
-            p-6 
-            px-4
-            pt-32
-            pb-10 ">
+    <section
+      className="
+        relative
+        min-h-screen
+        bg-[#f4efee]
+        px-4
+        pt-32
+        pb-10
+      "
+    >
       <div className="mx-auto max-w-7xl">
         <h1 className="mb-2 text-3xl font-bold text-[#4c1711]">
           {chapterData.title}
@@ -60,7 +90,7 @@ export default async function ChapterPage({
 
         <div className="overflow-hidden rounded-2xl border bg-white shadow-lg">
           <iframe
-            src={data.publicUrl}
+            src={data.signedUrl}
             className="h-[85vh] w-full"
             title={chapterData.title}
           />
