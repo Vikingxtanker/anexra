@@ -1,8 +1,8 @@
 import { FileText } from "lucide-react";
-import { pharmacyPrograms } from "@/data/pharmacy-programs";
 
-import { subjectResources } from "@/data/subject-resources";
 import Link from "next/link";
+
+import { createClient } from "@/lib/supabase/server";
 
 interface PageProps {
   params: Promise<{
@@ -14,7 +14,14 @@ interface PageProps {
 export default async function SubjectPage({
   params,
 }: PageProps) {
+
+  const supabase = await createClient();
+
   const { year, subject } = await params;
+
+  console.log("SUBJECT PAGE HIT");
+  console.log("year =", year);
+  console.log("subject =", subject);
 
   const yearMap: Record<string, string> = {
     "1st-year": "1st Year",
@@ -23,16 +30,16 @@ export default async function SubjectPage({
 
   const yearName = yearMap[year];
 
-  const subjects =
-    pharmacyPrograms["D.Pharm"].years[
-      yearName as keyof typeof pharmacyPrograms["D.Pharm"]["years"]
-    ]?.subjects ?? [];
+  const { data: currentSubject, error: subjectError } =
+    await supabase
+      .from("subjects")
+      .select("*")
+      .eq("degree", "dpharm")
+      .eq("year", year)
+      .eq("slug", subject)
+      .single();
 
-  const currentSubject = subjects.find(
-    (s) => s.slug === subject
-  );
-
-  if (!currentSubject) {
+  if (subjectError || !currentSubject) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <h1 className="text-2xl font-bold text-[#4c1711]">
@@ -42,10 +49,14 @@ export default async function SubjectPage({
     );
   }
 
-  const chapters =
-    subjectResources[
-        subject as keyof typeof subjectResources
-    ]?.notes ?? [];
+  const { data: chapters, error: chaptersError } =
+    await supabase
+      .from("chapters")
+      .select("*")
+      .eq("subject_id", currentSubject.id)
+      .order("created_at");
+
+  const chapterList = chapters ?? [];
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f4efee] via-white to-[#f4efee] px-6 py-12">
@@ -72,12 +83,12 @@ export default async function SubjectPage({
   </h2>
 
   <p className="mb-6 text-[#87565b]">
-    {chapters.length} chapter{chapters.length !== 1 ? "s" : ""} available
+    {chapterList.length} chapter{chapterList.length !== 1 ? "s" : ""} available
     </p>
 
   <div className="grid gap-6">
 
-    {chapters.length === 0 && (
+    {chapterList.length === 0 && (
     <div className="rounded-2xl border border-dashed p-8 text-center">
         <p className="text-[#87565b]">
         Notes will be added soon.
@@ -85,7 +96,7 @@ export default async function SubjectPage({
     </div>
     )}
 
-        {chapters.map((chapter) => (
+        {chapterList.map((chapter) => (
         <Link
             key={chapter.title}
             href={`/student/dashboard/dpharm/${year}/${subject}/${chapter.slug}`}
