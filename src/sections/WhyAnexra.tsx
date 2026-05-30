@@ -9,7 +9,7 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 const points = [
-  "Pharmacist-led care",
+  "Clinical Pharmacist-led care",
   "Patient-centered support",
   "Technology-enabled monitoring",
   "Medication safety focus",
