@@ -18,7 +18,7 @@ const whoWeServe = [
       "Integrated pharmaceutical and clinical support for hospitals and healthcare networks.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmaceutical-company.webp",
   },
   {
     title: "Physicians",
@@ -26,7 +26,7 @@ const whoWeServe = [
       "Collaborative care solutions supporting physicians and medical practices.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/chronic-care-management.webp",
   },
   {
     title: "Healthcare Training Institutes",
@@ -34,7 +34,7 @@ const whoWeServe = [
       "Clinical education, training, and healthcare workforce development programs.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmacy-education.webp",
   },
   {
     title: "Insurance Companies",
@@ -42,7 +42,7 @@ const whoWeServe = [
       "Healthcare coordination and medication management support for insurers.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/insurance-support.webp",
   },
   {
     title: "Pharmaceutical Companies",
@@ -50,7 +50,7 @@ const whoWeServe = [
       "Strategic partnerships for pharmaceutical innovation and patient care initiatives.",
     href: "#",
     image:
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop",
+      "/images/solutions/pharmaceutical-company.webp",
   },
   {
     title: "Healthcare Payors",
