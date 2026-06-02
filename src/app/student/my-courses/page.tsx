@@ -11,6 +11,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { Progress } from "@/components/ui/progress";
+
 export default async function MyCoursesPage() {
   const supabase = await createClient();
 
@@ -32,6 +34,22 @@ export default async function MyCoursesPage() {
 
   const courseIds =
     purchases?.map((p) => p.course_id) ?? [];
+
+    const { data: userProgress } =
+    await supabase
+      .from("lesson_progress")
+      .select("lesson_id, completed")
+      .eq("user_id", user.id);
+
+  const { data: modules } =
+    await supabase
+      .from("modules")
+      .select("id, course_id");
+
+  const { data: lessons } =
+    await supabase
+      .from("lessons")
+      .select("id, module_id");
 
   // No purchases
   if (courseIds.length === 0) {
@@ -64,6 +82,60 @@ export default async function MyCoursesPage() {
     .from("courses")
     .select("*")
     .in("id", courseIds);
+  
+  const courseProgressMap = new Map<
+    string,
+    {
+      percentage: number;
+      completedLessons: number;
+      totalLessons: number;
+    }
+  >();
+
+  courses?.forEach((course) => {
+    const courseModules =
+      modules?.filter(
+        (m) => m.course_id === course.id
+      ) ?? [];
+
+    const moduleIds =
+      courseModules.map((m) => m.id);
+
+    const courseLessons =
+      lessons?.filter((l) =>
+        moduleIds.includes(l.module_id)
+      ) ?? [];
+
+    const totalLessons =
+      courseLessons.length;
+
+    const completedLessons =
+      courseLessons.filter((lesson) =>
+        userProgress?.some(
+          (p) =>
+            p.lesson_id === lesson.id &&
+            p.completed
+        )
+      ).length;
+
+    const percentage =
+      totalLessons > 0
+        ? Math.round(
+            (completedLessons /
+              totalLessons) *
+              100
+          )
+        : 0;
+
+    courseProgressMap.set(
+      course.id,
+      {
+        percentage,
+        completedLessons,
+        totalLessons,
+      }
+    );
+  });
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
@@ -79,7 +151,14 @@ export default async function MyCoursesPage() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {courses?.map((course) => (
+          {courses?.map((course) => {
+            const progressData =
+              courseProgressMap.get(course.id);
+
+            const progress =
+              progressData?.percentage ?? 0;
+
+            return (
             <Card
               key={course.id}
               className="overflow-hidden border-[#d8c7c9] bg-white shadow-sm"
@@ -106,6 +185,24 @@ export default async function MyCoursesPage() {
                   {course.short_description ||
                     course.description}
                 </p>
+                <div className="mt-6">
+                  <div className="mb-2 flex justify-between text-xs text-[#87565b]">
+                    <span>Course Progress</span>
+                    <span>{progress}%</span>
+                  </div>
+
+                  <Progress
+                    value={progress}
+                    className="h-2"
+                  />
+
+                  <p className="mt-2 text-xs text-[#87565b]">
+                    {progressData?.completedLessons ?? 0}
+                    {" / "}
+                    {progressData?.totalLessons ?? 0}
+                    {" "}lessons completed
+                  </p>
+                </div>
               </CardContent>
 
               <CardFooter>
@@ -116,12 +213,17 @@ export default async function MyCoursesPage() {
                   <Link
                     href={`/student/continue/${course.id}`}
                     >
-                    Continue Learning
+                    {progress === 100
+                      ? "Review Course"
+                      : progress > 0
+                      ? "Continue Learning"
+                      : "Start Course"}
                     </Link>
                 </Button>
               </CardFooter>
             </Card>
-          ))}
+            );
+            })}
         </div>
       </div>
     </section>
