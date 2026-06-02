@@ -66,8 +66,6 @@ export default async function CoursePage({
     .in("module_id", moduleIds)
     .order("position");
 
-  const firstLesson = lessons?.[0];
-
   const totalModules =
     modules?.length ?? 0;
 
@@ -127,9 +125,9 @@ export default async function CoursePage({
                 size="lg"
                 className="bg-[#4c1711] hover:bg-[#5f1d16]"
               >
-                {hasPurchased && firstLesson ? (
+                {hasPurchased ? (
                   <Link
-                    href={`/student/courses/${slug}/lesson/${firstLesson.id}`}
+                    href={`/student/continue/${course.id}`}
                   >
                     Continue Learning
                   </Link>
@@ -231,18 +229,15 @@ export default async function CoursePage({
           <Button
             asChild
             size="lg"
-            className="mt-6 bg-[#4c1711] hover:bg-[#5f1d16]"
           >
-            {hasPurchased && firstLesson ? (
+            {hasPurchased ? (
               <Link
-                href={`/student/courses/${slug}/lesson/${firstLesson.id}`}
+                href={`/student/continue/${course.id}`}
               >
                 Continue Learning
               </Link>
             ) : (
-              <span>
-                Purchase Course — ₹{course.price}
-              </span>
+              <span>Purchase Course</span>
             )}
           </Button>
         </div>

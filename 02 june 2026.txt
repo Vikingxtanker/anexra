@@ -1,0 +1,10 @@
+1. Previous / Next lesson navigation
+2. Mark Complete button
+3. lesson_progress integration
+4. Progress percentage
+5. Sidebar curriculum
+6. Dashboard widgets
+7. Razorpay
+8. Coupons
+9. Custom pricing
+10. Certificates
