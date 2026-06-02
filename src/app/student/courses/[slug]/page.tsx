@@ -10,6 +10,9 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import CoursePurchaseButton
+from "@/components/course-purchase-button";
+
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -129,7 +132,10 @@ export default async function CoursePage({
                     Continue Learning
                   </Link>
                 ) : (
-                  <span>Purchase Course</span>
+                  <CoursePurchaseButton
+                    courseId={course.id}
+                    amount={course.price}
+                  />
                 )}
               </Button>
             </div>
@@ -234,7 +240,10 @@ export default async function CoursePage({
                 Continue Learning
               </Link>
             ) : (
-              <span>Purchase Course</span>
+              <CoursePurchaseButton
+                courseId={course.id}
+                amount={course.price}
+              />
             )}
           </Button>
         </div>
