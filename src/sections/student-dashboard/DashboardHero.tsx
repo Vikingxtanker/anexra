@@ -1,10 +1,28 @@
 "use client";
 
+interface DashboardHeroProps {
+  totalCourses: number;
+  completedCourses: number;
+  inProgressCourses: number;
+  totalCompletedLessons: number;
+
+  continueCourse?: any;
+
+  continueProgress: number;
+}
+
 import Link from "next/link";
 import { GraduationCap, Search } from "lucide-react";
 import { pharmacyPrograms } from "@/data/pharmacy-programs";
 
-export default function DashboardHero() {
+export default function DashboardHero({
+    totalCourses,
+    completedCourses,
+    inProgressCourses,
+    totalCompletedLessons,
+    continueCourse,
+    continueProgress,
+  }: DashboardHeroProps) {
   const programs = Object.entries(pharmacyPrograms);
 
   const degreeSlugs: Record<string, string> = {
@@ -91,6 +109,99 @@ export default function DashboardHero() {
             </Link>
           ))}
         </div>
+
+        {/* Student Progress */}
+        <div className="mt-16 mb-16">
+          <h3 className="mb-8 text-center text-2xl font-bold text-[#4c1711]">
+            Learning Progress
+          </h3>
+
+          <div className="grid gap-6 md:grid-cols-4">
+            <div className="rounded-2xl bg-white/60 p-6 backdrop-blur-xl">
+              <p className="text-sm text-[#87565b]">
+                Enrolled Courses
+              </p>
+
+              <h3 className="mt-2 text-3xl font-bold text-[#4c1711]">
+                {totalCourses}
+              </h3>
+            </div>
+
+            <div className="rounded-2xl bg-white/60 p-6 backdrop-blur-xl">
+              <p className="text-sm text-[#87565b]">
+                Completed Courses
+              </p>
+
+              <h3 className="mt-2 text-3xl font-bold text-[#4c1711]">
+                {completedCourses}
+              </h3>
+            </div>
+
+            <div className="rounded-2xl bg-white/60 p-6 backdrop-blur-xl">
+              <p className="text-sm text-[#87565b]">
+                In Progress
+              </p>
+
+              <h3 className="mt-2 text-3xl font-bold text-[#4c1711]">
+                {inProgressCourses}
+              </h3>
+            </div>
+
+            <div className="rounded-2xl bg-white/60 p-6 backdrop-blur-xl">
+              <p className="text-sm text-[#87565b]">
+                Lessons Completed
+              </p>
+
+              <h3 className="mt-2 text-3xl font-bold text-[#4c1711]">
+                {totalCompletedLessons}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Continue Learning */}
+        {continueCourse && (
+          <div className="mb-16 overflow-hidden rounded-3xl bg-[#4c1711] text-white shadow-xl">
+            <div className="grid gap-8 p-8 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <p className="text-sm uppercase tracking-widest text-white/70">
+                  Continue Learning
+                </p>
+
+                <h2 className="mt-2 text-3xl font-bold">
+                  {continueCourse.title}
+                </h2>
+
+                <p className="mt-3 text-white/80">
+                  Pick up where you left off.
+                </p>
+
+                <div className="mt-6 max-w-md">
+                  <div className="mb-2 flex justify-between text-sm">
+                    <span>Progress</span>
+                    <span>{continueProgress}%</span>
+                  </div>
+
+                  <div className="h-3 overflow-hidden rounded-full bg-white/20">
+                    <div
+                      className="h-full rounded-full bg-white"
+                      style={{
+                        width: `${continueProgress}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href={`/student/continue/${continueCourse.id}`}
+                className="inline-flex items-center rounded-xl bg-white px-6 py-3 font-medium text-[#4c1711] transition hover:bg-[#f4efee]"
+              >
+                Resume Course →
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Future Features */}
         <div className="mt-20">
