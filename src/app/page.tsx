@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Anexra bridges clinical pharmacy, patient care, and digital healthcare solutions. Empowering hospitals, healthcare providers, pharmaceutical companies, and patients through chronic care management, medication therapy management, remote monitoring, and healthcare education.",
+    "Anexra delivers clinical pharmacy, chronic care management, remote monitoring, medication therapy, and pharmacy education solutions.",
 
   keywords: [
     "Anexra",
