@@ -73,6 +73,25 @@ export default async function LessonPage({
     .from("lessons")
     .select("*")
     .in("module_id", moduleIds);
+  
+  const moduleNumber =
+    (modules?.findIndex(
+      (m) => m.id === module.id
+    ) ?? 0) + 1;
+
+  const lessonsInModule =
+    allLessons
+      ?.filter(
+        (l) => l.module_id === module.id
+      )
+      .sort(
+        (a, b) => a.position - b.position
+      ) ?? [];
+
+  const lessonNumber =
+    lessonsInModule.findIndex(
+      (l) => l.id === lesson.id
+    ) + 1;
 
   // Build proper course order
   const orderedLessons =
@@ -126,6 +145,18 @@ export default async function LessonPage({
     redirect(`/student/courses/${course.slug}`);
   }
 
+  // Get lesson progress
+  const { data: progress } = await supabase
+    .from("lesson_progress")
+    .select("watch_percentage")
+    .eq("user_id", user.id)
+    .eq("lesson_id", lesson.id)
+    .maybeSingle();
+
+  const watchPercentage = Number(
+    progress?.watch_percentage ?? 0
+  );
+
   // Convert YouTube URL to embed URL
   const videoId =
     lesson.youtube_url
@@ -136,47 +167,81 @@ export default async function LessonPage({
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">
-          {lesson.title}
-        </h1>
+        <div className="mb-8 flex justify-between items-start gap-8">
+          <div>
+            <p className="text-sm font-semibold tracking-wide text-[#87565b] uppercase">
+              Module {moduleNumber} • Lesson {lessonNumber}
+            </p>
+
+            <h1 className="mt-2 text-4xl font-bold text-[#4c1711]">
+              {lesson.title}
+            </h1>
+
+            <p className="mt-3 text-lg text-gray-600">
+              {module.title}
+            </p>
+          </div>
+
+          <div className="w-80 flex-shrink-0">
+            <div className="flex justify-between mb-2 text-sm">
+              <span>Progress</span>
+
+              <span>
+                {watchPercentage.toFixed(0)}%
+              </span>
+            </div>
+
+            <div className="h-3 rounded-full bg-gray-200 overflow-hidden">
+              <div
+                className="h-full bg-[#87565b]"
+                style={{
+                  width: `${watchPercentage}%`,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            {previousLesson ? (
+              <Link
+                href={`/student/courses/${slug}/lesson/${previousLesson.id}`}
+                className="inline-flex items-center rounded-xl border border-[#d8c7c9] bg-white px-4 py-2 text-sm font-medium text-[#4c1711] shadow-sm hover:bg-gray-50"
+              >
+                ← Previous Lesson
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+
+          <Link
+            href={`/student/courses/${slug}`}
+            className="text-sm font-medium text-[#87565b] hover:underline"
+          >
+            Back to Course
+          </Link>
+
+          <div>
+            {nextLesson ? (
+              <Link
+                href={`/student/courses/${slug}/lesson/${nextLesson.id}`}
+                className="inline-flex items-center rounded-xl border border-[#d8c7c9] bg-white px-4 py-2 text-sm font-medium text-[#4c1711] shadow-sm hover:bg-gray-50"
+              >
+                Next Lesson →
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+        </div>
 
         <CourseVideoPlayer
           lessonId={lesson.id}
           videoId={videoId}
         />
 
-        <div className="mt-6">
-          <Link
-            href={`/student/courses/${slug}`}
-            className="text-[#87565b] hover:underline"
-          >
-            ← Back to Course
-          </Link>
-        </div>
-
-        <div className="mt-8 flex justify-between gap-4">
-          {previousLesson ? (
-            <Link
-              href={`/student/courses/${slug}/lesson/${previousLesson.id}`}
-              className="rounded-lg border border-[#d8c7c9] bg-white px-5 py-3 hover:bg-gray-50"
-            >
-              ← {previousLesson.title}
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          {nextLesson ? (
-            <Link
-              href={`/student/courses/${slug}/lesson/${nextLesson.id}`}
-              className="rounded-lg border border-[#d8c7c9] bg-white px-5 py-3 hover:bg-gray-50"
-            >
-              {nextLesson.title} →
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div>
       </div>
     </section>
   );

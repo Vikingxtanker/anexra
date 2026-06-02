@@ -201,16 +201,16 @@ export default function CourseVideoPlayer({
         </div>
       )}
 
-      <div className="aspect-video w-full overflow-hidden rounded-2xl shadow-lg">
+      <div className="overflow-hidden rounded-2xl shadow-lg">
         <YouTube
           videoId={videoId}
           onReady={onReady}
           onEnd={onEnd}
-          className="w-full"
-          iframeClassName="w-full h-full"
+          className="w-full min-h-[600px]"
+          iframeClassName="w-full min-h-[600px]"
           opts={{
             width: "100%",
-            height: "100%",
+            height: "600",
             playerVars: {
               rel: 0,
               modestbranding: 1,
