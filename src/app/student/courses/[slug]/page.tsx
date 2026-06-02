@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -32,6 +34,23 @@ export default async function CoursePage({
     notFound();
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let hasPurchased = false;
+
+  if (user) {
+    const { data: purchase } = await supabase
+      .from("course_purchases")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("course_id", course.id)
+      .maybeSingle();
+
+    hasPurchased = !!purchase;
+  }
+
   const { data: modules } = await supabase
     .from("modules")
     .select("*")
@@ -46,6 +65,8 @@ export default async function CoursePage({
     .select("*")
     .in("module_id", moduleIds)
     .order("position");
+
+  const firstLesson = lessons?.[0];
 
   const totalModules =
     modules?.length ?? 0;
@@ -102,10 +123,19 @@ export default async function CoursePage({
               </div>
 
               <Button
+                asChild
                 size="lg"
                 className="bg-[#4c1711] hover:bg-[#5f1d16]"
               >
-                Purchase Course
+                {hasPurchased && firstLesson ? (
+                  <Link
+                    href={`/student/courses/${slug}/lesson/${firstLesson.id}`}
+                  >
+                    Continue Learning
+                  </Link>
+                ) : (
+                  <span>Purchase Course</span>
+                )}
               </Button>
             </div>
           </div>
@@ -157,12 +187,23 @@ export default async function CoursePage({
                             key={lesson.id}
                             className="flex items-center justify-between rounded-lg border border-[#d8c7c9] bg-white px-4 py-3"
                           >
-                            <span className="text-[#4c1711]">
-                              🔒 {lesson.title}
-                            </span>
+                            {hasPurchased ? (
+                              <Link
+                                href={`/student/courses/${slug}/lesson/${lesson.id}`}
+                                className="text-[#4c1711] hover:underline"
+                              >
+                                {lesson.title}
+                              </Link>
+                            ) : (
+                              <span className="text-[#4c1711]">
+                                🔒 {lesson.title}
+                              </span>
+                            )}
 
                             <span className="text-sm text-[#87565b]">
-                              Preview Locked
+                              {hasPurchased
+                                ? "Available"
+                                : "Preview Locked"}
                             </span>
                           </li>
                         )
@@ -188,10 +229,21 @@ export default async function CoursePage({
           </p>
 
           <Button
+            asChild
             size="lg"
             className="mt-6 bg-[#4c1711] hover:bg-[#5f1d16]"
           >
-            Purchase Course — ₹{course.price}
+            {hasPurchased && firstLesson ? (
+              <Link
+                href={`/student/courses/${slug}/lesson/${firstLesson.id}`}
+              >
+                Continue Learning
+              </Link>
+            ) : (
+              <span>
+                Purchase Course — ₹{course.price}
+              </span>
+            )}
           </Button>
         </div>
 
