@@ -79,9 +79,6 @@ export default async function CoursePage({
         {/* HERO */}
         <div className="grid gap-10 lg:grid-cols-2 items-center mb-16">
           <div>
-            <span className="inline-flex rounded-full bg-[#c79da1]/20 px-4 py-2 text-sm font-medium text-[#4c1711]">
-              Professional Certification
-            </span>
 
             <h1 className="mt-5 text-5xl font-bold text-[#4c1711] leading-tight">
               {course.title}

@@ -10,13 +10,95 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { Progress } from "@/components/ui/progress";
+
 export default async function CoursesPage() {
   const supabase = await createClient();
+  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: courses } = await supabase
     .from("courses")
     .select("*")
     .eq("is_published", true);
+  
+  const { data: purchases } = user
+    ? await supabase
+        .from("course_purchases")
+        .select("course_id")
+        .eq("user_id", user.id)
+    : { data: [] };
+
+  const { data: userProgress } = user
+    ? await supabase
+        .from("lesson_progress")
+        .select("lesson_id, completed")
+        .eq("user_id", user.id)
+    : { data: [] };
+
+  const { data: modules } = await supabase
+    .from("modules")
+    .select("id, course_id");
+
+  const { data: lessons } = await supabase
+    .from("lessons")
+    .select("id, module_id");
+
+  const courseProgressMap = new Map<
+  string,
+    {
+      percentage: number;
+      completedLessons: number;
+      totalLessons: number;
+    }
+  >();
+
+courses?.forEach((course) => {
+    const courseModules =
+      modules?.filter(
+        (m) => m.course_id === course.id
+      ) ?? [];
+
+    const moduleIds =
+      courseModules.map((m) => m.id);
+
+    const courseLessons =
+      lessons?.filter((l) =>
+        moduleIds.includes(l.module_id)
+      ) ?? [];
+
+    const totalLessons =
+      courseLessons.length;
+
+    const completedLessons =
+      courseLessons.filter((lesson) =>
+        userProgress?.some(
+          (p) =>
+            p.lesson_id === lesson.id &&
+            p.completed
+        )
+      ).length;
+
+    const percentage =
+      totalLessons > 0
+        ? Math.round(
+            (completedLessons /
+              totalLessons) *
+              100
+          )
+        : 0;
+
+    courseProgressMap.set(
+      course.id,
+      {
+        percentage,
+        completedLessons,
+        totalLessons,
+      }
+    );
+  });
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
@@ -37,7 +119,19 @@ export default async function CoursesPage() {
 
         {/* Course Grid */}
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {courses?.map((course) => (
+          {courses?.map((course) => {
+            const progressData =
+              courseProgressMap.get(course.id);
+
+            const progress =
+              progressData?.percentage ?? 0;
+
+            const purchased =
+              purchases?.some(
+                (p) => p.course_id === course.id
+              ) ?? false;
+
+            return (
             <Card
               key={course.id}
               className="overflow-hidden border-[#d8c7c9] bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
@@ -67,6 +161,27 @@ export default async function CoursesPage() {
                     "Professional certification course designed to build practical knowledge and clinical expertise."}
                 </p>
 
+                {purchased && (
+                  <div className="mt-6">
+                    <div className="mb-2 flex justify-between text-xs text-[#87565b]">
+                      <span>Course Progress</span>
+                      <span>{progress}%</span>
+                    </div>
+
+                    <Progress
+                      value={progress}
+                      className="h-2"
+                    />
+
+                    <p className="mt-2 text-xs text-[#87565b]">
+                      {progressData?.completedLessons ?? 0}
+                      {" / "}
+                      {progressData?.totalLessons ?? 0}
+                      {" "}lessons completed
+                    </p>
+                  </div>
+                )}
+
                 <div className="mt-6">
                   <span className="text-2xl font-bold text-[#4c1711]">
                     ₹{course.price}
@@ -82,12 +197,19 @@ export default async function CoursesPage() {
                   <Link
                     href={`/student/courses/${course.slug}`}
                   >
-                    View Course
+                    {!purchased
+                      ? "View Course"
+                      : progress === 100
+                      ? "Review Course"
+                      : progress > 0
+                      ? "Continue Learning"
+                      : "Start Course"}
                   </Link>
                 </Button>
               </CardFooter>
             </Card>
-          ))}
+          );
+        })}
         </div>
 
         {/* Empty State */}

@@ -5,6 +5,16 @@ import { createClient } from "@/lib/supabase/server";
 
 import CourseVideoPlayer from "@/components/course-video-player";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { Progress } from "@/components/ui/progress";
+
+import {
+  CheckCircle2,
+  PlayCircle,
+  Circle,
+} from "lucide-react";
+
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -74,6 +84,23 @@ export default async function LessonPage({
     .select("*")
     .in("module_id", moduleIds);
   
+  const lessonIds =
+  allLessons?.map((l) => l.id) ?? [];
+
+  const { data: progressRows } =
+    await supabase
+      .from("lesson_progress")
+      .select("lesson_id, completed")
+      .eq("user_id", user.id)
+      .in("lesson_id", lessonIds);
+  
+  const progressMap = new Map(
+    progressRows?.map((p) => [
+      p.lesson_id,
+      p,
+    ]) ?? []
+  );
+    
   const moduleNumber =
     (modules?.findIndex(
       (m) => m.id === module.id
@@ -166,7 +193,109 @@ export default async function LessonPage({
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8">
+        <aside className="hidden lg:block">
+          <div className="sticky top-32">
+            <div className="rounded-2xl border border-[#d8c7c9] bg-white shadow-sm">
+              <div className="border=b border-[#d8c7c9] p-5">
+                <h2 className="text-lg font-semibold text-[#4c1711]">
+                  Curriculum
+                </h2>
+              </div>
+
+              <ScrollArea className="h-[calc(100vh-14rem)]">
+                <div className="p-3">
+                  {modules?.map(
+                    (moduleItem, moduleIndex) => {
+                      const moduleLessons =
+                        allLessons
+                          ?.filter(
+                            (lesson) =>
+                              lesson.module_id ===
+                              moduleItem.id
+                          )
+                          .sort(
+                            (a, b) =>
+                              a.position - b.position
+                          ) ?? [];
+
+                      return (
+                        <div
+                          key={moduleItem.id}
+                          className="mb-6"
+                        >
+                          <h3 className="mb-2 text-xs font-semibold uppercase text-[#87565b]">
+                            Module {moduleIndex + 1}
+                          </h3>
+
+                          <p className="mb-3 text-sm text-gray-600">
+                            {moduleItem.title}
+                          </p>
+
+                          <div className="space-y-1">
+                            {moduleLessons.map(
+                              (
+                                lessonItem,
+                                lessonIndex
+                              ) => {
+                                const progress =
+                                  progressMap.get(
+                                    lessonItem.id
+                                  );
+
+                                const completed =
+                                  progress?.completed;
+
+                                const current =
+                                  lessonItem.id ===
+                                  lesson.id;
+
+                                return (
+                                  <Link
+                                    key={lessonItem.id}
+                                    href={`/student/courses/${slug}/lesson/${lessonItem.id}`}
+                                    className={`flex items-start gap-2 rounded-lg px-3 py-2 text-sm transition ${
+                                      current
+                                        ? "bg-[#87565b] text-white"
+                                        : "hover:bg-gray-100"
+                                    }`}
+                                  >
+                                    <div className="flex-shrink-0">
+                                      {completed ? (
+                                        <CheckCircle2
+                                          className={`h-4 w-4 ${
+                                            current
+                                              ? "text-white"
+                                              : "text-green-600"
+                                          }`}
+                                        />
+                                      ) : current ? (
+                                        <PlayCircle className="h-4 w-4" />
+                                      ) : (
+                                        <Circle className="h-4 w-4 text-gray-400" />
+                                      )}
+                                    </div>
+
+                                    <span className="flex-1 break-words whitespace-normal leading-5">
+                                      {moduleIndex + 1}.
+                                      {lessonIndex + 1}{" "}
+                                      {lessonItem.title}
+                                    </span>
+                                  </Link>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+          </div>
+        </aside>
+        <div>
         <div className="mb-8 flex justify-between items-start gap-8">
           <div>
             <p className="text-sm font-semibold tracking-wide text-[#87565b] uppercase">
@@ -183,7 +312,7 @@ export default async function LessonPage({
           </div>
 
           <div className="w-80 flex-shrink-0">
-            <div className="flex justify-between mb-2 text-sm">
+            <div className="mb-2 flex justify-between text-sm">
               <span>Progress</span>
 
               <span>
@@ -191,14 +320,10 @@ export default async function LessonPage({
               </span>
             </div>
 
-            <div className="h-3 rounded-full bg-gray-200 overflow-hidden">
-              <div
-                className="h-full bg-[#87565b]"
-                style={{
-                  width: `${watchPercentage}%`,
-                }}
-              />
-            </div>
+            <Progress
+              value={watchPercentage}
+              className="h-3"
+            />
           </div>
         </div>
 
@@ -218,7 +343,7 @@ export default async function LessonPage({
 
           <Link
             href={`/student/courses/${slug}`}
-            className="text-sm font-medium text-[#87565b] hover:underline"
+            className="inline-flex items-center rounded-xl border border-[#d8c7c9] bg-white px-4 py-2 text-sm font-medium text-[#4c1711] shadow-sm hover:bg-gray-50"
           >
             Back to Course
           </Link>
@@ -242,6 +367,7 @@ export default async function LessonPage({
           videoId={videoId}
         />
 
+      </div>
       </div>
     </section>
   );
