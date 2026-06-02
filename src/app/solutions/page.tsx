@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: "/og-solutions.png",
+        url: "/images/og.webp",
         width: 1200,
         height: 630,
         alt: "Anexra Healthcare Solutions",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     description:
       "Comprehensive healthcare solutions including CCM, MTM, RPM, Clinical Pharmacist-Led Care, Preventive Wellness, and more.",
 
-    images: ["/og-solutions.png"],
+    images: ["/images/og.webp"],
   },
 
   robots: {

@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     description:
       "Empowering D.Pharm students through notes, MCQs, assignments, pharmacy courses, and video lectures.",
 
-    images: ["/og-d-pharm.png"],
+    images: ["/images/og.webp"],
   },
 
   robots: {

@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     description:
       "Meet the team behind Anexra and learn how we are transforming healthcare through clinical pharmacy, education, and technology.",
 
-    images: ["/og-about.png"],
+    images: ["/og.webp"],
   },
 
   robots: {

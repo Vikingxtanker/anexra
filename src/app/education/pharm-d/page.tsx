@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     description:
       "Master Pharm.D with notes, MCQs, assignments, clinical case studies, and video lectures on Anexra.",
 
-    images: ["/og-pharm-d.png"],
+    images: ["/images/og.webp"],
   },
 
   robots: {

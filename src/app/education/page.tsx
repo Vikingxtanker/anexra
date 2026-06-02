@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     description:
       "Empowering pharmacy students through notes, MCQs, assignments, video lectures, and career-focused learning resources.",
 
-    images: ["/og-education.png"],
+    images: ["/images/og.webp"],
   },
 
   robots: {

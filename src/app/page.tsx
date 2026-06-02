@@ -11,7 +11,7 @@ import Footer from "@/sections/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.anexra.com"),
+  metadataBase: new URL("https://anexra.com"),
 
   title: {
     default: "Anexra | Next-Gen Assistance for Modern Healthcare",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://www.anexra.com",
+    url: "https://anexra.com",
     siteName: "Anexra",
 
     title: "Anexra | Next-Gen Assistance for Modern Healthcare",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: "/images/og.png",
+        url: "/images/og.webp",
         width: 1200,
         height: 630,
         alt: "Anexra Healthcare Solutions",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
 
     creator: "@anexra",
 
-    images: ["/og-image.png"],
+    images: ["/images/og.webp"],
   },
 
   robots: {
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://www.anexra.com",
+    canonical: "https://anexra.com",
   },
 
   category: "Healthcare",

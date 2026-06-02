@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: "/og-contact.png",
+        url: "/og.webp",
         width: 1200,
         height: 630,
         alt: "Contact Anexra",
