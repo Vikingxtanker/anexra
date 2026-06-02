@@ -22,7 +22,7 @@ const navLinks = [
   },
   {
     label: "Courses",
-    href: "#",
+    href: "/student/courses",
   },
   {
     label: "Notes",
