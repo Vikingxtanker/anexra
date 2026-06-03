@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
@@ -17,7 +19,12 @@ export default async function CoursesPage() {
   
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    redirect("/student/login");
+  }
 
   const { data: courses } = await supabase
     .from("courses")
