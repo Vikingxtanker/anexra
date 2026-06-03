@@ -15,6 +15,12 @@ import type {
   Session,
 } from "@supabase/supabase-js";
 
+import {
+  Search,
+  Bell,
+  User,
+} from "lucide-react";
+
 const navLinks = [
   {
     label: "Dashboard",
@@ -25,28 +31,31 @@ const navLinks = [
     href: "/student/courses",
   },
   {
-    label: "My Courses",
+    label: "My Learning",
     href: "/student/my-courses",
-  },
-  {
-    label: "Notes",
-    href: "#",
-  },
-  {
-    label: "Profile",
-    href: "/student/profile",
   },
 ];
 
 export default function StudentNavbar() {
   const [menuOpen, setMenuOpen] =
     useState(false);
+  
+  const [darkMode, setDarkMode] = useState(false);
 
   const [loggedIn, setLoggedIn] =
     useState(false);
 
   const [loading, setLoading] =
     useState(true);
+
+  const [userEmail, setUserEmail] =
+    useState("");
+
+  const [userInitial, setUserInitial] =
+    useState("U");
+
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
   const pathname = usePathname();
 
@@ -61,6 +70,18 @@ export default function StudentNavbar() {
       } = await supabase.auth.getUser();
 
       setLoggedIn(!!user);
+
+      if (user) {
+        setUserEmail(user.email ?? "");
+
+        const initial =
+          user.user_metadata.full_name
+            ?.charAt(0)
+            .toUpperCase() ?? "U";
+
+        setUserInitial(initial);
+      }
+
       setLoading(false);
     };
 
@@ -74,11 +95,74 @@ export default function StudentNavbar() {
         session: Session | null
       ) => {
         setLoggedIn(!!session?.user);
+
+        if (session?.user) {
+          setUserEmail(
+            session.user.email ?? ""
+          );
+
+          setUserInitial(
+            session.user.email
+              ?.charAt(0)
+              .toUpperCase() ?? "U"
+          );
+        }
       }
     );
 
     return () => subscription.unsubscribe();
   }, [supabase]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const darkSections = document.querySelectorAll(
+        "[data-theme='dark']"
+      );
+
+      let isDark = false;
+
+      darkSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          isDark = true;
+        }
+      });
+
+      setDarkMode(isDark);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClick = () => {
+      setProfileOpen(false);
+    };
+
+    if (profileOpen) {
+      document.addEventListener(
+        "click",
+        handleClick
+      );
+    }
+
+    return () => {
+      document.removeEventListener(
+        "click",
+        handleClick
+      );
+    };
+  }, [profileOpen]);
 
   const handleLogout = () => {
     console.log("LOGOUT CLICKED");
@@ -109,11 +193,13 @@ export default function StudentNavbar() {
   console.log("LOADING:", loading);
   console.log("PATHNAME:", pathname);
 
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
       <div className="max-w-7xl mx-auto">
         <nav
-          className="
+          className={`
+            isolate
             rounded-full
             px-6
             lg:px-8
@@ -124,13 +210,24 @@ export default function StudentNavbar() {
             transition-all
             duration-500
             relative
-            overflow-hidden
-            border
-            border-white/20
-            bg-white/20
-            backdrop-blur-2xl
-            shadow-[0_8px_32px_rgba(76,23,17,0.10)]
-          "
+            shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+            glass-navbar
+            isolate
+
+            ${
+              darkMode
+                ? `
+                    bg-black/30
+                    border border-white/25
+                    shadow-[0_8px_32px_rgba(0,0,0,0.45)]
+                  `
+                : `
+                    bg-white/20
+                    border border-white/20
+                    shadow-[0_8px_32px_rgba(76,23,17,0.10)]
+                  `
+            }
+          `}
         >
           {/* Logo */}
           <Link
@@ -138,13 +235,21 @@ export default function StudentNavbar() {
             className="flex items-center"
           >
             <img
-              src="/anexra-wordmark.svg"
+              src={
+                darkMode
+                  ? "/anexra-wordmark-white.svg"
+                  : "/anexra-wordmark.svg"
+              }
               alt="Anexra"
               className="hidden lg:block h-11 w-auto"
             />
 
             <img
-              src="/anexra-logomark.svg"
+              src={
+                darkMode
+                  ? "/anexra-logomark-white.svg"
+                  : "/anexra-logomark.svg"
+              }
               alt="Anexra"
               className="block lg:hidden h-10 w-10"
             />
@@ -157,15 +262,19 @@ export default function StudentNavbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="
+                  className={`
                     text-base
                     font-semibold
                     tracking-tight
-                    text-[#564740]
-                    hover:text-[#aa6f73]
                     transition-all
                     duration-300
-                  "
+
+                    ${
+                      darkMode
+                        ? "text-white/80 hover:text-white"
+                        : "text-[#564740] hover:text-[#aa6f73]"
+                    }
+                  `}
                 >
                   {link.label}
                 </Link>
@@ -176,26 +285,142 @@ export default function StudentNavbar() {
           {/* Desktop Auth Button */}
           {!loading && (
             <div className="hidden lg:flex items-center gap-4">
-              <button
-                onClick={handleAuthButton}
-                className="
-                  relative
-                  z-[9999]
-                  px-6
-                  py-3
-                  rounded-full
-                  bg-[#aa6f73]
-                  text-white
-                  text-sm
-                  font-semibold
-                  hover:bg-[#4c1711]
-                  hover:scale-105
-                  transition-all
-                  duration-300
-                "
-              >
-                {loggedIn ? "Logout" : "Login"}
-              </button>
+
+              {loggedIn ? (
+                <div className="relative">
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      setProfileOpen(
+                        !profileOpen
+                      );
+                    }}
+                    className="
+                      h-10
+                      w-10
+                      rounded-full
+                      bg-[#aa6f73]
+                      text-white
+                      font-semibold
+                      flex
+                      items-center
+                      justify-center
+                      hover:scale-105
+                      transition-all
+                      cursor-pointer
+                    "
+                  >
+                    {userInitial}
+                  </button>
+
+                  {profileOpen && (
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className="
+                        absolute
+                        right-0
+                        top-14
+                        z-[9999]
+
+                        rounded-3xl
+                        p-2
+
+                        glass-navbar
+
+                        bg-[#f4efee]/90
+                        backdrop-blur-2xl
+
+                        border border-white/20
+
+                        flex
+                        flex-col
+
+                        shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+                        isolate
+
+                        min-w-[240px]
+                      "
+                    >
+                      <div className="px-4 py-3 border-b border-white/10 mb-2">
+                        <p className="font-semibold truncate">
+                          {userEmail}
+                        </p>
+                      </div>
+
+                      <Link
+                        href="/student/profile"
+                        className="
+                          px-4
+                          py-3
+                          rounded-xl
+                          transition-all
+                          duration-300
+                          cursor-pointer
+
+                          hover:bg-black/10
+                        "
+                      >
+                        Profile
+                      </Link>
+
+                      <Link
+                        href="/student/my-courses"
+                        className="
+                          px-4
+                          py-3
+                          rounded-xl
+                          transition-all
+                          duration-300
+
+                          hover:bg-black/10
+                        "
+                      >
+                        My Courses
+                      </Link>
+
+                      <button
+                        onClick={handleLogout}
+                        className="
+                          w-full
+                          text-left
+                          px-4
+                          py-3
+                          rounded-xl
+                          text-red-600
+                          hover:bg-red-500/10
+                          transition-all
+                          duration-300
+                          cursor-pointer
+                        "
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() =>
+                    window.location.assign(
+                      "/student/login"
+                    )
+                  }
+                  className="
+                    px-6
+                    py-3
+                    rounded-full
+                    bg-[#aa6f73]
+                    text-white
+                    text-sm
+                    font-semibold
+                  "
+                >
+                  Login
+                </button>
+              )}
+
             </div>
           )}
 
@@ -204,10 +429,17 @@ export default function StudentNavbar() {
             onClick={() =>
               setMenuOpen(!menuOpen)
             }
-            className="
+            className={`
               lg:hidden
-              text-[#564740]
-            "
+              transition-all
+              duration-300
+
+              ${
+                darkMode
+                  ? "text-white"
+                  : "text-[#564740]"
+              }
+            `}
           >
             {menuOpen ? (
               <X size={28} />
@@ -232,10 +464,8 @@ export default function StudentNavbar() {
               flex
               flex-col
               gap-5
-              bg-white/20
-              backdrop-blur-2xl
-              border
-              border-white/20
+              glass-navbar
+              isolate
               shadow-[0_8px_30px_rgba(76,23,17,0.08)]
             "
           >
@@ -252,11 +482,14 @@ export default function StudentNavbar() {
                     text-lg
                     font-semibold
                     tracking-tight
-                    text-[#564740]
-                    hover:text-[#aa6f73]
                     transition-all
                     duration-300
                   "
+                  style={{
+                    color: darkMode
+                      ? "#f4efee"
+                      : "#564740",
+                  }}
                 >
                   {link.label}
                 </Link>

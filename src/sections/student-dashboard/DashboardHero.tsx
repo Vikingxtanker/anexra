@@ -11,6 +11,8 @@ interface DashboardHeroProps {
   continueProgress: number;
 }
 
+import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import { GraduationCap, Search } from "lucide-react";
 import { pharmacyPrograms } from "@/data/pharmacy-programs";
@@ -30,6 +32,49 @@ export default function DashboardHero({
     "B.Pharm": "bpharm",
     "Pharm.D": "pharmd",
   };
+
+  const [searchTerm, setSearchTerm] =
+    useState("");
+
+  type SearchResults = {
+    subjects: {
+      id: string;
+      title: string;
+    }[];
+
+    chapters: {
+      id: string;
+      title: string;
+    }[];
+  };
+
+  const [results, setResults] =
+    useState<SearchResults | null>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(
+      async () => {
+        if (!searchTerm.trim()) {
+          setResults(null);
+          return;
+        }
+
+        const res = await fetch(
+          `/api/search?q=${encodeURIComponent(
+            searchTerm
+          )}`
+        );
+
+        const data = await res.json();
+
+        setResults(data);
+      },
+      300
+    );
+
+    return () =>
+      clearTimeout(timeout);
+  }, [searchTerm]);
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 px-6 pb-16 bg-[#f4efee]">
@@ -54,13 +99,68 @@ export default function DashboardHero({
         {/* Search Box */}
         <div className="mx-auto mb-16 max-w-2xl">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#87565b]" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#87565b] z-10 pointer-events-none" />
 
             <input
               type="text"
-              placeholder="Search subjects..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search subjects or chapters..."
               className="w-full rounded-2xl border border-white/40 bg-white/60 py-4 pl-12 pr-4 text-[#4c1711] shadow-lg backdrop-blur-xl outline-none transition focus:ring-2 focus:ring-[#87565b]/30"
             />
+
+            {results && (
+              <div
+                className="
+                  absolute
+                  top-full
+                  left-0
+                  right-0
+                  mt-3
+                  rounded-2xl
+                  bg-white
+                  shadow-xl
+                  z-50
+                  overflow-hidden
+                "
+              >
+                {results.subjects?.map((subject) => (
+                  <Link
+                    key={subject.id}
+                    href={`/student/subject/${subject.id}`}
+                    className="
+                      block
+                      px-4
+                      py-3
+
+                      text-[#4c1711]
+
+                      hover:bg-[#4c1711]/5
+                    "
+                  >
+                    📚 {subject.title}
+                  </Link>
+                ))}
+
+                {results.chapters?.map((chapter) => (
+                  <Link
+                    key={chapter.id}
+                    href={`/student/chapter/${chapter.id}`}
+                    className="
+                      block
+                      px-4
+                      py-3
+
+                      text-[#4c1711]
+
+                      hover:bg-[#4c1711]/5
+                    "
+                  >
+                    📖 {chapter.title}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
