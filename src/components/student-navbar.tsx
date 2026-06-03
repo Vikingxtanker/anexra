@@ -34,7 +34,7 @@ const navLinks = [
   },
   {
     label: "Profile",
-    href: "#",
+    href: "/student/profile",
   },
 ];
 
