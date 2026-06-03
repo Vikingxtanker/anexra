@@ -24,12 +24,42 @@ export default function CoursePurchaseButton({
   const [loading, setLoading] =
     useState(false);
 
+    const loadRazorpay = () =>
+  new Promise<boolean>((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script =
+      document.createElement("script");
+
+    script.src =
+      "https://checkout.razorpay.com/v1/checkout.js";
+
+    script.onload = () => resolve(true);
+
+    script.onerror = () =>
+      resolve(false);
+
+    document.body.appendChild(script);
+  });
+
   const handlePurchase =
     async () => {
       if (loading) return;
 
       try {
         setLoading(true);
+
+        const loaded =
+          await loadRazorpay();
+
+        if (!loaded) {
+          throw new Error(
+            "Failed to load Razorpay SDK"
+          );
+        }
 
         const orderRes =
           await fetch(
@@ -64,10 +94,18 @@ export default function CoursePurchaseButton({
           );
         }
 
+        const razorpayKey =
+          process.env
+            .NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+        if (!razorpayKey) {
+          throw new Error(
+            "Razorpay Key ID missing"
+          );
+        }
+
         const options = {
-          key:
-            process.env
-              .NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          key: razorpayKey,
 
           amount: order.amount,
 
@@ -129,6 +167,15 @@ export default function CoursePurchaseButton({
             }
           },
         };
+
+        if (
+          typeof window.Razorpay !==
+          "function"
+        ) {
+          throw new Error(
+            "Razorpay SDK not available"
+          );
+        }
 
         const razorpay =
           new window.Razorpay(
