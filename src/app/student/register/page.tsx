@@ -366,6 +366,7 @@ export default function StudentRegisterPage() {
 
   return (
     <div
+        data-theme="dark"
         className="
           relative 
           min-h-screen 
