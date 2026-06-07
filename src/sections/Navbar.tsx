@@ -163,7 +163,7 @@ export default function Navbar() {
 
           {/* Mobile Button */}
           <button
-            onClick={() => setMenuOpen(false)}
+            onClick={() => setMenuOpen((prev) => !prev)}
             aria-label="Toggle Menu"
             className={`
               lg:hidden
