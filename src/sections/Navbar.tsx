@@ -236,7 +236,7 @@ export default function Navbar() {
             overflow-hidden
 
             transition-all
-            duration-700
+            duration-1000
             ease-[cubic-bezier(0.22,1,0.36,1)]
 
             ${
@@ -271,7 +271,7 @@ export default function Navbar() {
                   tracking-tight
 
                   transition-all
-                  duration-500
+                  duration-700
                   ease-[cubic-bezier(0.22,1,0.36,1)]
 
                   ${
@@ -284,8 +284,8 @@ export default function Navbar() {
                   color: darkMode ? "#f4efee" : "#564740",
 
                   transitionDelay: menuOpen
-                    ? `${index * 70}ms`
-                    : `${(navLinks.length - index - 1) * 70}ms`,
+                    ? `${index * 120}ms`
+                    : `${(navLinks.length - index - 1) * 120}ms`,
                 }}
               >
                 {link.label}
