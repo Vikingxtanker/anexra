@@ -23,11 +23,20 @@ const menuVariants = {
 const itemVariants = {
   closed: {
     opacity: 0,
-    x: -20,
+    x: 20,
+    transition: {
+      duration: 0.3,
+      ease: [0.22, 1, 0.36, 1],
+    },
   },
+
   open: {
     opacity: 1,
     x: 0,
+    transition: {
+      duration: 0.35,
+      ease: [0.22, 1, 0.36, 1],
+    },
   },
 };
 
@@ -299,14 +308,10 @@ export default function Navbar() {
             "
           >
             
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <motion.div
                 key={link.label}
                 variants={itemVariants}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
               >
                 <Link
                   href={link.href}
@@ -327,10 +332,6 @@ export default function Navbar() {
             ))}
               <motion.div
                 variants={itemVariants}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
                 className="pt-4"
               >
                 <Link
