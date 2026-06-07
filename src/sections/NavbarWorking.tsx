@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { AnimatePresence, motion } from "framer-motion";
-
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
@@ -232,30 +230,22 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Menu */}
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: -10,
-                scale: 0.98
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                y: -10,
-                scale: 0.98,
-              }}
-              transition={{
-                duration: 0.45,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="lg:hidden mt-4"
-            >
+        <div
+          className={`
+            lg:hidden
+            overflow-hidden
+
+            transition-all
+            duration-1000
+            ease-[cubic-bezier(0.22,1,0.36,1)]
+
+            ${
+              menuOpen
+                ? "max-h-[800px] opacity-100 mt-4"
+                : "max-h-0 opacity-0"
+            }
+          `}
+        >
           <div className="
 
           rounded-3xl 
@@ -270,72 +260,84 @@ export default function Navbar() {
           ">
             
             {navLinks.map((link, index) => (
-              <motion.div
+              <Link
                 key={link.label}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
-                transition={{
-                  delay: index * 0.08,
-                  duration: 0.45,
-                  ease: [0.22, 1, 0.36, 1],
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`
+                  text-lg
+                  md:text-xl
+                  font-semibold
+                  tracking-tight
+
+                  transition-all
+                  duration-700
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    menuOpen
+                      ? "opacity-100 translate-x-0 scale-100"
+                      : "opacity-0 translate-x-6 scale-[0.98]"
+                  }
+                `}
+                style={{
+                  color: darkMode ? "#f4efee" : "#564740",
+
+                  transitionDelay: menuOpen
+                    ? `${index * 120}ms`
+                    : `${(navLinks.length - index - 1) * 120}ms`,
                 }}
               >
-                <Link
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`
-                    text-lg
-                    md:text-xl
-                    font-semibold
-                    tracking-tight
-                  `}
-                  style={{
-                    color: darkMode ? "#f4efee" : "#564740",
-                  }}
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
+                {link.label}
+              </Link>
             ))}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
-                transition={{
-                  delay: navLinks.length * 0.08,
-                  duration: 0.45,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="pt-4"
+
+            <div
+              className={`
+                flex flex-col gap-3 pt-4
+
+                transition-all
+                duration-500
+                ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                ${
+                  menuOpen
+                    ? "opacity-100 translate-x-0 scale-100"
+                    : "opacity-0 translate-x-6 scale-[0.98]"
+                }
+              `}
+              style={{
+                transitionDelay: menuOpen
+                  ? `${navLinks.length * 70 + 100}ms`
+                  : `${navLinks.length * 70}ms`,
+              }}
+            >
+              <Link
+                href="/portal"
+                onClick={() => setMenuOpen(false)}
+                className="
+                  w-full
+                  text-center
+                  px-6
+                  py-3
+                  rounded-full
+                  bg-[#aa6f73]
+                  text-white
+                  text-sm
+                  font-semibold
+
+                  hover:bg-[#4c1711]
+
+                  transition-all
+                  duration-300
+                "
               >
-                <Link
-                  href="/portal"
-                  onClick={() => setMenuOpen(false)}
-                  className="
-                    w-full
-                    block
-                    text-center
-                    px-6
-                    py-3
-                    rounded-full
-                    bg-[#aa6f73]
-                    text-white
-                    text-sm
-                    font-semibold
-                    hover:bg-[#4c1711]
-                    transition-all
-                    duration-300
-                  "
-                >
-                  Select Portal
-                </Link>
-              </motion.div>
+                Select Portal
+              </Link>
             </div>
-          </motion.div>  
-        )}
-      </AnimatePresence>
-    </div>
-  </header>
+          </div>
+          </div>
+      </div>
+    </header>
   );
 }
