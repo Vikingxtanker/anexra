@@ -165,28 +165,77 @@ export default function Navbar() {
           {/* Mobile Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle Menu"
             className={`
-  lg:hidden
-  transition-all
-  duration-300
-
-  ${
-    darkMode
-      ? "text-white"
-      : "text-[#564740]"
-  }
-`}
+              lg:hidden
+              relative
+              w-10
+              h-10
+              flex
+              items-center
+              justify-center
+            `}
           >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+            <div className="relative w-6 h-5">
+              
+              <span
+                className={`
+                  absolute left-0 top-0
+                  h-[2px] w-6 rounded-full
+                  transition-all duration-300 ease-in-out
+
+                  ${darkMode ? "bg-white" : "bg-[#564740]"}
+
+                  ${
+                    menuOpen
+                      ? "translate-y-[9px] rotate-45"
+                      : ""
+                  }
+                `}
+              />
+
+              <span
+                className={`
+                  absolute left-0 top-[9px]
+                  h-[2px] w-6 rounded-full
+                  transition-all duration-300 ease-in-out
+
+                  ${darkMode ? "bg-white" : "bg-[#564740]"}
+
+                  ${
+                    menuOpen
+                      ? "opacity-0"
+                      : "opacity-100"
+                  }
+                `}
+              />
+
+              <span
+                className={`
+                  absolute left-0 top-[18px]
+                  h-[2px] w-6 rounded-full
+                  transition-all duration-300 ease-in-out
+
+                  ${darkMode ? "bg-white" : "bg-[#564740]"}
+
+                  ${
+                    menuOpen
+                      ? "-translate-y-[9px] -rotate-45"
+                      : ""
+                  }
+                `}
+              />
+
+            </div>
           </button>
         </nav>
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`lg:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden ${
             menuOpen
-              ? "max-h-[500px] opacity-100 mt-4"
-              : "max-h-0 opacity-0"
+              ? "max-h-[500px] opacity-100 mt-4 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-2"
           }`}
         >
           <div className="
@@ -202,37 +251,77 @@ export default function Navbar() {
 
           ">
             
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className='
+                className={`
                   text-lg
-                  md:text-x1
+                  md:text-xl
                   font-semibold
-                  tracking-tight 
-                  transition-all
-                  duration-300
-                '
-                style={{
-                   color: darkMode ? "#f4efee" : "#564740",
-                }}
+                  tracking-tight
 
+                  transition-all
+                  duration-500
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    menuOpen
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 translate-x-4"
+                  }
+                `}
+                style={{
+                  color: darkMode ? "#f4efee" : "#564740",
+                  transitionDelay: menuOpen ? `${index * 70}ms` : "0ms",
+                }}
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="flex flex-col gap-3 pt-4">
+            <div
+              className={`
+                flex flex-col gap-3 pt-4
 
+                transition-all
+                duration-500
+                ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                ${
+                  menuOpen
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-4"
+                }
+              `}
+              style={{
+                transitionDelay: menuOpen
+                  ? `${navLinks.length * 70 + 100}ms`
+                  : "0ms",
+              }}
+            >
               <Link
                 href="/portal"
-                className="w-full text-center px-6 py-3 rounded-full bg-[#aa6f73] text-white text-sm font-semibold hover:bg-[#4c1711] transition-all duration-300"
+                className="
+                  w-full
+                  text-center
+                  px-6
+                  py-3
+                  rounded-full
+                  bg-[#aa6f73]
+                  text-white
+                  text-sm
+                  font-semibold
+
+                  hover:bg-[#4c1711]
+
+                  transition-all
+                  duration-300
+                "
               >
                 Select Portal
               </Link>
-
             </div>
           </div>
         </div>
