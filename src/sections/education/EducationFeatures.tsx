@@ -10,11 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const points = [
   "Concise and exam-focused pharmacy notes.",
-  "Structured practical records and laboratory resources.",
+  "Literature reviews, projects, and research assistance.",
   "Important viva questions and oral exam guidance.",
   "Previous year questions and practice assessments.",
   "Patient-centered learning for clinical understanding.",
-  "Literature reviews, projects, and research assistance.",
 ];
 
 export default function EducationFeatures() {

@@ -148,10 +148,13 @@ export default function WhyAnexra() {
             className="
               absolute
               top-1/2
-              right-0
               -translate-y-1/2
 
-              w-[42vw]
+              md:right-8
+              lg:right-0
+
+              md:w-[38vw]
+              lg:w-[42vw]
               max-w-[620px]
 
               flex

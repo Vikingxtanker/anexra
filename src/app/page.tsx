@@ -1,6 +1,6 @@
 import Navbar from "@/sections/Navbar";
 import Hero from "@/sections/Hero";
-import Introduction from "@/sections/Introduction";
+import IntroductionOG from "@/sections/IntroductionOG";
 // import Introductionv2 from "@/sections/Introductionv2";
 import Solutions from "@/sections/Solutions";
 import WhoWeServe from "@/sections/WhoWeServe";
