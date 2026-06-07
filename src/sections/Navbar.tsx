@@ -16,6 +16,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -47,6 +48,19 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const toggleMenu = () => {
+    if (!menuOpen) {
+      setMenuVisible(true);
+      setMenuOpen(true);
+    } else {
+      setMenuOpen(false);
+
+      setTimeout(() => {
+        setMenuVisible(false);
+      }, 1000);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
@@ -163,7 +177,7 @@ export default function Navbar() {
 
           {/* Mobile Button */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={toggleMenu}
             aria-label="Toggle Menu"
             className={`
               lg:hidden
@@ -230,19 +244,22 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Menu */}
-        <div
-          className={`lg:hidden
-            transition-all
-            duration-700
-            ease-[cubic-bezier(0.22,1,0.36,1)]
-            overflow-hidden
-            ${
-              menuOpen
-                ? "max-h-[800px] opacity-100 mt-4 translate-y-0"
-                : "max-h-0 opacity-0 -translate-y-2"
-            }
-          `}
-        >
+        {menuVisible && (
+          <div
+            className={`
+              lg:hidden
+              overflow-hidden
+              transition-all
+              duration-700
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+
+              ${
+                menuOpen
+                  ? "max-h-[800px] opacity-100 mt-4 translate-y-0"
+                  : "max-h-[800px] opacity-0 mt-4 -translate-y-2"
+              }
+            `}
+          >
           <div className="
 
           rounded-3xl 
@@ -260,7 +277,7 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => setMenuOpen(false)}
+                onClick={toggleMenu}
                 className={`
                   text-lg
                   md:text-xl
@@ -311,6 +328,7 @@ export default function Navbar() {
             >
               <Link
                 href="/portal"
+                onClick={toggleMenu}
                 className="
                   w-full
                   text-center
@@ -332,7 +350,8 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </header>
   );
