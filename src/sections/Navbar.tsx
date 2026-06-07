@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -232,11 +231,17 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden ${
-            menuOpen
-              ? "max-h-[500px] opacity-100 mt-4 translate-y-0"
-              : "max-h-0 opacity-0 -translate-y-2"
-          }`}
+          className={`lg:hidden
+            transition-all
+            duration-700
+            ease-[cubic-bezier(0.22,1,0.36,1)]
+            overflow-hidden
+            ${
+              menuOpen
+                ? "max-h-[800px] opacity-100 mt-4 translate-y-0"
+                : "max-h-0 opacity-0 -translate-y-2"
+            }
+          `}
         >
           <div className="
 
@@ -268,13 +273,16 @@ export default function Navbar() {
 
                   ${
                     menuOpen
-                      ? "opacity-100 translate-x-0"
-                      : "opacity-0 translate-x-4"
+                      ? "opacity-100 translate-x-0 scale-100"
+                      : "opacity-0 translate-x-4 scale-[0.98]"
                   }
                 `}
                 style={{
                   color: darkMode ? "#f4efee" : "#564740",
-                  transitionDelay: menuOpen ? `${index * 70}ms` : "0ms",
+
+                  transitionDelay: menuOpen
+                    ? `${index * 70}ms`
+                    : `${(navLinks.length - index - 1) * 70}ms`,
                 }}
               >
                 {link.label}
@@ -291,14 +299,14 @@ export default function Navbar() {
 
                 ${
                   menuOpen
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-4"
+                    ? "opacity-100 translate-x-0 scale-100"
+                    : "opacity-0 translate-x-4 scale-[0.98]"
                 }
               `}
               style={{
                 transitionDelay: menuOpen
                   ? `${navLinks.length * 70 + 100}ms`
-                  : "0ms",
+                  : `${navLinks.length * 70}ms`,
               }}
             >
               <Link
