@@ -4,6 +4,24 @@ import {
   FaFacebookF,
 } from "react-icons/fa";
 
+const socialLinks = [
+  {
+    href: "https://www.linkedin.com/company/anexra-solutions/",
+    icon: FaLinkedinIn,
+    label: "LinkedIn",
+  },
+  {
+    href: "https://www.instagram.com/anexra_solutions",
+    icon: FaInstagram,
+    label: "Instagram",
+  },
+  {
+    href: "https://www.facebook.com/people/Anexra-Solutions/61590388512447/",
+    icon: FaFacebookF,
+    label: "Facebook",
+  },
+];
+
 export default function ContactPage() {
   return (
     <section className="relative min-h-screen overflow-hidden flex items-center px-4 sm:px-6">
@@ -100,56 +118,60 @@ export default function ContactPage() {
                 </p>
 
                 <div className="flex items-center gap-4">
-                  <a
-                    href="#"
-                    className="
-                      w-12 h-12
-                      rounded-full
-                      bg-white/20
-                      backdrop-blur-md
-                      flex items-center justify-center
-                      text-[#4c1711]
-                      hover:bg-[#aa6f73]
-                      hover:text-white
-                      transition-all
-                    "
-                  >
-                    <FaLinkedinIn size={18} />
-                  </a>
+                  {socialLinks.map((social) => {
+                    const Icon = social.icon;
 
-                  <a
-                    href="#"
-                    className="
-                      w-12 h-12
-                      rounded-full
-                      bg-white/20
-                      backdrop-blur-md
-                      flex items-center justify-center
-                      text-[#4c1711]
-                      hover:bg-[#aa6f73]
-                      hover:text-white
-                      transition-all
-                    "
-                  >
-                    <FaInstagram size={18} />
-                  </a>
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                        title={social.label}
+                        className="
+                          group
 
-                  <a
-                    href="#"
-                    className="
-                      w-12 h-12
-                      rounded-full
-                      bg-white/20
-                      backdrop-blur-md
-                      flex items-center justify-center
-                      text-[#4c1711]
-                      hover:bg-[#aa6f73]
-                      hover:text-white
-                      transition-all
-                    "
-                  >
-                    <FaFacebookF size={18} />
-                  </a>
+                          w-12
+                          h-12
+
+                          rounded-full
+
+                          border
+                          border-white/15
+
+                          bg-white/15
+                          backdrop-blur-md
+                          shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+
+                          flex
+                          items-center
+                          justify-center
+
+                          text-[#4c1711]
+
+                          hover:bg-[#aa6f73]
+                          hover:text-white
+                          hover:border-[#c79da1]/40
+                          hover:shadow-[0_0_20px_rgba(199,157,161,0.20)]
+                          hover:-translate-y-0.5
+
+                          transition-all
+                          duration-300
+                          ease-out
+                        "
+                      >
+                        <Icon
+                          size={18}
+                          className="
+                            transition-transform
+                            duration-300
+                            group-hover:scale-110
+                          "
+                        />
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>
