@@ -163,7 +163,7 @@ export default function Navbar() {
 
           {/* Mobile Button */}
           <button
-            onClick={() => setMenuOpen(false)}
+            onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle Menu"
             className={`
               lg:hidden
@@ -231,18 +231,15 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`
-            lg:hidden
-            overflow-hidden
-
+          className={`lg:hidden
             transition-all
             duration-700
             ease-[cubic-bezier(0.22,1,0.36,1)]
-
+            overflow-hidden
             ${
               menuOpen
-                ? "max-h-[800px] opacity-100 mt-4"
-                : "max-h-0 opacity-0"
+                ? "max-h-[800px] opacity-100 mt-4 translate-y-0"
+                : "max-h-0 opacity-0 -translate-y-2"
             }
           `}
         >
@@ -314,7 +311,6 @@ export default function Navbar() {
             >
               <Link
                 href="/portal"
-                onClick={() => setMenuOpen(false)}
                 className="
                   w-full
                   text-center
@@ -336,7 +332,7 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-          </div>
+        </div>
       </div>
     </header>
   );
