@@ -111,7 +111,7 @@ export default function Home() {
     return <>
         <Navbar/>
         <Hero/>
-        <Introduction/>
+        <IntroductionOG/>
         {/* <Introductionv2/> */}
         <Solutions/>
         <WhoWeServe/>
