@@ -1,4 +1,4 @@
-import Navbar from "@/sections/Navbar";
+import NavbarWorking from "@/sections/NavbarWorking";
 import Hero from "@/sections/Hero";
 import IntroductionOG from "@/sections/IntroductionOG";
 // import Introductionv2 from "@/sections/Introductionv2";
@@ -109,7 +109,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
     return <>
-        <Navbar/>
+        <NavbarWorking/>
         <Hero/>
         <IntroductionOG/>
         {/* <Introductionv2/> */}
