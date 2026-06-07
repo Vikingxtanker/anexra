@@ -277,7 +277,7 @@ export default function Navbar() {
                   ${
                     menuOpen
                       ? "opacity-100 translate-x-0 scale-100"
-                      : "opacity-0 translate-x-4 scale-[0.98]"
+                      : "opacity-0 translate-x-6 scale-[0.98]"
                   }
                 `}
                 style={{
@@ -303,7 +303,7 @@ export default function Navbar() {
                 ${
                   menuOpen
                     ? "opacity-100 translate-x-0 scale-100"
-                    : "opacity-0 translate-x-4 scale-[0.98]"
+                    : "opacity-0 translate-x-6 scale-[0.98]"
                 }
               `}
               style={{
