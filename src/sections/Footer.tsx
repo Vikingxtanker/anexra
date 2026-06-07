@@ -12,6 +12,24 @@ const footerLinks = [
   { href: "#", label: "Terms & Conditions" },
 ];
 
+const socialLinks = [
+  {
+    href: "https://www.linkedin.com/company/anexra-solutions/",
+    icon: FaLinkedinIn,
+    label: "LinkedIn",
+  },
+  {
+    href: "https://www.instagram.com/anexra_solutions",
+    icon: FaInstagram,
+    label: "Instagram",
+  },
+  {
+    href: "https://www.facebook.com/people/Anexra-Solutions/61590388512447/",
+    icon: FaFacebookF,
+    label: "Facebook",
+  },
+];
+
 export default function Footer() {
   return (
     <footer
@@ -130,102 +148,55 @@ export default function Footer() {
             © 2026 Anexra. Designed for connected healthcare.
           </p>
 
-<div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
+            {socialLinks.map((social) => {
+              const Icon = social.icon;
 
-  <a
-    href="#"
-    className="
-      w-10
-      h-10
+              return (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  title={social.label}
+                  className="
+                    group
+                    w-10
+                    h-10
 
-      rounded-full
+                    rounded-full
 
-      border
-      border-white/10
+                    border
+                    border-white/10
 
-      bg-white/5
-      backdrop-blur-xl
+                    bg-white/5
+                    backdrop-blur-xl
 
-      flex
-      items-center
-      justify-center
+                    flex
+                    items-center
+                    justify-center
 
-      text-white/60
+                    text-white/60
 
-      hover:text-white
-      hover:bg-white/10
-      hover:scale-105
+                    hover:text-white
+                    hover:bg-white/10
+                    hover:border-[#c79da1]/30
+                    hover:shadow-[0_0_20px_rgba(199,157,161,0.15)]
+                    hover:-translate-y-0.5
 
-      transition-all
-      duration-300
-    "
-  >
-    <FaLinkedinIn size={18} />
-  </a>
-
-  <a
-    href="#"
-    className="
-      w-10
-      h-10
-
-      rounded-full
-
-      border
-      border-white/10
-
-      bg-white/5
-      backdrop-blur-xl
-
-      flex
-      items-center
-      justify-center
-
-      text-white/60
-
-      hover:text-white
-      hover:bg-white/10
-      hover:scale-105
-
-      transition-all
-      duration-300
-    "
-  >
-    <FaInstagram size={18} />
-  </a>
-
-  <a
-    href="#"
-    className="
-      w-10
-      h-10
-
-      rounded-full
-
-      border
-      border-white/10
-
-      bg-white/5
-      backdrop-blur-xl
-
-      flex
-      items-center
-      justify-center
-
-      text-white/60
-
-      hover:text-white
-      hover:bg-white/10
-      hover:scale-105
-
-      transition-all
-      duration-300
-    "
-  >
-    <FaFacebookF size={18} />
-  </a>
-
-</div>
+                    transition-all
+                    duration-300
+                    ease-out
+                  "
+                >
+                  <Icon size={18}
+                    className="transition-transform duration-300 group-hover:scale-110"
+                  />
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
       </div>
