@@ -7,24 +7,26 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const menuVariants = {
   closed: {
-    opacity: 0,
+  opacity: 0,
 
-    transition: {
-      staggerChildren: 0.07,
-      staggerDirection: -1,
-      when: "afterChildren",
-    },
+  transition: {
+    when: "afterChildren",
+    staggerChildren: 0.07,
+    staggerDirection: -1,
+    duration: 0.2,
   },
+},
 
   open: {
-    opacity: 1,
+  opacity: 1,
 
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-      when: "beforeChildren",
-    },
+  transition: {
+    when: "beforeChildren",
+    staggerChildren: 0.08,
+    delayChildren: 0.05,
+    duration: 0.2,
   },
+},
 };
 
 const itemVariants = {
@@ -274,7 +276,7 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Menu */}
-        <AnimatePresence mode="wait" propagate>
+        <AnimatePresence mode="sync">
           {menuOpen && (
             <motion.div
               initial={{
@@ -292,7 +294,7 @@ export default function Navbar() {
                 y: -10,
                 scale: 0.98,
                 transition: {
-                  delay: 0.65,
+                  delay: 0.7,
                   duration: 0.25,
                 },
               }}
