@@ -5,6 +5,32 @@ import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
 
+const menuVariants = {
+  closed: {
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+    },
+  },
+  open: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  closed: {
+    opacity: 0,
+    x: -20,
+  },
+  open: {
+    opacity: 1,
+    x: 0,
+  },
+};
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
@@ -256,28 +282,29 @@ export default function Navbar() {
               }}
               className="lg:hidden mt-4"
             >
-          <div className="
-
-          rounded-3xl 
-          p-6 
-          flex 
-          flex-col 
-          gap-5 
-          shadow-[0_8px_30px_rgba(76,23,17,0.08)]
-          glass-navbar
-          isolate
-
-          ">
+          <motion.div
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="
+              rounded-3xl
+              p-6
+              flex
+              flex-col
+              gap-5
+              shadow-[0_8px_30px_rgba(76,23,17,0.08)]
+              glass-navbar
+              isolate
+            "
+          >
             
             {navLinks.map((link, index) => (
               <motion.div
                 key={link.label}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
+                variants={itemVariants}
                 transition={{
-                  delay: index * 0.08,
-                  duration: 0.45,
+                  duration: 0.35,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
@@ -299,12 +326,9 @@ export default function Navbar() {
               </motion.div>
             ))}
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
+                variants={itemVariants}
                 transition={{
-                  delay: navLinks.length * 0.08,
-                  duration: 0.45,
+                  duration: 0.35,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="pt-4"
@@ -331,8 +355,8 @@ export default function Navbar() {
                   Select Portal
                 </Link>
               </motion.div>
-            </div>
-          </motion.div>  
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
