@@ -27,7 +27,7 @@ const leadership = [
     name: "Kumkum Bhenwal",
     role: "Chief Operating Officer (COO)",
     qualification: "Doctor of Pharmacy",
-    image: "https://placehold.net/avatar.svg",
+    image: "/leaders/kumkum.webp",
     description:
       "Managing healthcare operations, workflows, and patient-centered service coordination.",
   },
