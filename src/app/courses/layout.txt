@@ -1,0 +1,271 @@
+Since ANEXRA is positioning itself as a premium healthcare education platform for Pharm.D, B.Pharm, and D.Pharm students (not just a simple course marketplace), I would structure the page more like a modern SaaS learning platform rather than a typical Udemy clone.
+
+## Recommended Page Structure
+
+### 1. CoursesHero.tsx
+
+**Goal:** Explain why these courses matter.
+
+**Layout**
+
+* Large headline
+* Short description (6–10 lines)
+* CTA buttons
+* Course statistics
+
+Example:
+
+> Learn Industry-Relevant Pharmacy & Clinical Skills
+> Advance your career with expert-led certificate programs designed for Pharm.D, B.Pharm, and D.Pharm students. Build practical clinical knowledge, strengthen patient-care skills, earn certificates, and enhance your CV with job-ready competencies. Every course includes structured learning modules, assessments, and completion certification.
+
+**Buttons**
+
+* Explore Courses
+* View Certifications
+
+**Stats Row**
+
+* 5000+ Students
+* 20+ Courses
+* Industry Certificates
+* Self-Paced Learning
+
+---
+
+### 2. CoursesList.tsx
+
+Fetch from Supabase.
+
+#### Course Card Design
+
+Each card should contain:
+
+* Course Thumbnail
+* Course Category
+* Course Title
+* Instructor
+* Duration
+* Modules Count
+* Certificate Badge
+* Difficulty Level
+* Rating
+* Enroll Button
+
+Example:
+
+```
+Clinical Patient Counselling
+Beginner
+
+✓ Certificate Included
+✓ 12 Modules
+✓ 6 Hours Content
+✓ Self Paced
+
+[Enroll Now]
+```
+
+---
+
+### 3. CoursesImportance.tsx
+
+Instead of generic text, use visual benefit cards.
+
+### How These Courses Help Your Career
+
+#### Resume Enhancement
+
+* Stand out during placements
+* Add recognized certifications
+* Demonstrate practical clinical skills
+
+#### Clinical Knowledge
+
+* Improve patient counselling
+* Learn real-world pharmacy practice
+* Understand medication management
+
+#### Higher Education
+
+* Strengthen PG applications
+* Improve interview confidence
+* Build academic profile
+
+#### Job Opportunities
+
+* Hospital Pharmacist
+* Clinical Pharmacist
+* Pharmacovigilance
+* Medical Writing
+* Regulatory Affairs
+
+---
+
+# Additional Sections I'd Add
+
+These will make the page look much more premium.
+
+---
+
+## 4. Featured Course Section
+
+```tsx
+FeaturedCourse.tsx
+```
+
+Large highlighted course.
+
+Example:
+
+### Most Popular This Month
+
+Clinical Patient Counselling Certification
+
+* 1,200+ Enrolled
+* 4.9 Rating
+* Certificate Included
+
+Large thumbnail + CTA.
+
+---
+
+## 5. Learning Journey Section
+
+```tsx
+LearningPath.tsx
+```
+
+Timeline style.
+
+```
+Enroll
+↓
+Watch Lectures
+↓
+Complete MCQs
+↓
+Pass Assessment
+↓
+Earn Certificate
+↓
+Add to CV
+```
+
+This visually explains the value proposition.
+
+---
+
+## 6. Certificates Showcase
+
+```tsx
+CertificatePreview.tsx
+```
+
+Show certificate mockups.
+
+Students always want to see:
+
+> "What certificate will I get?"
+
+Display:
+
+* Completion Certificate
+* Skill Certificate
+* Verification QR Code
+
+---
+
+## 7. Career Outcomes Section
+
+```tsx
+CareerOutcomes.tsx
+```
+
+Cards:
+
+* Clinical Pharmacy
+* Hospital Pharmacy
+* Pharmacovigilance
+* Medical Coding
+* Medical Writing
+* Regulatory Affairs
+
+Each with icon and salary range.
+
+---
+
+## 8. Student Testimonials
+
+```tsx
+CourseTestimonials.tsx
+```
+
+Real student reviews.
+
+Example:
+
+> "The Patient Counselling Course helped me secure my hospital internship."
+
+---
+
+## 9. FAQ Section
+
+```tsx
+CoursesFAQ.tsx
+```
+
+Common questions:
+
+* Are certificates provided?
+* Is lifetime access available?
+* Are courses mobile-friendly?
+* Are assessments included?
+* How do I download my certificate?
+
+---
+
+## 10. CTA Banner (Bottom)
+
+```tsx
+CoursesCTA.tsx
+```
+
+Large premium section:
+
+### Ready to Advance Your Pharmacy Career?
+
+> Gain practical skills, earn certificates, and build a stronger professional profile with ANEXRA courses.
+
+[Browse Courses]
+
+---
+
+# Premium SaaS Layout Order
+
+```txt
+CoursesHero
+↓
+FeaturedCourse
+↓
+CoursesList
+↓
+LearningPath
+↓
+CoursesImportance
+↓
+CertificatePreview
+↓
+CareerOutcomes
+↓
+Testimonials
+↓
+FAQ
+↓
+CoursesCTA
+```
+
+This flow converts much better because it follows:
+
+**Attention → Trust → Courses → Benefits → Proof → Action**
+
+which is exactly how platforms like Coursera, Udemy, and LinkedIn Learning structure their course pages.

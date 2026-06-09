@@ -13,8 +13,10 @@ export default function SmoothScroll() {
       smoothWheel: true,
       wheelMultiplier: 1.2,
 
-      // smoother easing
       easing: (t) => 1 - Math.pow(1 - t, 6),
+
+      prevent: (node) =>
+        Boolean(node.closest("[data-slot='dialog-content']")),
     });
 
     function raf(time: number) {
