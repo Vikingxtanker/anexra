@@ -10,6 +10,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { redirect } from "next/navigation";
+
 import CoursePurchaseButton
 from "@/components/course-purchase-button";
 
@@ -40,6 +42,10 @@ export default async function CoursePage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   let hasPurchased = false;
 
