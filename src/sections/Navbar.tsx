@@ -75,7 +75,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
   { label: "Education", href: "/education" },
-  { label: "Courses", href: "/student/courses" },
+  { label: "Courses", href: "/courses" },
   // { label: "Healthcare Services", href: "/healthcare-services" },
   { label: "Career Connect", href: "/career-connect" },
   { label: "About", href: "/about" },
