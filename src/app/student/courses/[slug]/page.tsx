@@ -44,7 +44,7 @@ export default async function CoursePage({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/student/login");
   }
 
   let hasPurchased = false;
