@@ -3,38 +3,54 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
+
+const menuContainerVariants = {
+  closed: {
+    opacity: 0,
+    y: -10,
+    transition: {
+      duration: 0.18,
+      ease: [0.22, 1, 0.36, 1],
+      when: "afterChildren",
+      staggerChildren: 0.03,
+      staggerDirection: -1,
+    },
+  },
+
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.18,
+      ease: [0.22, 1, 0.36, 1],
+      when: "beforeChildren",
+      staggerChildren: 0.03,
+    },
+  },
+};
 
 const menuVariants = {
   closed: {
-  opacity: 0,
-
-  transition: {
-    when: "afterChildren",
-    staggerChildren: 0.07,
-    staggerDirection: -1,
-    duration: 0.2,
+    transition: {
+      staggerChildren: 0.04,
+      staggerDirection: -1,
+    },
   },
-},
 
   open: {
-  opacity: 1,
-
-  transition: {
-    when: "beforeChildren",
-    staggerChildren: 0.08,
-    delayChildren: 0.05,
-    duration: 0.2,
+    transition: {
+      staggerChildren: 0.04,
+    },
   },
-},
 };
 
 const itemVariants = {
   closed: {
     opacity: 0,
-    x: 40,
+    x: 20,
     transition: {
-      duration: 0.3,
+      duration: 0.2,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -43,10 +59,16 @@ const itemVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.35,
+      duration: 0.25,
       ease: [0.22, 1, 0.36, 1],
     },
   },
+};
+
+const burgerTransition = {
+  type: "spring",
+  stiffness: 400,
+  damping: 30,
 };
 
 const navLinks = [
@@ -223,52 +245,58 @@ export default function Navbar() {
           >
             <div className="relative w-6 h-5">
               
-              <span
+              <motion.span
                 className={`
                   absolute left-0 top-0
                   h-[2px] w-6 rounded-full
-                  transition-all duration-300 ease-in-out
-
                   ${darkMode ? "bg-white" : "bg-[#564740]"}
-
-                  ${
-                    menuOpen
-                      ? "translate-y-[9px] rotate-45"
-                      : ""
-                  }
                 `}
+                animate={
+                  menuOpen
+                    ? {
+                        y: 9,
+                        rotate: 45,
+                      }
+                    : {
+                        y: 0,
+                        rotate: 0,
+                      }
+                }
+                transition={burgerTransition}
               />
 
-              <span
+              <motion.span
                 className={`
                   absolute left-0 top-[9px]
                   h-[2px] w-6 rounded-full
-                  transition-all duration-300 ease-in-out
-
                   ${darkMode ? "bg-white" : "bg-[#564740]"}
-
-                  ${
-                    menuOpen
-                      ? "opacity-0"
-                      : "opacity-100"
-                  }
                 `}
+                animate={{
+                  opacity: menuOpen ? 0 : 1,
+                }}
+                transition={{
+                  duration: 0.15,
+                }}
               />
 
-              <span
+              <motion.span
                 className={`
                   absolute left-0 top-[18px]
                   h-[2px] w-6 rounded-full
-                  transition-all duration-300 ease-in-out
-
                   ${darkMode ? "bg-white" : "bg-[#564740]"}
-
-                  ${
-                    menuOpen
-                      ? "-translate-y-[9px] -rotate-45"
-                      : ""
-                  }
                 `}
+                animate={
+                  menuOpen
+                    ? {
+                        y: -9,
+                        rotate: -45,
+                      }
+                    : {
+                        y: 0,
+                        rotate: 0,
+                      }
+                }
+                transition={burgerTransition}
               />
 
             </div>
@@ -276,40 +304,19 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Menu */}
-        <AnimatePresence mode="sync">
-          {menuOpen && (
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: -10,
-                scale: 0.98,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                y: -10,
-                scale: 0.98,
-                transition: {
-                  delay: 0.7,
-                  duration: 0.25,
-                },
-              }}
-              transition={{
-                duration: 0.45,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="lg:hidden mt-4"
-            >
+        <motion.div
+          variants={menuContainerVariants}
+          animate={menuOpen ? "open" : "closed"}
+          initial={false}
+          style={{
+            pointerEvents: menuOpen ? "auto" : "none",
+            transformOrigin: "top center",
+          }}
+          className="lg:hidden mt-4 overflow-hidden"
+        >
           <motion.div
             variants={menuVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="
+            className={`
               rounded-3xl
               p-6
               flex
@@ -318,9 +325,14 @@ export default function Navbar() {
               shadow-[0_8px_30px_rgba(76,23,17,0.08)]
               glass-navbar
               isolate
-            "
+
+              ${
+                darkMode
+                  ? "bg-black/30 border border-white/25"
+                  : "bg-white/20 border border-white/20"
+              }
+            `}
           >
-            
             {navLinks.map((link) => (
               <motion.div
                 key={link.label}
@@ -329,12 +341,12 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`
+                  className="
                     text-lg
                     md:text-xl
                     font-semibold
                     tracking-tight
-                  `}
+                  "
                   style={{
                     color: darkMode ? "#f4efee" : "#564740",
                   }}
@@ -343,36 +355,36 @@ export default function Navbar() {
                 </Link>
               </motion.div>
             ))}
-              <motion.div
-                variants={itemVariants}
-                className="pt-4"
+
+            <motion.div
+              variants={itemVariants}
+              className="pt-4"
+            >
+              <Link
+                href="/portal"
+                onClick={() => setMenuOpen(false)}
+                className="
+                  w-full
+                  block
+                  text-center
+                  px-6
+                  py-3
+                  rounded-full
+                  bg-[#aa6f73]
+                  text-white
+                  text-sm
+                  font-semibold
+                  hover:bg-[#4c1711]
+                  transition-all
+                  duration-300
+                "
               >
-                <Link
-                  href="/portal"
-                  onClick={() => setMenuOpen(false)}
-                  className="
-                    w-full
-                    block
-                    text-center
-                    px-6
-                    py-3
-                    rounded-full
-                    bg-[#aa6f73]
-                    text-white
-                    text-sm
-                    font-semibold
-                    hover:bg-[#4c1711]
-                    transition-all
-                    duration-300
-                  "
-                >
-                  Select Portal
-                </Link>
-              </motion.div>
+                Select Portal
+              </Link>
             </motion.div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+        
     </div>
   </header>
   );
