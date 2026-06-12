@@ -11,7 +11,7 @@ const leadership = [
     name: "Shubham Chormale",
     role: "Chief Executive Officer (CEO)",
     qualification: "Doctor of Pharmacy & MBA",
-    image: "https://placehold.net/avatar.svg",
+    image: "/leaders/shubham.webp",
     description:
       "Leading Anexra\’s vision, healthcare strategy, partnerships, and long-term innovation.",
   },
@@ -19,7 +19,7 @@ const leadership = [
     name: "Gaurav Gaikwad",
     role: "Chief Technology Officer (CTO)",
     qualification: "Doctor of Pharmacy",
-    image: "https://placehold.net/avatar.svg",
+    image: "/leaders/gaurav.webp",
     description:
       "Building digital healthcare systems focused on patient care, monitoring, and accessibility.",
   },
@@ -35,7 +35,7 @@ const leadership = [
     name: "Akanksha Khandale",
     role: "Chief Financial Officer (CFO)",
     qualification: "Doctor of Pharmacy",
-    image: "https://placehold.net/avatar.svg",
+    image: "/leaders/akanksha.webp",
     description:
       "Driving financial planning, sustainability, and long-term healthcare growth strategies.",
   },
@@ -103,7 +103,7 @@ export default function LeadershipSection() {
         </div>
 
         {/* Cards */}
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
 
           {leadership.map((leader, index) => (
             <Card
@@ -112,6 +112,7 @@ export default function LeadershipSection() {
                 group
                 relative
                 overflow-hidden
+                h-auto
                 border border-white/10
                 bg-black/25
                 backdrop-blur-xl
@@ -122,82 +123,55 @@ export default function LeadershipSection() {
                 hover:shadow-[0_20px_60px_rgba(76,23,17,0.12)]
                 hover:border-[#aa6f73]/20
                 hover:bg-black/35
+                p-0
               "
             >
-              <CardContent className="p-8 flex flex-col items-center text-center">
+              <CardContent className="p-0 h-full flex flex-col">
 
-                {/* Profile Image */}
-                <div
-                  className="
-                    relative
-                    w-32 h-32
-                    rounded-full
-                    overflow-hidden
-                    border-4 border-white
-                    shadow-xl
-                    transition-transform duration-500
-                    group-hover:scale-105
-                  "
-                >
+                {/* Large Profile Image */}
+                <div className="relative aspect-[1200/1320] w-full overflow-hidden rounded-t-[28px]">
                   <Image
                     src={leader.image}
                     alt={leader.name}
                     fill
-                    className="object-cover"
+                    className="
+                      object-cover
+                      object-top
+                      transition-transform
+                      duration-700
+                      group-hover:scale-105
+                    "
                   />
                 </div>
 
-                {/* Name */}
-                <h3
-                  className="
-                    mt-6
-                    text-2xl
-                    font-semibold
-                    tracking-tight
-                    text-white
-                  "
-                >
-                  {leader.name}
-                </h3>
+                {/* Bottom Content */}
+                <div className="p-6 text-center flex-1 flex flex-col justify-between">
 
-                {/* Role */}
-                <p
-                  className="
-                    mt-2
-                    text-[#d6a3a7]
-                    font-medium
-                    text-sm
-                  "
-                >
-                  {leader.role}
-                </p>
+                  <div>
 
-                {/* Qualification */}
-                <p
-                  className="
-                    mt-2
-                    text-sm
-                    text-white/50
-                  "
-                >
-                  {leader.qualification}
-                </p>
+                    {/* Name */}
+                    <h3 className="text-2xl font-semibold text-white">
+                      {leader.name}
+                    </h3>
 
-                {/* Divider */}
-                <div className="w-12 h-[1px] bg-white/10 my-5" />
+                    {/* Designation */}
+                    <p className="mt-1 text-[#d6a3a7] font-medium">
+                      {leader.role}
+                    </p>
 
-                {/* Description */}
-                <p
-                  className="
-                    text-sm
-                    leading-relaxed
-                    text-white/65
-                    transition-all duration-500
-                    group-hover:text-white
-                  "
-                >
-                  {leader.description}
-                </p>
+                    {/* Qualification */}
+                    <p className="mt-1 text-sm text-white/60">
+                      {leader.qualification}
+                    </p>
+
+                  </div>
+
+                  {/* Short Description */}
+                  <p className="mt-4 text-sm text-white/70 leading-relaxed">
+                    {leader.description}
+                  </p>
+
+                </div>
 
               </CardContent>
 

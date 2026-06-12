@@ -13,6 +13,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const solutions = [
   {
+    title: "End to End Hospital Solutions",
+    description:
+    "Complete hospital management solutions including EHR, patient registration, billing, pharmacy, laboratory, and clinical workflows.",
+    href: "/solutions/end-to-end-hospital-solutions",
+    image:
+      "/images/solutions/pharmacist-led-care.webp",
+    large: true,
+  },
+  {
     title: "Clinical Pharmacist-Led Care",
     description:
       "Personalized medication management and patient-centered pharmaceutical care.",

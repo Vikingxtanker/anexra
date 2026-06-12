@@ -99,9 +99,9 @@ export default function Home() {
         <Navbar/>
         <AboutHero/>
         <WhoWeAre/>
-        <VisionMission/>
-        <WhyAnexra/>
         <Leadership/>
+        <WhyAnexra/>
+        <VisionMission/>
         <AboutCTA/>
 
         <Footer/>
