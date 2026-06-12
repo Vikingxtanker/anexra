@@ -1,4 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
+import PharmaConnectModal from "@/components/pharma-connect-modal";
+
 export default function Hero() {
+
+  const [isNetworkOpen, setIsNetworkOpen] = useState(false);
+
   return (
     <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6">
       
@@ -61,43 +70,45 @@ export default function Hero() {
           technology-driven services.
         </p>
 
-        {/* CTA */}
-        <div
-          className="
-            mt-10 sm:mt-12
-            w-full max-w-md mx-auto
-            flex flex-col sm:flex-row
-            items-center gap-4
-          "
-        >
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="
-              w-full h-14 px-5 rounded-full
-              border border-[#aa6f73]/20
-              bg-white/60 backdrop-blur-md
-              outline-none text-[#4c1711]
-              placeholder:text-[#564740]/50
-              focus:border-[#aa6f73]
-              transition-all
-            "
-          />
-
+        {/* Pharma Connect CTA */}
+        <div className="mt-12 flex flex-col items-center">
           <button
+            onClick={() => setIsNetworkOpen(true)}
             className="
-              w-full sm:w-auto
-              h-14 px-7
+              h-14 px-8
               rounded-full
               bg-[#aa6f73]
-              text-white font-semibold
+              text-white
+              font-semibold
+              text-lg
               hover:bg-[#4c1711]
               transition-all duration-300
+              hover:scale-105
+              shadow-lg
             "
           >
-            Partner With Us
+            Join Pharma Connect Network
           </button>
+
+          <p
+            className="
+              mt-4
+              text-sm sm:text-base
+              text-[#564740]/70
+              max-w-xl
+              text-center
+            "
+          >
+            Connect with pharmacy students, graduates, educators, and healthcare
+            professionals across India.
+          </p>
         </div>
+
+        <PharmaConnectModal
+          open={isNetworkOpen}
+          onOpenChange={setIsNetworkOpen}
+        />
+
       </div>
     </section>
   );
