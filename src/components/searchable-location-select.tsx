@@ -69,7 +69,10 @@ export function SearchableLocationSelect({
 
       <PopoverContent
         data-lenis-prevent
-        className="min-w-[300px] p-0"
+        className="
+          w-[var(--radix-popover-trigger-width)]
+          p-0
+        "
         align="start"
       >
         <Command>
@@ -86,11 +89,19 @@ export function SearchableLocationSelect({
               overflow-y-auto
             "
           >
+          {/* <CommandList
+            data-lenis-prevent
+            className="overflow-hidden"
+          > */}
             <CommandEmpty>
               No results found.
             </CommandEmpty>
 
-            <ScrollArea data-lenis-prevent className="h-64">
+            <ScrollArea
+              data-lenis-prevent
+              className="h-64"
+              onTouchMove={(e) => e.stopPropagation()}
+            >
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
