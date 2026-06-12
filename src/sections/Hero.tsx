@@ -12,7 +12,7 @@ export default function Hero() {
     <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6">
       
       {/* Background Video */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <video
           autoPlay
           muted
@@ -30,11 +30,11 @@ export default function Hero() {
         </video>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-[#f4efee]/30 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#f4efee]/30 backdrop-blur-[1px] pointer-events-none" />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto text-center py-24 sm:py-28 md:py-32">
+      <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-24 sm:py-28 md:py-32">
 
         {/* Heading */}
         <h1
@@ -71,23 +71,34 @@ export default function Hero() {
         </p>
 
         {/* Pharma Connect CTA */}
-        <div className="mt-12 flex flex-col items-center">
+        <div className="mt-12 flex flex-col items-center gap-5">
           <button
             onClick={() => setIsNetworkOpen(true)}
             className="
-              h-14 px-8
+              group
+              relative
+              w-full
+              max-w-sm
+              inline-flex
+              items-center
+              justify-center
+              h-16
+              px-8
               rounded-full
-              bg-[#aa6f73]
+              bg-gradient-to-r
+              from-[#aa6f73]
+              to-[#c78d91]
               text-white
               font-semibold
               text-lg
-              hover:bg-[#4c1711]
-              transition-all duration-300
+              shadow-[0_10px_35px_rgba(170,111,115,0.35)]
+              transition-all
+              duration-300
               hover:scale-105
-              shadow-lg
+              hover:shadow-[0_15px_45px_rgba(170,111,115,0.5)]
             "
           >
-            Join Pharma Connect Network
+            Join Pharma Connect
           </button>
 
           <p
