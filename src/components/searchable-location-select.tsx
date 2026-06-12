@@ -22,6 +22,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 interface SearchableSelectProps {
   options: {
     value: string;
@@ -66,40 +68,53 @@ export function SearchableLocationSelect({
       </PopoverTrigger>
 
       <PopoverContent
-        className="w-full p-0"
+        data-lenis-prevent
+        className="min-w-[300px] p-0"
         align="start"
       >
         <Command>
-          <CommandInput placeholder={`Search...`} />
+          <CommandInput
+            autoFocus
+            placeholder={`Search ${placeholder.toLowerCase()}...`}
+          />
 
-          <CommandList>
+          <CommandList
+            data-lenis-prevent
+            onWheel={(e) => e.stopPropagation()}
+            className="
+              max-h-64
+              overflow-y-auto
+            "
+          >
             <CommandEmpty>
               No results found.
             </CommandEmpty>
 
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.label}
-                  onSelect={() => {
-                    onChange(option.value);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === option.value
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
+            <ScrollArea data-lenis-prevent className="h-64">
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.label}
+                    onSelect={() => {
+                      onChange(option.value);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === option.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
 
-                  {option.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </ScrollArea>
           </CommandList>
         </Command>
       </PopoverContent>

@@ -3,8 +3,6 @@
 import { createClient } from "@/lib/supabase/client";
 
 import { useState } from "react";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 
 import { State, City } from "country-state-city";
 
@@ -21,14 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import { Calendar } from "@/components/ui/calendar";
 
 import {
   Select,
@@ -49,83 +39,137 @@ export default function PharmaConnectModal({
   open,
   onOpenChange,
 }: PharmaConnectModalProps) {
-  const [dob, setDob] = useState<Date>();
-
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
   const [qualification, setQualification] = useState("");
+
+  const [phone, setPhone] = useState("");
+
+  const [customQualification, setCustomQualification] =
+  useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  function formatName(name: string) {
+    return name
+      .trim()
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  }
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    if (!dob) {
-      alert("Please select your date of birth");
+    if (!qualification) {
+      toast.error("Please select your qualification");
       return;
     }
 
-    if (!qualification) {
-      alert("Please select your qualification");
+    if (
+      qualification === "Other" &&
+      !customQualification.trim()
+    ) {
+      toast.error(
+        "Please enter your qualification"
+      );
       return;
     }
 
     if (!selectedState) {
-      alert("Please select your state");
+      toast.error("Please select your state");
       return;
     }
 
     if (!selectedCity) {
-      alert("Please select your city");
+      toast.error("Please select your city");
       return;
     }
 
-    const formData = new FormData(e.currentTarget);
-
-    const stateName =
-      states.find(
-        (state) => state.isoCode === selectedState
-      )?.name ?? "";
-
-    const { error } = await supabase
-      .from("pharma_connect_members")
-      .insert([
-        {
-          full_name: formData.get("fullName"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-
-          date_of_birth: dob.toISOString(),
-
-          qualification,
-
-          institution: formData.get("institution"),
-
-          state: stateName,
-          city: selectedCity,
-        },
-      ]);
-
-    if (error) {
-      console.error(error);
-
+    if (!/^[6-9]\d{9}$/.test(phone)) {
       toast.error(
-        "Failed to join Pharma Connect"
+        "Please enter a valid Indian mobile number"
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+
+      const stateName =
+        states.find(
+          (state) => state.isoCode === selectedState
+        )?.name ?? "";
+
+      const firstName = formatName(
+        String(formData.get("firstName") || "")
       );
 
-      return;
-    }
+      const lastName = formatName(
+        String(formData.get("lastName") || "")
+      );
 
-    toast.success(
-      "Welcome to Pharma Connect! 🎉",
-      {
-        description:
-          "We'll keep you updated with pharmacy opportunities and industry news.",
+      const fullName = `${firstName} ${lastName}`;
+
+      const { error } = await supabase
+        .from("pharma_connect_members")
+        .insert([
+          {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: fullName,
+
+            email: formData.get("email"),
+            phone: `+91${phone}`,
+
+            qualification: finalQualification,
+
+            institution: formData.get("institution"),
+
+            state: stateName,
+            city: selectedCity,
+          },
+        ]);
+
+      if (error) {
+        console.error(error);
+
+        if (error.code === "23505") {
+          toast.error(
+            "This email is already registered in Pharma Connect."
+          );
+          return;
+        }
+
+        toast.error(
+          "Failed to join Pharma Connect"
+        );
+        return;
       }
-    );
 
-    onOpenChange(false);
+      toast.success(
+        "Welcome to Pharma Connect! 🎉",
+        {
+          description:
+            "We'll keep you updated with pharmacy opportunities and industry news.",
+        }
+      );
+
+      onOpenChange(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const states = State.getStatesOfCountry("IN");
@@ -143,6 +187,11 @@ export default function PharmaConnectModal({
     value: city.name,
     label: city.name,
   }));
+
+  const finalQualification =
+    qualification === "Other"
+      ? customQualification.trim()
+      : qualification;
 
   const supabase = createClient();
 
@@ -165,12 +214,24 @@ export default function PharmaConnectModal({
           onSubmit={handleSubmit}
           className="space-y-4 mt-4"
         >
-          {/* Name */}
-          <Input
-            name="fullName"
-            placeholder="Full Name"
-            required
-          />
+          {/* First & Last Name */}
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              name="firstName"
+              placeholder="First Name"
+              autoCapitalize="words"
+              autoComplete="given-name"
+              required
+            />
+
+            <Input
+              name="lastName"
+              placeholder="Last Name"
+              autoCapitalize="words"
+              autoComplete="family-name"
+              required
+            />
+          </div>
 
           {/* Email */}
           <Input
@@ -181,49 +242,49 @@ export default function PharmaConnectModal({
           />
 
           {/* Phone */}
-          <Input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            required
-          />
+          <div
+            className="
+              flex items-center
+              border rounded-md
+              overflow-hidden
+              bg-background
+            "
+          >
+            <div
+              className="
+                px-3
+                py-2
+                border-r
+                bg-muted/40
+                text-sm
+                font-medium
+                whitespace-nowrap
+              "
+            >
+              🇮🇳 +91
+            </div>
+
+            <Input
+              type="tel"
+              name="phone"
+              value={phone}
+              inputMode="numeric"
+              maxLength={10}
+              placeholder="Enter your 10 digit number"
+              className="border-0 focus-visible:ring-0"
+              onChange={(e) => {
+                const digitsOnly = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 10);
+
+                setPhone(digitsOnly);
+              }}
+              required
+            />
+          </div>
 
           {/* DOB */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                type="button"
-                variant="outline"
-                className="
-                  w-full
-                  justify-start
-                  text-left
-                  font-normal
-                "
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-
-                {dob
-                  ? format(dob, "PPP")
-                  : "Select Date of Birth"}
-              </Button>
-            </PopoverTrigger>
-
-            <PopoverContent
-              className="w-auto p-0"
-              align="start"
-            >
-              <Calendar
-                mode="single"
-                selected={dob}
-                onSelect={setDob}
-                captionLayout="dropdown"
-                startMonth={new Date(1950, 0)}
-                endMonth={new Date()}
-                defaultMonth={new Date(2000, 0)}
-              />
-            </PopoverContent>
-          </Popover>
+          {/* REMOVED */}
 
           {/* Qualification */}
           <Select
@@ -250,8 +311,25 @@ export default function PharmaConnectModal({
               <SelectItem value="Pharm.D">
                 Pharm.D
               </SelectItem>
+
+              <SelectItem value="Other">
+                Other
+              </SelectItem>
             </SelectContent>
           </Select>
+
+          {qualification === "Other" && (
+            <Input
+              value={customQualification}
+              onChange={(e) =>
+                setCustomQualification(e.target.value)
+              }
+              placeholder="Enter your qualification"
+              autoCapitalize="words"
+              maxLength={100}
+              required
+            />
+          )}
 
           {/* Institution */}
           <Input
@@ -282,13 +360,14 @@ export default function PharmaConnectModal({
 
           <Button
             type="submit"
+            disabled={loading}
             className="
               w-full
               bg-[#aa6f73]
               hover:bg-[#4c1711]
             "
           >
-            Join Network
+            {loading ? "Joining..." : "Join Network"}
           </Button>
         </form>
       </DialogContent>
