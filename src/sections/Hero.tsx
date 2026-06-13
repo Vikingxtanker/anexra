@@ -36,7 +36,7 @@ export default function Hero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-16 sm:py-24 md:py-32">
+      <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-16 sm:py-24 md:py-32 max-[700px]:py-4">
 
         {/* Heading */}
         <h1
@@ -44,7 +44,7 @@ export default function Hero() {
             font-semibold tracking-tight text-[#4c1711]
             leading-none
             sm:leading-[0.9]
-            text-[clamp(2.5rem,8vw,6rem)]
+            text-[clamp(2rem,7vw,6rem)]
             max-w-5xl mx-auto
           "
         >
@@ -76,7 +76,7 @@ export default function Hero() {
         </p>
 
         {/* Pharma Connect CTA */}
-        <div className="mt-12 flex flex-col items-center gap-5">
+        <div className="mt-8 sm:mt-12 flex flex-col items-center gap-3 sm:gap-5">
           <Button
             type="button"
             onClick={() => setIsNetworkOpen(true)}
