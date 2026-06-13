@@ -61,7 +61,19 @@ export default function Introduction() {
         md:pt-0
       "
     >
-      <div className="min-h-screen flex items-center justify-center">
+      <div
+        className="
+          min-h-screen
+          flex
+          justify-center
+
+          items-start
+          sm:items-center
+
+          pt-20
+          sm:pt-0
+        "
+      >
 
         <div className="max-w-6xl mx-auto text-center">
 
@@ -83,20 +95,19 @@ export default function Introduction() {
               lg:text-6xl
 
               max-[700px]:text-[1.7rem]
+              max-[700px]:leading-[0.85]
 
-              font-medium
               leading-[0.95]
+              font-medium
               tracking-tight
-              max-w-6xl
-              mx-auto
             "
           >
 
-            <span className="block text-[#4c1711] mb-6 sm:mb-10">
+            <span className="block text-[#4c1711] mb-4 sm:mb-10">
               Healthcare deserves connected long-term care.
             </span>
 
-            <div className="relative mt-6 sm:mt-10">
+            <div className="relative mt-4 sm:mt-10">
 
               {/* Aurora Background */}
               <div className="absolute inset-0 rounded-[40px] overflow-hidden z-0">
@@ -120,7 +131,15 @@ export default function Introduction() {
               >
                 <p
                   ref={textRef}
-                  className="text-[#4c1711] inline leading-[1.15]"
+                  className="
+                    text-[#4c1711]
+
+                    text-[1.4rem]
+                    sm:text-inherit
+
+                    inline
+                    leading-[1.05]
+                  "
                 >
                   Smarter chronic care, seamless patient follow-ups,
                   and connected long-term healthcare support.
@@ -129,7 +148,7 @@ export default function Introduction() {
 
             </div>
 
-            <span className="block text-[#4c1711] mt-6 sm:mt-10">
+            <span className="block text-[#4c1711] mt-4 sm:mt-10">
               That&apos;s why we built Anexra.
             </span>
           </h2>
