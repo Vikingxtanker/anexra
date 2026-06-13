@@ -53,9 +53,15 @@ export default function Introduction() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#f4efee] px-6"
+      className="
+        relative 
+        bg-[#f4efee] 
+        px-6
+        pt-16
+        md:pt-0
+      "
     >
-      <div className="h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
 
         <div className="max-w-6xl mx-auto text-center">
 
@@ -69,7 +75,7 @@ export default function Introduction() {
           </div> */}
 
           {/* Main Heading */}
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-medium leading-[0.95] tracking-tight max-w-6xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-medium leading-[0.95] tracking-tight max-w-6xl mx-auto">
 
             <span className="block text-[#4c1711] mb-10">
               Healthcare deserves connected long-term care.
@@ -93,7 +99,7 @@ export default function Introduction() {
                   border border-white/40
                   bg-white/5
                   backdrop-blur-2xl
-                  p-10 md:p-16
+                  p-6 md:p-16
                   shadow-[0_8px_40px_rgba(0,0,0,0.08)]
                 "
               >
