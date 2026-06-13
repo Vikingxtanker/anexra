@@ -197,7 +197,18 @@ export default function PharmaConnectModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="
+          w-[calc(100vw-2rem)]
+          max-w-[420px]
+          sm:max-w-xl
+          max-h-[85dvh]
+          overflow-y-auto
+          rounded-3xl
+          p-5
+          sm:p-6
+        "
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl text-[#4c1711]">
             Join Pharma Connect
@@ -215,7 +226,7 @@ export default function PharmaConnectModal({
           className="space-y-4 mt-4"
         >
           {/* First & Last Name */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               name="firstName"
               placeholder="First Name"
