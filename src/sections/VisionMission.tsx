@@ -134,9 +134,11 @@ export default function VisionMission() {
               bg-white/10
               backdrop-blur-2xl
 
-              h-[420px]
+              min-h-[420px]
+              h-auto
 
-              p-8
+              p-6
+              sm:p-8
               md:p-10
               lg:p-12
 
@@ -171,11 +173,12 @@ export default function VisionMission() {
               className="
                 text-white
 
-                text-2xl
+                text-[1.6rem]
+                sm:text-2xl
                 md:text-3xl
-                lg:text-[2rem]
 
-                max-w-[90%]
+                max-w-full
+                lg:max-w-[90%]
 
                 mt-4
 
@@ -204,9 +207,11 @@ export default function VisionMission() {
               bg-white/10
               backdrop-blur-2xl
 
-              h-[420px]
+              min-h-[420px]
+              h-auto
 
-              p-8
+              p-6
+              sm:p-8
               md:p-10
               lg:p-12
 
@@ -241,11 +246,12 @@ export default function VisionMission() {
               className="
                 text-white
 
-                text-2xl
+                text-[1.6rem]
+                sm:text-2xl
                 md:text-3xl
-                lg:text-[2rem]
 
-                max-w-[90%]
+                max-w-full
+                lg:max-w-[90%]
 
                 mt-4
 

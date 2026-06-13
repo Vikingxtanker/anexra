@@ -36,17 +36,15 @@ export default function Hero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-24 sm:py-28 md:py-32">
+      <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-16 sm:py-24 md:py-32">
 
         {/* Heading */}
         <h1
           className="
             font-semibold tracking-tight text-[#4c1711]
-            leading-[0.9]
-            text-[3rem]
-            sm:text-6xl
-            md:text-7xl
-            lg:text-8xl
+            leading-none
+            sm:leading-[0.9]
+            text-[clamp(2.5rem,8vw,6rem)]
             max-w-5xl mx-auto
           "
         >
@@ -59,9 +57,14 @@ export default function Hero() {
         <p
           className="
             mt-6 sm:mt-8
-            text-base sm:text-lg md:text-xl
+            text-[0.95rem]
+            sm:text-lg
+            md:text-xl
             text-[#564740]/80
-            max-w-3xl mx-auto
+            max-w-md
+            sm:max-w-2xl
+            md:max-w-3xl
+            mx-auto
             leading-relaxed
             px-2
           "
@@ -81,13 +84,16 @@ export default function Hero() {
             className="
               w-full
               max-w-sm
-              h-16
+              h-14
+              sm:h-16
+
+              text-base
+              sm:text-lg
               rounded-full
               bg-gradient-to-r
               from-[#aa6f73]
               to-[#c78d91]
               text-white
-              text-lg
               font-semibold
               shadow-[0_10px_35px_rgba(170,111,115,0.35)]
               transition-all
