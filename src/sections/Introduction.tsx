@@ -87,36 +87,29 @@ export default function Introduction() {
           </div> */}
 
           {/* Main Heading */}
-          <h2
-            className="
-              text-2xl
-              sm:text-3xl
-              md:text-5xl
-              lg:text-6xl
+          <div className="max-w-6xl mx-auto text-center">
 
-              max-[700px]:text-[1.7rem]
-              max-[700px]:leading-[0.85]
-
-              leading-[0.95]
-              font-medium
-              tracking-tight
-            "
-          >
-
-            <span className="block text-[#4c1711] mb-4 sm:mb-10">
+            <h2
+              className="
+                text-[1.7rem]
+                sm:text-3xl
+                md:text-5xl
+                lg:text-6xl
+                font-medium
+                leading-[0.95]
+                tracking-tight
+              "
+            >
               Healthcare deserves connected long-term care.
-            </span>
+            </h2>
 
             <div className="relative mt-4 sm:mt-10">
-
-              {/* Aurora Background */}
               <div className="absolute inset-0 rounded-[40px] overflow-hidden z-0">
                 <div className="animated-gradient gradient-1" />
                 <div className="animated-gradient gradient-2" />
                 <div className="animated-gradient gradient-3" />
               </div>
 
-              {/* Glass Card */}
               <div
                 className="
                   relative
@@ -126,32 +119,42 @@ export default function Introduction() {
                   bg-white/5
                   backdrop-blur-2xl
                   p-4 sm:p-8 md:p-16
-                  shadow-[0_8px_40px_rgba(0,0,0,0.08)]
                 "
               >
                 <p
                   ref={textRef}
                   className="
                     text-[#4c1711]
-
                     text-[1.4rem]
-                    sm:text-inherit
-
-                    inline
+                    sm:text-[2rem]
+                    md:text-[3rem]
                     leading-[1.05]
+                    font-medium
                   "
                 >
                   Smarter chronic care, seamless patient follow-ups,
                   and connected long-term healthcare support.
                 </p>
               </div>
-
             </div>
 
-            <span className="block text-[#4c1711] mt-4 sm:mt-10">
-              That&apos;s why we built Anexra.
-            </span>
-          </h2>
+            <h2
+              className="
+                mt-4 sm:mt-10
+                text-[1.7rem]
+                sm:text-3xl
+                md:text-5xl
+                lg:text-6xl
+                font-medium
+                leading-[0.95]
+                tracking-tight
+                text-[#4c1711]
+              "
+            >
+              That's why we built Anexra.
+            </h2>
+
+          </div>
         </div>
       </div>
     </section>
