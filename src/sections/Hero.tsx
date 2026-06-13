@@ -11,7 +11,7 @@ export default function Hero() {
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
 
   return (
-    <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6">
+    <section className="relative overflow-hidden min-h-screen flex items-start md:items-center pt-24 md:pt-0 px-4 sm:px-6">
       
       {/* Background Video */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
