@@ -117,7 +117,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate">
+    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 isolate pointer-events-none">
       
       {/* Main Navbar Container */}
       <div className="max-w-7xl mx-auto">
@@ -144,6 +144,8 @@ export default function Navbar() {
 
     glass-navbar
     isolate
+
+    pointer-events-auto
 
     ${
       // darkMode
@@ -312,7 +314,7 @@ export default function Navbar() {
             pointerEvents: menuOpen ? "auto" : "none",
             transformOrigin: "top center",
           }}
-          className="lg:hidden mt-4 overflow-hidden"
+          className="lg:hidden mt-4 overflow-hidden pointer-events-auto"
         >
           <motion.div
             variants={menuVariants}

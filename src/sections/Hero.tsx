@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import PharmaConnectModal from "@/components/pharma-connect-modal";
 
+import { Button } from "@/components/ui/button";
+
 export default function Hero() {
 
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
@@ -72,34 +74,31 @@ export default function Hero() {
 
         {/* Pharma Connect CTA */}
         <div className="mt-12 flex flex-col items-center gap-5">
-          <button
+          <Button
+            type="button"
             onClick={() => setIsNetworkOpen(true)}
+            size="lg"
             className="
-              group
-              relative
               w-full
               max-w-sm
-              inline-flex
-              items-center
-              justify-center
               h-16
-              px-8
               rounded-full
               bg-gradient-to-r
               from-[#aa6f73]
               to-[#c78d91]
               text-white
-              font-semibold
               text-lg
+              font-semibold
               shadow-[0_10px_35px_rgba(170,111,115,0.35)]
               transition-all
               duration-300
               hover:scale-105
               hover:shadow-[0_15px_45px_rgba(170,111,115,0.5)]
+              active:scale-95
             "
           >
             Join Pharma Connect
-          </button>
+          </Button>
 
           <p
             className="
