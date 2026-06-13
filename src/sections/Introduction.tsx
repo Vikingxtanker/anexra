@@ -75,13 +75,28 @@ export default function Introduction() {
           </div> */}
 
           {/* Main Heading */}
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-medium leading-[0.95] tracking-tight max-w-6xl mx-auto">
+          <h2
+            className="
+              text-2xl
+              sm:text-3xl
+              md:text-5xl
+              lg:text-6xl
 
-            <span className="block text-[#4c1711] mb-10">
+              max-[700px]:text-[1.7rem]
+
+              font-medium
+              leading-[0.95]
+              tracking-tight
+              max-w-6xl
+              mx-auto
+            "
+          >
+
+            <span className="block text-[#4c1711] mb-6 sm:mb-10">
               Healthcare deserves connected long-term care.
             </span>
 
-            <div className="relative mt-10">
+            <div className="relative mt-6 sm:mt-10">
 
               {/* Aurora Background */}
               <div className="absolute inset-0 rounded-[40px] overflow-hidden z-0">
@@ -99,7 +114,7 @@ export default function Introduction() {
                   border border-white/40
                   bg-white/5
                   backdrop-blur-2xl
-                  p-6 md:p-16
+                  p-4 sm:p-8 md:p-16
                   shadow-[0_8px_40px_rgba(0,0,0,0.08)]
                 "
               >
@@ -114,7 +129,7 @@ export default function Introduction() {
 
             </div>
 
-            <span className="block text-[#4c1711] mt-10">
+            <span className="block text-[#4c1711] mt-6 sm:mt-10">
               That&apos;s why we built Anexra.
             </span>
           </h2>
