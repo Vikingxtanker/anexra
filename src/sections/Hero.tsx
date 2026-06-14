@@ -28,7 +28,7 @@ export default function Hero() {
             opacity-[0.45]
           "
         >
-          <source src="/hero_background.mp4" type="video/mp4" />
+          <source src="/hero_background.webm" type="video/webm" />
         </video>
 
         {/* Overlay */}

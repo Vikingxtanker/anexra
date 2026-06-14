@@ -18,7 +18,7 @@ const solutions = [
     "Complete hospital management solutions including EHR, patient registration, billing, pharmacy, laboratory, and clinical workflows.",
     href: "/solutions/end-to-end-hospital-solutions",
     image:
-      "/images/solutions/pharmacist-led-care.webp",
+      "/images/solutions/ETEHS.webp",
     large: true,
   },
   {
