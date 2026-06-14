@@ -101,9 +101,9 @@ export default function CoursesImportance() {
               {/* Background Image */}
               <div
                 className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                style={{
-                  backgroundImage: `url(${item.image})`,
-                }}
+                // style={{
+                //   backgroundImage: `url(${item.image})`,
+                // }}
               />
 
               {/* Overlay */}
@@ -132,9 +132,9 @@ export default function CoursesImportance() {
             >
               <div
                 className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                style={{
-                  backgroundImage: `url(${item.image})`,
-                }}
+                // style={{
+                //   backgroundImage: `url(${item.image})`,
+                // }}
               />
 
               <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
@@ -161,9 +161,9 @@ export default function CoursesImportance() {
             >
               <div
                 className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                style={{
-                  backgroundImage: `url(${item.image})`,
-                }}
+                // style={{
+                //   backgroundImage: `url(${item.image})`,
+                // }}
               />
 
               <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/20 via-[#4c1711]/20 to-[#4c1711]/80" />
