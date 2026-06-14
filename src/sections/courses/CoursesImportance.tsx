@@ -7,40 +7,40 @@ const benefits = [
     title: "Resume Enhancement",
     description:
       "Stand out during placements with recognized certifications and practical healthcare skills.",
-    image: "/images/courses/resume-enhancement.webp",
+    image: "/images/courses/importance/RE.webp",
     large: true,
   },
   {
     title: "Clinical Knowledge",
     description:
       "Develop patient counselling, medication management, and real-world pharmacy practice skills.",
-    image: "/images/courses/clinical-knowledge.webp",
+    image: "/images/courses/importance/CK.webp",
     large: true,
   },
   {
     title: "Higher Education",
     description:
       "Strengthen postgraduate applications and build a competitive academic profile.",
-    image: "/images/courses/higher-education.webp",
+    image: "/images/courses/importance/CK2.webp",
   },
   {
     title: "Job Opportunities",
     description:
       "Prepare for careers in Clinical Pharmacy, Pharmacovigilance, Regulatory Affairs, and Medical Writing.",
-    image: "/images/courses/job-opportunities.webp",
+    image: "/images/courses/importance/JO.webp",
   },
   {
     title: "Industry Ready Skills",
     description:
       "Gain practical healthcare knowledge that employers actively look for in graduates.",
-    image: "/images/courses/industry-ready.webp",
+    image: "/images/courses/importance/IRS.webp",
     large: true,
   },
   {
     title: "Certificate Value",
     description:
       "Earn professional certificates that showcase your commitment to continuous learning.",
-    image: "/images/courses/certificate-value.webp",
+    image: "/images/courses/importance/CERT.webp",
   },
 ];
 

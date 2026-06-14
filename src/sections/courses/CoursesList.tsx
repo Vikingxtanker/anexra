@@ -69,6 +69,7 @@ export default function CoursesList() {
         duration_hours,
         price,
         is_published,
+        display_order,
 
         modules (
           id,
@@ -83,7 +84,7 @@ export default function CoursesList() {
         )
       `)
       .eq("is_published", true)
-      .order("created_at", { ascending: false });
+      .order("display_order", { ascending: true });
 
     if (error) {
       console.error(error);
@@ -306,7 +307,38 @@ export default function CoursesList() {
                     "
                   >
                     <div className="flex gap-2">
-                      <Link
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button
+                            className="
+                              flex-1
+                              text-center
+                              rounded-full
+                              bg-[#4c1711]
+                              px-6
+                              py-3
+                              text-sm
+                              font-medium
+                              text-white
+                              hover:bg-[#aa6f73]
+                              transition
+                              cursor-pointer
+                            "
+                          >
+                            Enroll Now
+                          </button>
+                        </DialogTrigger>
+
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Coming Soon</DialogTitle>
+                            <DialogDescription>
+                              Course enrollment will be available soon. Stay tuned for updates.
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                      {/* <Link
                         href={`/student/courses/${course.slug}`}
                         className="
                           flex-1
@@ -323,7 +355,7 @@ export default function CoursesList() {
                         "
                       >
                         Enroll Now
-                      </Link>
+                      </Link> */}
 
                       <Dialog>
                         <DialogTrigger asChild>

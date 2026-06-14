@@ -17,32 +17,36 @@ export default function Introduction() {
 
     // Split text into words
     const split = new SplitType(textRef.current, {
-      types: "words",
+      types: "chars",
     });
 
-    // Initial state
-    gsap.set(split.words, {
+    if (!split.chars) return;
+
+    gsap.set(split.chars, {
       opacity: 0.15,
       color: "#4c1711",
     });
 
-    // Timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top top",
-        end: "+=2500",
+        end: "+=1000",
         scrub: true,
         pin: true,
-        anticipatePin: 1,
       },
     });
 
-    // Animate words sequentially
-    tl.to(split.words, {
-      opacity: 1,
-      stagger: 0.15,
-      ease: "none",
+    split.chars.forEach((char, i) => {
+      tl.to(
+        char,
+        {
+          opacity: 1,
+          duration: 0.05,
+          ease: "none",
+        },
+        i * 0.05
+      );
     });
 
     return () => {
@@ -72,7 +76,7 @@ export default function Introduction() {
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[0.95] tracking-tight max-w-6xl mx-auto">
 
             <span className="block text-[#4c1711] mb-10">
-              Healthcare deserves connected long-term care.
+              Healthcare deserves connected long-term care
             </span>
 
             {/* Animated Text */}
@@ -80,8 +84,7 @@ export default function Introduction() {
               ref={textRef}
               className="text-[#4c1711] inline leading-[1.15]"
             >
-              Smarter chronic care, seamless patient follow-ups, and connected
-              long-term healthcare support.
+              End to End Healthcare Solutions
             </p>
 
             <span className="block text-[#4c1711] mt-10">
