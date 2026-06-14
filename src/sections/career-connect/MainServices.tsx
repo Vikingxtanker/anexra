@@ -28,7 +28,7 @@ const services = [
     icon: Compass,
     href: "/career-connect/career-explore",
     size: "large",
-    image: "/images/career-connect/CE.webp",
+    // image: "/images/career-connect/CE.webp",
   },
   {
     title: "Pharmacy Ecosystem",
@@ -37,7 +37,7 @@ const services = [
     icon: Network,
     href: "/career-connect/pharmacy-ecosystem",
     size: "large",
-    image: "/images/career-connect/PE.webp",
+    // image: "/images/career-connect/PE.webp",
   },
   {
     title: "Resume Building",
@@ -46,7 +46,7 @@ const services = [
     icon: FileText,
     href: "/career-connect/resume-building",
     size: "medium",
-    image: "/images/career-connect/RB.webp",
+    // image: "/images/career-connect/RB.webp",
   },
   {
     title: "LinkedIn Optimization",
@@ -55,7 +55,7 @@ const services = [
     icon: FaLinkedinIn,
     href: "/career-connect/linkedin-optimization",
     size: "medium",
-    image: "/images/career-connect/LIO.webp",
+    // image: "/images/career-connect/LIO.webp",
   },
   {
     title: "Hospital Placement",
@@ -64,7 +64,7 @@ const services = [
     icon: Building2,
     href: "/career-connect/hospital-placement",
     size: "wide",
-    image: "/images/career-connect/HP.webp",
+    // image: "/images/career-connect/HP.webp",
   },
   {
     title: "Interview Preparation",
@@ -73,7 +73,7 @@ const services = [
     icon: MessageSquareText,
     href: "/career-connect/interview-preparation",
     size: "medium",
-    image: "/images/career-connect/IP.webp",
+    // image: "/images/career-connect/IP.webp",
   },
   {
     title: "Abroad Opportunities",
@@ -82,7 +82,7 @@ const services = [
     icon: Globe,
     href: "/career-connect/abroad-opportunities",
     size: "medium",
-    image: "/images/career-connect/AO.webp",
+    // image: "/images/career-connect/AO.webp",
   },
   {
     title: "Research Club",
@@ -91,7 +91,7 @@ const services = [
     icon: Microscope,
     href: "/career-connect/research-club",
     size: "wide",
-    image: "/images/career-connect/RC.webp",
+    // image: "/images/career-connect/RC.webp",
   },
 ];
 
