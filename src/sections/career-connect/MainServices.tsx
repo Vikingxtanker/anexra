@@ -227,9 +227,9 @@ export default function CareerServices() {
                       transition-transform duration-700
                       group-hover:scale-105
                     "
-                    style={{
-                      backgroundImage: `url(${service.image})`,
-                    }}
+                    // style={{
+                    //   backgroundImage: `url(${service.image})`,
+                    // }}
                   />
 
                   {/* Dark Overlay */}
