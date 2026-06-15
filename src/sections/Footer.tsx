@@ -145,7 +145,7 @@ export default function Footer() {
               md:text-left
             "
           >
-            © 2026 Anexra. Designed for connected healthcare.
+            © 2026 Anexra. Designed and developed by Gaurav Gaikwad.
           </p>
 
           <div className="flex items-center gap-4">
