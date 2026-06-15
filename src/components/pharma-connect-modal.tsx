@@ -389,6 +389,19 @@ export default function PharmaConnectModal({
 
           {qualification === "Other" && (
             <Input
+              className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
               value={customQualification}
               onChange={(e) =>
                 setCustomQualification(e.target.value)
