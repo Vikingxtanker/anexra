@@ -207,6 +207,11 @@ export default function PharmaConnectModal({
           rounded-3xl
           p-5
           sm:p-6
+          border border-white/30
+          bg-white/15
+          backdrop-blur-3xl
+
+          glass-navbar
         "
       >
         <DialogHeader>
@@ -214,7 +219,7 @@ export default function PharmaConnectModal({
             Join Pharma Connect
           </DialogTitle>
 
-          <DialogDescription>
+          <DialogDescription className="text-[#564740] mt-2">
             Connect with pharmacy students, graduates,
             educators and healthcare professionals
             across India.
@@ -228,6 +233,19 @@ export default function PharmaConnectModal({
           {/* First & Last Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
+              className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
               name="firstName"
               placeholder="First Name"
               autoCapitalize="words"
@@ -236,6 +254,19 @@ export default function PharmaConnectModal({
             />
 
             <Input
+              className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
               name="lastName"
               placeholder="Last Name"
               autoCapitalize="words"
@@ -246,6 +277,19 @@ export default function PharmaConnectModal({
 
           {/* Email */}
           <Input
+            className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
             type="email"
             name="email"
             placeholder="Email Address"
@@ -302,7 +346,21 @@ export default function PharmaConnectModal({
             value={qualification}
             onValueChange={setQualification}
           >
-            <SelectTrigger>
+            <SelectTrigger
+              className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
+            >
               <SelectValue placeholder="Select Qualification" />
             </SelectTrigger>
 
@@ -344,6 +402,19 @@ export default function PharmaConnectModal({
 
           {/* Institution */}
           <Input
+            className="
+                bg-white/85
+
+                border-[#d7c7c2]
+
+                text-[#4c1711]
+
+                placeholder:text-[#7a6b66]
+
+                focus:border-[#aa6f73]
+
+                focus-visible:ring-[#aa6f73]/30
+              "
             name="institution"
             placeholder="Institution / Organization"
             required
