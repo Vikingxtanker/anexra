@@ -100,6 +100,22 @@ export default async function LessonPage({
       p,
     ]) ?? []
   );
+
+  const totalLessons = allLessons?.length ?? 0;
+
+  const completedLessons =
+    progressRows?.filter((p) => p.completed).length ?? 0;
+
+  const courseCompleted =
+    totalLessons > 0 &&
+    completedLessons === totalLessons;
+
+  const courseProgress =
+    totalLessons === 0
+      ? 0
+      : Math.round(
+          (completedLessons / totalLessons) * 100
+        );
     
   const moduleNumber =
     (modules?.findIndex(
@@ -197,13 +213,38 @@ export default async function LessonPage({
         <aside className="hidden lg:block">
           <div className="sticky top-32">
             <div className="rounded-2xl border border-[#d8c7c9] bg-white shadow-sm">
-              <div className="border=b border-[#d8c7c9] p-5">
+              <div className="border-b border-[#d8c7c9] p-5">
                 <h2 className="text-lg font-semibold text-[#4c1711]">
                   Curriculum
                 </h2>
+
+                <div className="mt-4">
+                  <div className="mb-2 flex justify-between text-sm text-gray-600">
+                    <span>Course Progress</span>
+                    <span>{courseProgress}%</span>
+                  </div>
+
+                  <Progress
+                    value={courseProgress}
+                    className="h-2"
+                  />
+
+                  <p className="mt-2 text-xs text-gray-500">
+                    {completedLessons} / {totalLessons} lessons completed
+                  </p>
+
+                  {courseCompleted && (
+                    <Link
+                      href={`/student/courses/${slug}/certificate`}
+                      className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#4c1711] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#38100d]"
+                    >
+                      🎓 Get Certificate
+                    </Link>
+                  )}
+                </div>
               </div>
 
-              <ScrollArea className="h-[calc(100vh-14rem)]">
+              <ScrollArea className="h-[calc(100vh-20rem)]">
                 <div className="p-3">
                   {modules?.map(
                     (moduleItem, moduleIndex) => {
