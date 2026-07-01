@@ -1,9 +1,19 @@
+import { readFile } from "fs/promises";
+import path from "path";
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { generatePDF, verifyCompletion } from "@/lib/certificate";
+import {
+  generatePDF,
+  getStudentCertificateName,
+  verifyCompletion,
+} from "@/lib/certificate";
+
+export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
+  console.log("=== CERTIFICATE API HIT ===");
   const courseId = request.nextUrl.searchParams.get("courseId");
+  const shouldDownload = request.nextUrl.searchParams.get("download") === "1";
 
   if (!courseId) {
     return Response.json({ error: "Course ID is required." }, { status: 400 });
@@ -37,30 +47,43 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const pdfBytes = await generatePDF({
-    studentName:
-      user.user_metadata?.full_name ??
-      user.user_metadata?.name ??
-      user.email ??
-      "Anexra Student",
-    courseTitle: course.title,
-    issuedAt: new Date(),
-  });
+  const templateBytes = await readFile(
+    path.join(
+      process.cwd(),
+      "public",
+      "certificate",
+      "cmtmp-certificate-template.pdf",
+    ),
+  );
 
-  const fileName = `${course.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "")}-certificate.pdf`;
+  const pdfBytes = await generatePDF(
+    {
+      studentName: getStudentCertificateName(user),
+      courseTitle: course.title,
+      issuedAt: new Date(),
+    },
+    templateBytes,
+  );
 
- const pdfArrayBuffer = pdfBytes.buffer.slice(
+  const fileName =
+    course.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") + "-certificate.pdf";
+
+  const pdfArrayBuffer = pdfBytes.buffer.slice(
     pdfBytes.byteOffset,
     pdfBytes.byteOffset + pdfBytes.byteLength,
   ) as ArrayBuffer;
 
+  console.log("PDF bytes length:", pdfBytes.length);
+  console.log("First 10 bytes:", Array.from(pdfBytes.slice(0, 10)));
+
   return new Response(pdfArrayBuffer, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${fileName}"`,
+      "Content-Disposition":
+        (shouldDownload ? "attachment" : "inline") + '; filename="' + fileName + '"',
       "Cache-Control": "no-store",
     },
   });

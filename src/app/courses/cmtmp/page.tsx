@@ -184,7 +184,7 @@ export default function CmtmpCoursePage() {
 
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-                  href="/student/register"
+                  href="/student/courses/cmtmp"
                   className="rounded-full bg-[#4c1711] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#aa6f73]"
                 >
                   Enroll Now
@@ -561,7 +561,7 @@ export default function CmtmpCoursePage() {
             </div>
 
             <Link
-              href="/student/register"
+              href="/student/courses/cmtmp"
               className="shrink-0 rounded-full bg-white px-7 py-3 text-sm font-semibold text-[#4c1711] transition hover:bg-[#f4efee]"
             >
               Enroll Now

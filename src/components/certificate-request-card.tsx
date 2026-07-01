@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getStudentCertificateName } from "@/lib/certificate";
 
 import CertificatePreviewDialog from "@/components/certificate-preview-dialog";
 import PhysicalOrderDialog from "@/components/physical-order-dialog";
@@ -20,13 +21,22 @@ type CertificateCourse = {
   request?: CertificateRequest | null;
 };
 
-export default function CertificateRequestCard({
+export default async function CertificateRequestCard({
   course,
 }: {
   course: CertificateCourse;
 }) {
   const request = course.request ?? null;
   const status = request?.status ?? null;
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const studentName = user
+    ? getStudentCertificateName(user)
+    : "Anexra Student";
 
   async function orderPrintedCertificate(formData: FormData) {
     "use server";
@@ -142,15 +152,21 @@ export default function CertificateRequestCard({
         <div className="mt-6 grid gap-3">
           <CertificatePreviewDialog
             courseId={course.id}
-            courseTitle={course.title}
+            studentName={studentName}
           >
             <button
               type="button"
               className="inline-flex w-full items-center justify-center rounded-xl bg-[#4c1711] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#38100d]"
             >
-              🎓 Download Digital Certificate
+              Download Digital Certificate
             </button>
           </CertificatePreviewDialog>
+          {/* <button
+            type="button"
+            className="inline-flex w-full items-center justify-center rounded-xl bg-[#4c1711] px-4 py-3 text-sm font-semibold text-white"
+          >
+            Download Digital Certificate
+          </button> */}
 
           {status !== "approved" && (
             <PhysicalOrderDialog
@@ -158,10 +174,10 @@ export default function CertificateRequestCard({
               disabled={!canOrderPrinted}
               buttonLabel={
                 status === "pending"
-                  ? "📦 Printed Order Pending"
+                  ? "Printed Order Pending"
                   : status === "rejected"
-                    ? "📦 Order Printed Certificate Again"
-                    : "📦 Order Printed Certificate"
+                    ? "Order Printed Certificate Again"
+                    : "Order Printed Certificate"
               }
             />
           )}
