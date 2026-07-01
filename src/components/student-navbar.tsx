@@ -31,6 +31,10 @@ const navLinks = [
     href: "/student/courses",
   },
   {
+    label: "Certificate",
+    href: "/student/certificate",
+  },
+  {
     label: "My Learning",
     href: "/student/my-courses",
   },
