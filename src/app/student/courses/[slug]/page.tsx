@@ -15,6 +15,9 @@ import { redirect } from "next/navigation";
 import CoursePurchaseButton
 from "@/components/course-purchase-button";
 
+import ManualPurchaseDialog
+from "@/components/manual-purchase-dialog";
+
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -138,8 +141,12 @@ export default async function CoursePage({
                     Continue Learning
                   </Link>
                 ) : (
-                  <CoursePurchaseButton
-                    courseId={course.id}
+                  // <CoursePurchaseButton
+                  //   courseId={course.id}
+                  //   amount={course.price}
+                  // />
+                  <ManualPurchaseDialog
+                    courseTitle={course.title}
                     amount={course.price}
                   />
                 )}
