@@ -27,9 +27,13 @@ export default async function CoursesPage() {
   }
 
   const { data: courses } = await supabase
-    .from("courses")
-    .select("*")
-    .eq("is_published", true);
+  .from("courses")
+  .select("*")
+  .eq("is_published", true)
+  .order("display_order", { 
+    ascending: true,
+    nullsFirst: false,
+  });
   
   const { data: purchases } = user
     ? await supabase
