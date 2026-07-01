@@ -1,40 +1,50 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-type PdfPreviewProps = {
-  file: string;
-};
+export default function PdfPreview({ file }: { file: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(600);
 
-export default function PdfPreview({ file }: PdfPreviewProps) {
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setWidth(containerRef.current.clientWidth);
+      }
+    };
+
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    window.addEventListener("resize", updateWidth);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateWidth);
+    };
+  }, []);
+
   return (
-    <Document
-      file={file}
-      loading={
-        <p className="text-sm font-medium text-[#87565b]">
-          Loading certificate preview...
-        </p>
-      }
-      error={
-        <p className="text-sm font-medium text-[#87565b]">
-          Unable to display certificate preview.
-        </p>
-      }
-    >
-      <Page
-        pageNumber={1}
-        width={820}
-        renderTextLayer={false}
-        renderAnnotationLayer={false}
-      />
-    </Document>
+    <div ref={containerRef} className="w-full">
+      <Document file={file}>
+        <Page
+          pageNumber={1}
+          width={width}
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
+      </Document>
+    </div>
   );
 }
