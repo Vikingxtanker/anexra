@@ -6,22 +6,26 @@ import YouTube, { YouTubeProps } from "react-youtube";
 interface Props {
   lessonId: string;
   videoId: string;
+  initialMaxWatchedSecond?: number;
+  initialCompleted?: boolean;
 }
 
 export default function CourseVideoPlayer({
   lessonId,
   videoId,
+  initialMaxWatchedSecond = 0,
+  initialCompleted = false,
 }: Props) {
   const playerRef = useRef<any>(null);
 
   const completedRef =
-    useRef(false);
+    useRef(initialCompleted);
 
   const previousTimeRef =
     useRef(0);
 
   const maxAllowedPositionRef =
-    useRef(0);
+    useRef(initialMaxWatchedSecond);
 
   const seekLockedRef =
     useRef(false);
@@ -38,23 +42,63 @@ export default function CourseVideoPlayer({
     const startTime =
       event.target.getCurrentTime();
 
+    const savedPosition =
+      Math.max(0, initialMaxWatchedSecond);
+
     previousTimeRef.current =
-      startTime;
+      Math.max(startTime, savedPosition);
 
     maxAllowedPositionRef.current =
-      startTime;
+      Math.max(startTime, savedPosition);
 
     completedRef.current =
-      false;
+      initialCompleted;
 
     seekLockedRef.current =
       false;
+
+    if (savedPosition > 0 && !initialCompleted) {
+      event.target.seekTo(savedPosition, true);
+    }
   };
 
   const onEnd: YouTubeProps["onEnd"] =
-    () => {
+    async () => {
       completedRef.current =
         true;
+
+      if (!playerRef.current)
+        return;
+
+      try {
+        const duration =
+          playerRef.current.getDuration();
+
+        if (!duration || duration <= 0)
+          return;
+
+        await fetch(
+          "/api/lesson-progress",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              lessonId,
+              currentTime: duration,
+              duration,
+              seekDetected: false,
+            }),
+          }
+        );
+      } catch (error) {
+        console.error(
+          "Progress completion error:",
+          error
+        );
+      }
     };
 
   useEffect(() => {

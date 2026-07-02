@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Award, ArrowLeft, Download } from "lucide-react";
+import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
 
 interface PageProps {
   params: Promise<{
@@ -82,6 +83,14 @@ export default async function CertificatePage({
 
   if (!courseCompleted) {
     redirect(`/student/courses/${slug}`);
+  }
+
+  const assessmentPassed = Boolean(
+    await getPassedAssessmentAttemptForCourse(supabase, user.id, course.id),
+  );
+
+  if (!assessmentPassed) {
+    redirect(`/student/courses/${slug}/assessment`);
   }
 
   return (

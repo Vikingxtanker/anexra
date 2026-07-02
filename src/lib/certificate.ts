@@ -1,4 +1,5 @@
 import { PDFDocument, PDFPage, PDFFont, RGB, StandardFonts, rgb } from "pdf-lib";
+import { hasPassedRequiredAssessment } from "@/lib/assessment/certificates";
 
 type SupabaseClientLike = {
   from: (table: string) => any;
@@ -76,10 +77,22 @@ export async function verifyCompletion(
       .map((item: { lesson_id: string }) => item.lesson_id) ?? [],
   );
 
+  const lessonsComplete = lessonIds.every((lessonId: string) =>
+    completedLessonIds.has(lessonId),
+  );
+
+  if (!lessonsComplete) {
+    return { complete: false, course };
+  }
+
+  const assessmentPassed = await hasPassedRequiredAssessment(
+    supabase,
+    userId,
+    courseId,
+  );
+
   return {
-    complete: lessonIds.every((lessonId: string) =>
-      completedLessonIds.has(lessonId),
-    ),
+    complete: assessmentPassed,
     course,
   };
 }

@@ -57,6 +57,24 @@ export default async function CoursesPage() {
     .from("lessons")
     .select("id, module_id");
 
+  const { data: assessments } = await supabase
+    .from("assessments")
+    .select("id, course_id")
+    .eq("is_active", true);
+
+  const assessmentIds =
+    assessments?.map((assessment) => assessment.id) ?? [];
+
+  const { data: passedAttempts } =
+    assessmentIds.length > 0
+      ? await supabase
+          .from("assessment_attempts")
+          .select("assessment_id, passed")
+          .eq("user_id", user.id)
+          .eq("passed", true)
+          .in("assessment_id", assessmentIds)
+      : { data: [] };
+
   const courseProgressMap = new Map<
   string,
     {
@@ -137,10 +155,23 @@ courses?.forEach((course) => {
             const progress =
               progressData?.percentage ?? 0;
 
-            const purchased =
-              purchases?.some(
-                (p) => p.course_id === course.id
-              ) ?? false;
+    const purchased =
+      purchases?.some(
+        (p) => p.course_id === course.id
+      ) ?? false;
+    const assessment =
+      assessments?.find(
+        (item) => item.course_id === course.id
+      );
+    const assessmentPassed =
+      assessment
+        ? passedAttempts?.some(
+            (attempt) =>
+              attempt.assessment_id ===
+                assessment.id &&
+              attempt.passed
+          ) ?? false
+        : false;
 
             return (
             <Card
@@ -190,6 +221,13 @@ courses?.forEach((course) => {
                       {progressData?.totalLessons ?? 0}
                       {" "}lessons completed
                     </p>
+
+                    {progress === 100 && assessment && (
+                      <p className="mt-3 text-xs font-semibold text-[#4c1711]">
+                        Assessment{" "}
+                        {assessmentPassed ? "Passed" : "Pending"}
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -206,10 +244,19 @@ courses?.forEach((course) => {
                   className="w-full bg-[#4c1711] hover:bg-[#5f1d16]"
                 >
                   <Link
-                    href={`/student/courses/${course.slug}`}
+                    href={
+                      purchased &&
+                      progress === 100 &&
+                      assessment &&
+                      !assessmentPassed
+                        ? `/student/courses/${course.slug}/assessment`
+                        : `/student/courses/${course.slug}`
+                    }
                   >
                     {!purchased
                       ? "View Course"
+                      : progress === 100 && assessment && !assessmentPassed
+                      ? "Start Assessment"
                       : progress === 100
                       ? "Review Course"
                       : progress > 0

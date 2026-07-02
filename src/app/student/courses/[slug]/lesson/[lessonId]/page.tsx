@@ -191,7 +191,7 @@ export default async function LessonPage({
   // Get lesson progress
   const { data: progress } = await supabase
     .from("lesson_progress")
-    .select("watch_percentage")
+    .select("watch_percentage, max_watched_second, completed")
     .eq("user_id", user.id)
     .eq("lesson_id", lesson.id)
     .maybeSingle();
@@ -199,6 +199,13 @@ export default async function LessonPage({
   const watchPercentage = Number(
     progress?.watch_percentage ?? 0
   );
+
+  const maxWatchedSecond = Number(
+    progress?.max_watched_second ?? 0
+  );
+
+  const lessonCompleted =
+    Boolean(progress?.completed);
 
   // Convert YouTube URL to embed URL
   const videoId =
@@ -235,10 +242,10 @@ export default async function LessonPage({
 
                   {courseCompleted && (
                     <Link
-                        href="/student/certificate"
+                        href={`/student/courses/${slug}/assessment`}
                         className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#4c1711] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#38100d]"
                     >
-                      🎓 Get Certificate
+                      Start Final Assessment
                     </Link>
                     
                   )}
@@ -407,6 +414,8 @@ export default async function LessonPage({
         <CourseVideoPlayer
           lessonId={lesson.id}
           videoId={videoId}
+          initialMaxWatchedSecond={maxWatchedSecond}
+          initialCompleted={lessonCompleted}
         />
 
       </div>

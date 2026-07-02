@@ -46,7 +46,18 @@ export async function POST(req: Request) {
       .maybeSingle();
 
     const existingMax =
-      existing?.max_watched_second ?? 0;
+      Number(existing?.max_watched_second ?? 0);
+
+    const existingWatchPercentage =
+      Number(existing?.watch_percentage ?? 0);
+
+    const savedSecondFromPercentage =
+      duration > 0
+        ? Math.floor(
+            (existingWatchPercentage / 100) *
+              duration
+          )
+        : 0;
 
     const existingSeekCount =
       existing?.seek_count ?? 0;
@@ -63,6 +74,7 @@ export async function POST(req: Request) {
     // Track furthest watched position
     maxWatched = Math.max(
       existingMax,
+      savedSecondFromPercentage,
       Math.floor(currentTime)
     );
 
@@ -74,7 +86,7 @@ export async function POST(req: Request) {
       seekCount += 1;
     }
 
-    const watchPercentage =
+    const calculatedWatchPercentage =
       duration > 0
         ? Math.min(
             100,
@@ -85,8 +97,15 @@ export async function POST(req: Request) {
           )
         : 0;
 
+    const watchPercentage =
+      Math.max(
+        existingWatchPercentage,
+        calculatedWatchPercentage
+      );
+
     // Completion depends on watch progress
     const completed =
+      Boolean(existing?.completed) ||
       watchPercentage >= 90;
 
     const payload = {
@@ -115,7 +134,7 @@ export async function POST(req: Request) {
         completed
           ? existing?.completed_at ??
             new Date().toISOString()
-          : null,
+          : existing?.completed_at ?? null,
     };
 
     const { error } = await supabase

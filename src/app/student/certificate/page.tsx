@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 import CertificateRequestCard from "@/components/certificate-request-card";
+import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
 
 export default async function CertificatesPage() {
   const supabase = await createClient();
@@ -77,6 +78,9 @@ export default async function CertificatesPage() {
     const existingRequest =
       certificateRequests?.find((request) => request.course_id === course.id) ??
       null;
+    const assessmentPassed = Boolean(
+      await getPassedAssessmentAttemptForCourse(supabase, user.id, course.id),
+    );
 
     const courseData = {
       ...course,
@@ -84,9 +88,10 @@ export default async function CertificatesPage() {
       completedLessons,
       totalLessons,
       request: existingRequest,
+      assessmentPassed,
     };
 
-    if (percentage === 100) {
+    if (percentage === 100 && assessmentPassed) {
       eligibleCourses.push(courseData);
     } else {
       incompleteCourses.push(courseData);
@@ -120,7 +125,8 @@ export default async function CertificatesPage() {
                 </h3>
 
                 <p className="mt-2 text-[#87565b]">
-                  Complete your enrolled courses to unlock your certificates.
+                  Complete your lessons and pass the final assessment to unlock
+                  your certificates.
                 </p>
               </div>
             ) : (
@@ -181,13 +187,25 @@ export default async function CertificatesPage() {
                           {course.completedLessons} / {course.totalLessons}{" "}
                           Lessons Completed
                         </p>
+
+                        {course.percentage === 100 && !course.assessmentPassed && (
+                          <p className="mt-3 rounded-lg bg-[#f4efee] px-3 py-2 text-sm font-semibold text-[#4c1711]">
+                            Final assessment pending
+                          </p>
+                        )}
                       </div>
 
                       <a
-                        href={`/student/courses/${course.slug}`}
+                        href={
+                          course.percentage === 100 && !course.assessmentPassed
+                            ? `/student/courses/${course.slug}/assessment`
+                            : `/student/courses/${course.slug}`
+                        }
                         className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-[#4c1711] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#38100d]"
                       >
-                        Continue Course
+                        {course.percentage === 100 && !course.assessmentPassed
+                          ? "Start Final Assessment"
+                          : "Continue Course"}
                       </a>
                     </div>
                   </div>
