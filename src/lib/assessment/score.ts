@@ -60,10 +60,11 @@ export function calculateScore({
   const score = correctCount * marksPerQuestion;
   const percentage =
     totalMarks === 0 ? 0 : Math.round((score / totalMarks) * 100);
-  const passingPercentage = Number(
-    assessment.passing_percentage ??
-    70
-  );
+  const passingPercentage = Number(assessment.passing_percentage);
+
+  if (Number.isNaN(passingPercentage)) {
+    throw new Error("Assessment is missing passing_percentage.");
+  }
 
   const passingMarks = Math.ceil(
     totalMarks * (passingPercentage / 100)

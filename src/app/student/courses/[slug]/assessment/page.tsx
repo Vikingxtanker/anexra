@@ -145,6 +145,15 @@ export default async function AssessmentPage({
       user.id
     );
 
+  const attemptsUsed = Number(previousAttempt?.attempt_number ?? 0);
+
+  const maxAttempts = Number(assessment.max_attempts);
+
+  const attemptsRemaining = Math.max(
+    0,
+    maxAttempts - attemptsUsed
+  );
+
   // If max attempts reached
 
   if (previousAttempt?.passed) {
@@ -221,6 +230,16 @@ export default async function AssessmentPage({
             {assessment.description}
           </p>
 
+        </div>
+
+        <div className="mb-6 rounded-xl border border-[#d8c7c9] bg-white p-4">
+          <p className="font-medium text-[#4c1711]">
+            Attempts Remaining
+          </p>
+
+          <p className="mt-1 text-[#87565b]">
+            {attemptsRemaining} of {maxAttempts}
+          </p>
         </div>
 
         <AssessmentForm

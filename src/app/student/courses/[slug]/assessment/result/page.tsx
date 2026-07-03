@@ -69,6 +69,14 @@ export default async function AssessmentResultPage({
   const passed = Boolean(result.passed);
   const maxAttemptsReached =
     Number(result.attempt_number) >= Number(assessment.max_attempts ?? 1);
+  
+  const attemptsUsed = Number(result.attempt_number);
+  const maxAttempts = Number(assessment.max_attempts);
+
+  const attemptsRemaining = Math.max(
+    0,
+    maxAttempts - attemptsUsed
+  );
 
   return (
     <section className="min-h-screen bg-[#f4efee] px-6 pb-20 pt-32">
@@ -100,6 +108,16 @@ export default async function AssessmentResultPage({
           <div className="mt-8 text-6xl font-bold text-[#4c1711]">
             {Number(result.percentage ?? 0)}%
           </div>
+
+          <p className="mt-3 text-sm text-[#87565b]">
+            Attempt {attemptsUsed} of {maxAttempts}
+          </p>
+
+          {!passed && (
+            <p className="mt-1 text-sm text-[#87565b]">
+              Attempts Remaining: {attemptsRemaining}
+            </p>
+          )}
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl border border-[#d8c7c9] bg-[#faf7f6] p-4">
@@ -141,8 +159,20 @@ export default async function AssessmentResultPage({
                 href={`/student/courses/${slug}/assessment`}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#4c1711] px-8 py-4 font-semibold text-white transition hover:bg-[#38100d]"
               >
-                <RotateCcw className="h-5 w-5" />
-                Retry Assessment
+                <div className="flex flex-col items-center gap-3">
+                  <p className="text-sm text-[#87565b]">
+                    {attemptsRemaining} attempt
+                    {attemptsRemaining !== 1 ? "s" : ""} remaining
+                  </p>
+
+                  <Link
+                    href={`/student/courses/${slug}/assessment`}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#4c1711] px-8 py-4 font-semibold text-white transition hover:bg-[#38100d]"
+                  >
+                    <RotateCcw className="h-5 w-5" />
+                    Retry Assessment
+                  </Link>
+                </div>
               </Link>
             )}
           </div>
