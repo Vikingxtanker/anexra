@@ -130,15 +130,16 @@ export default function CertificatePreviewDialog({
 
       <DialogContent
         className="
-        w-[95vw]
-        h-[95vh]
-        max-w-none
-        p-6
-        flex
-        flex-col
-        overflow-hidden
+          w-[95vw]
+          h-[95vh]
+          max-w-[95vw]
+          max-h-[95vh]
+          flex
+          flex-col
+          overflow-hidden
+          p-6
         "
-        >
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#4c1711]">
             Certificate Preview

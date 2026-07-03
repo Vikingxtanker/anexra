@@ -11,71 +11,44 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 export default function PdfPreview({ file }: { file: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [scale, setScale] = useState(1);
+  const [width, setWidth] = useState(0);
 
-  const pdfPageSize = useRef({
-    width: 0,
-    height: 0,
-  });
-
-  // 👇 THIS IS OUTSIDE useEffect
-  const updateScale = () => {
+  const updateWidth = () => {
     if (!containerRef.current) return;
 
-    const { width: pdfWidth, height: pdfHeight } = pdfPageSize.current;
-
-    if (!pdfWidth || !pdfHeight) return;
-
-    const containerWidth = containerRef.current.clientWidth;
-    const containerHeight = containerRef.current.clientHeight;
-
-    const scaleX = containerWidth / pdfWidth;
-    const scaleY = containerHeight / pdfHeight;
-
-    setScale(Math.min(scaleX, scaleY));
+    setWidth(containerRef.current.clientWidth);
   };
 
   useEffect(() => {
-    const observer = new ResizeObserver(updateScale);
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
 
     if (containerRef.current) {
       observer.observe(containerRef.current);
     }
 
-    window.addEventListener("resize", updateScale);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", updateScale);
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="w-full h-full flex items-center justify-center overflow-hidden"
+      className="w-full h-full flex items-center justify-center"
     >
       <Document
         file={file}
-        onLoadSuccess={async (pdf) => {
-          const page = await pdf.getPage(1);
-
-          const viewport = page.getViewport({ scale: 1 });
-
-          pdfPageSize.current = {
-            width: viewport.width,
-            height: viewport.height,
-          };
-
-          updateScale();
-        }}
+        onLoadSuccess={updateWidth}   // <-- important
       >
-        <Page
+        {width > 0 && (
+          <Page
             pageNumber={1}
-            scale={scale}
+            width={width}
+            onRenderSuccess={updateWidth}   // <-- important
             renderTextLayer={false}
             renderAnnotationLayer={false}
-        />
+          />
+        )}
       </Document>
     </div>
   );
