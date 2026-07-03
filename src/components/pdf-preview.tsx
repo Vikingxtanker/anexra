@@ -10,39 +10,71 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export default function PdfPreview({ file }: { file: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(600);
+
+  const [scale, setScale] = useState(1);
+
+  const pdfPageSize = useRef({
+    width: 0,
+    height: 0,
+  });
+
+  // 👇 THIS IS OUTSIDE useEffect
+  const updateScale = () => {
+    if (!containerRef.current) return;
+
+    const { width: pdfWidth, height: pdfHeight } = pdfPageSize.current;
+
+    if (!pdfWidth || !pdfHeight) return;
+
+    const containerWidth = containerRef.current.clientWidth;
+    const containerHeight = containerRef.current.clientHeight;
+
+    const scaleX = containerWidth / pdfWidth;
+    const scaleY = containerHeight / pdfHeight;
+
+    setScale(Math.min(scaleX, scaleY));
+  };
 
   useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setWidth(containerRef.current.clientWidth);
-      }
-    };
-
-    updateWidth();
-
-    const observer = new ResizeObserver(updateWidth);
+    const observer = new ResizeObserver(updateScale);
 
     if (containerRef.current) {
       observer.observe(containerRef.current);
     }
 
-    window.addEventListener("resize", updateWidth);
+    window.addEventListener("resize", updateScale);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", updateWidth);
+      window.removeEventListener("resize", updateScale);
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full">
-      <Document file={file}>
+    <div
+      ref={containerRef}
+      className="w-full h-full flex items-center justify-center overflow-hidden"
+    >
+      <Document
+        file={file}
+        onLoadSuccess={async (pdf) => {
+          const page = await pdf.getPage(1);
+
+          const viewport = page.getViewport({ scale: 1 });
+
+          pdfPageSize.current = {
+            width: viewport.width,
+            height: viewport.height,
+          };
+
+          updateScale();
+        }}
+      >
         <Page
-          pageNumber={1}
-          width={width}
-          renderTextLayer={false}
-          renderAnnotationLayer={false}
+            pageNumber={1}
+            scale={scale}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
         />
       </Document>
     </div>

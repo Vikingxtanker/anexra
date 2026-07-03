@@ -128,15 +128,25 @@ export default function CertificatePreviewDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className="w-[95vw] max-w-7xl max-h-[95vh] overflow-hidden bg-white p-6">
+      <DialogContent
+        className="
+        w-[95vw]
+        h-[95vh]
+        max-w-none
+        p-6
+        flex
+        flex-col
+        overflow-hidden
+        "
+        >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#4c1711]">
             Certificate Preview
           </DialogTitle>
         </DialogHeader>
 
-        <div className="overflow-hidden rounded-xl border border-[#d8c7c9] bg-[#f4efee] p-3">
-          <div className="w-full overflow-hidden rounded-lg border border-[#d8c7c9] bg-white">
+        <div className="flex-1 overflow-hidden rounded-xl border border-[#d8c7c9] bg-[#f4efee] p-3">
+          <div className="h-full w-full flex items-center justify-center overflow-hidden rounded-lg border border-[#d8c7c9] bg-white">
             {previewObjectUrl ? (
               <PdfPreview file={previewObjectUrl} />
             ) : (
