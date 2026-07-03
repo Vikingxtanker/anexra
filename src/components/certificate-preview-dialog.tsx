@@ -129,17 +129,16 @@ export default function CertificatePreviewDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent
-        className="
-          w-[95vw]
-          h-[95vh]
-          max-w-[95vw]
-          max-h-[95vh]
-          flex
-          flex-col
-          overflow-hidden
-          p-6
-        "
-      >
+  className="
+    !w-[95vw]
+    !max-w-[95vw]
+    !h-[95vh]
+    !max-h-[95vh]
+    flex
+    flex-col
+    overflow-hidden
+  "
+>
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#4c1711]">
             Certificate Preview
