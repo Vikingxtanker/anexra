@@ -9,47 +9,47 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function PdfPreview({ file }: { file: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [width, setWidth] = useState(0);
-
-  const updateWidth = () => {
-    if (!containerRef.current) return;
-
-    setWidth(containerRef.current.clientWidth);
-  };
+  const [pageWidth, setPageWidth] = useState(0);
 
   useEffect(() => {
-    updateWidth();
+    if (!wrapperRef.current) return;
 
-    const observer = new ResizeObserver(updateWidth);
+    const resize = () => {
+      if (!wrapperRef.current) return;
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+      const width = wrapperRef.current.getBoundingClientRect().width;
+
+      console.log("Wrapper width:", width);
+
+      // leave a little padding
+      setPageWidth(width - 24);
+    };
+
+    resize();
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(wrapperRef.current);
 
     return () => observer.disconnect();
   }, []);
 
   return (
     <div
-      ref={containerRef}
-      className="w-full h-full flex items-center justify-center"
+      ref={wrapperRef}
+      className="w-full h-full overflow-auto"
     >
-      <Document
-        file={file}
-        onLoadSuccess={updateWidth}   // <-- important
-      >
-        {width > 0 && (
+      {pageWidth > 0 && (
+        <Document file={file}>
           <Page
             pageNumber={1}
-            width={width}
-            onRenderSuccess={updateWidth}   // <-- important
+            width={pageWidth}
             renderTextLayer={false}
             renderAnnotationLayer={false}
           />
-        )}
-      </Document>
+        </Document>
+      )}
     </div>
   );
 }
