@@ -153,14 +153,20 @@ export async function POST(request: NextRequest) {
       passed: result.passed,
     });
   } catch (error) {
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to submit assessment.",
-      },
-      { status: 500 },
-    );
-  }
+      console.error("Assessment submit error:", error);
+
+      return Response.json(
+        {
+          error:
+            error instanceof Error
+              ? error.message
+              : "Unable to submit assessment.",
+          stack:
+            error instanceof Error
+              ? error.stack
+              : null,
+        },
+        { status: 500 },
+      );
+    }
 }

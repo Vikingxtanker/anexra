@@ -1,3 +1,5 @@
+import type { AssessmentResult } from "@/lib/assessment/score";
+
 type SupabaseClientLike = {
   from: (table: string) => any;
 };
@@ -61,32 +63,30 @@ export async function createAssessmentAttempt({
   courseId: string;
   userId: string;
   attemptNumber: number;
-  result: {
-    score: number;
-    totalMarks: number;
-    percentage: number;
-    correctCount: number;
-    wrongCount: number;
-    passed: boolean;
-  };
+  result: AssessmentResult;
 }) {
   const { data, error } = await supabase
-    .from("assessment_attempts")
-    .insert({
-      assessment_id: assessmentId,
-      course_id: courseId,
-      user_id: userId,
-      attempt_number: attemptNumber,
-      score: result.score,
-      total_marks: result.totalMarks,
-      percentage: result.percentage,
-      correct_count: result.correctCount,
-      wrong_count: result.wrongCount,
-      passed: result.passed,
-      submitted_at: new Date().toISOString(),
-    })
-    .select("id")
-    .single();
+  .from("assessment_attempts")
+  .insert({
+    assessment_id: assessmentId,
+    course_id: courseId,
+    user_id: userId,
+    attempt_number: attemptNumber,
+
+    total_questions: result.totalQuestions,
+    correct_answers: result.correctCount,
+    wrong_answers: result.wrongCount,
+    unanswered: 0,
+
+    obtained_marks: result.score,
+    total_marks: result.totalMarks,
+    percentage: result.percentage,
+
+    passed: result.passed,
+    submitted_at: new Date().toISOString(),
+  })
+  .select("id")
+  .single();
 
   if (error || !data) {
     throw new Error(error?.message ?? "Unable to save assessment attempt.");
@@ -113,7 +113,6 @@ export async function saveAssessmentAnswers({
     attempt_id: attemptId,
     question_id: answer.questionId,
     selected_option_id: answer.selectedOptionId,
-    correct_option_id: answer.correctOptionId,
     is_correct: answer.isCorrect,
   }));
 

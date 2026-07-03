@@ -77,3 +77,5 @@ export function calculateScore({
     answerResults,
   };
 }
+
+export type AssessmentResult = ReturnType<typeof calculateScore>;
