@@ -105,21 +105,21 @@ export default async function AssessmentResultPage({
             <div className="rounded-xl border border-[#d8c7c9] bg-[#faf7f6] p-4">
               <p className="text-sm text-[#87565b]">Correct</p>
               <p className="mt-1 text-2xl font-bold text-[#4c1711]">
-                {Number(result.correct_count ?? 0)}
+                {Number(result.correct_answers ?? 0)}
               </p>
             </div>
 
             <div className="rounded-xl border border-[#d8c7c9] bg-[#faf7f6] p-4">
               <p className="text-sm text-[#87565b]">Wrong</p>
               <p className="mt-1 text-2xl font-bold text-[#4c1711]">
-                {Number(result.wrong_count ?? 0)}
+                {Number(result.wrong_answers ?? 0)}
               </p>
             </div>
 
             <div className="rounded-xl border border-[#d8c7c9] bg-[#faf7f6] p-4">
               <p className="text-sm text-[#87565b]">Score</p>
               <p className="mt-1 text-2xl font-bold text-[#4c1711]">
-                {Number(result.score ?? 0)} / {Number(result.total_marks ?? 0)}
+                {Number(result.obtained_marks ?? 0)} / {Number(result.total_marks ?? 0)}
               </p>
             </div>
           </div>
