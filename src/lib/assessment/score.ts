@@ -13,8 +13,7 @@ export type ScoreQuestion = {
 
 export type ScoreAssessment = {
   marks_per_question?: number | null;
-  passing_marks?: number | null;
-  pass_percentage?: number | null;
+  passing_percentage?: number | null;
 };
 
 export function calculateScore({
@@ -61,9 +60,14 @@ export function calculateScore({
   const score = correctCount * marksPerQuestion;
   const percentage =
     totalMarks === 0 ? 0 : Math.round((score / totalMarks) * 100);
-  const passingMarks =
-    assessment.passing_marks ??
-    Math.ceil(totalMarks * (Number(assessment.pass_percentage ?? 70) / 100));
+  const passingPercentage = Number(
+    assessment.passing_percentage ??
+    70
+  );
+
+  const passingMarks = Math.ceil(
+    totalMarks * (passingPercentage / 100)
+  );
 
   return {
     totalQuestions,
@@ -72,8 +76,9 @@ export function calculateScore({
     score,
     totalMarks,
     percentage,
+    passingPercentage,
     passingMarks,
-    passed: score >= Number(passingMarks),
+    passed: score >= passingMarks,
     answerResults,
   };
 }
