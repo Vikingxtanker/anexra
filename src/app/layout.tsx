@@ -6,6 +6,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 
 import { Toaster } from "sonner";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 // import Script from "next/script";
 
 const inter = Inter({
@@ -34,6 +36,10 @@ export default function RootLayout({
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="beforeInteractive"
         /> */}
+
+        <GoogleAnalytics
+          gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
+        />
       </body>
     </html>
   );
