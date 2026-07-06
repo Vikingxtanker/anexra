@@ -7,6 +7,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { Toaster } from "sonner";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Clarity from "@/components/clarity";
 
 // import Script from "next/script";
 
@@ -40,6 +41,8 @@ export default function RootLayout({
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
         />
+
+        <Clarity />
       </body>
     </html>
   );
