@@ -30,6 +30,8 @@ import {
 
 import { toast } from "sonner";
 
+import { useRouter } from "next/navigation";
+
 interface PharmaConnectModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -39,6 +41,7 @@ export default function PharmaConnectModal({
   open,
   onOpenChange,
 }: PharmaConnectModalProps) {
+  const router = useRouter();
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
@@ -163,10 +166,16 @@ export default function PharmaConnectModal({
         {
           description:
             "We'll keep you updated with pharmacy opportunities and industry news.",
+          duration: 10000,
         }
       );
 
       onOpenChange(false);
+
+      setTimeout(() => {
+        router.replace("/");
+      }, 700);
+
     } finally {
       setLoading(false);
     }
