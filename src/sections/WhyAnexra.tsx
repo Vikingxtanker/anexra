@@ -105,7 +105,7 @@ export default function WhyAnexra() {
       mm.add("(max-width: 767px)", () => {
       
           gsap.utils
-            .toArray<HTMLElement>(".mobile-serve-card")
+            .toArray<HTMLElement>(".mobile-why-card")
             .forEach((card) => {
       
               gsap.fromTo(
