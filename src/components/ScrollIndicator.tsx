@@ -7,17 +7,17 @@ export default function ScrollIndicator() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const visionMission = document.getElementById("vision-mission");
+      const healthcarePartners = document.getElementById("healthcare-partners");
 
-      if (!visionMission) {
+      if (!healthcarePartners) {
         setVisible(true);
         return;
       }
 
-      const rect = visionMission.getBoundingClientRect();
+      const rect = healthcarePartners.getBoundingClientRect();
 
-      // Hide once VisionMission reaches the middle of the screen
-      setVisible(rect.top > window.innerHeight * 0.5);
+      // Hide once HealthcarePartners starts entering the viewport
+      setVisible(rect.top > window.innerHeight * 0.9);
     };
 
     // Initial check
@@ -40,7 +40,7 @@ export default function ScrollIndicator() {
       className={`
         pointer-events-none
         fixed
-        bottom-8
+        bottom-3 md:bottom-6 lg:bottom-8
         left-1/2
         -translate-x-1/2
         z-30
@@ -59,7 +59,7 @@ export default function ScrollIndicator() {
         muted
         playsInline
         preload="auto"
-        className="h-20 w-auto select-none"
+        className="h-10 w-auto select-none"
       >
         <source
           src="/videos/scroll-indicatorv2.webm"
