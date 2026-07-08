@@ -9,15 +9,16 @@ export default function ScrollIndicator() {
     const handleScroll = () => {
       const healthcarePartners = document.getElementById("healthcare-partners");
 
-      if (!healthcarePartners) {
-        setVisible(true);
-        return;
-      }
+      if (!healthcarePartners || !visible) return;
 
       const rect = healthcarePartners.getBoundingClientRect();
 
-      // Hide once HealthcarePartners starts entering the viewport
-      setVisible(rect.top > window.innerHeight * 0.9);
+      // Permanently hide once HealthcarePartners enters the viewport
+      if (rect.top <= window.innerHeight * 0.9) {
+        setVisible(false);
+        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("resize", handleScroll);
+      }
     };
 
     // Initial check
