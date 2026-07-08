@@ -62,7 +62,7 @@ export default function ScrollIndicator() {
         className="h-20 w-auto select-none"
       >
         <source
-          src="/videos/scroll-indicator.webm"
+          src="/videos/scroll-indicatorv2.webm"
           type="video/webm"
         />
         <source
