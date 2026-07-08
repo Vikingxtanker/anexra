@@ -190,6 +190,7 @@ useGSAP(() => {
   return (
     <section
       ref={sectionRef}
+      id="who-we-serve"
       className="relative bg-[#f4efee] overflow-hidden lg:h-screen"
     >
       {/* ========================= */}

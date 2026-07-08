@@ -145,7 +145,7 @@ export default function Solutions() {
   }, []);
 
   return (
-    <section className="relative py-16 md:py-20 overflow-hidden">
+    <section id="solutions" className="relative py-16 md:py-20 overflow-hidden">
       {/* DESKTOP + TABLET */}
       <div className="max-w-7xl mx-auto relative z-10 px-6">
 

@@ -53,6 +53,7 @@ export default function VisionMission() {
   return (
     <section
       ref={sectionRef}
+      id="vision-mission"
       data-theme="dark"
       className="
         relative

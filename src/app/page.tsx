@@ -9,6 +9,8 @@ import HealthcarePartners from "@/sections/HealthcarePartners";
 import VisionMission from "@/sections/VisionMission";
 import Footer from "@/sections/Footer";
 
+import ScrollIndicator from "@/components/ScrollIndicator";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -108,16 +110,24 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-    return <>
+    return (
+      <>
         <Navbar/>
-        <Hero/>
-        <IntroductionOG/>
-        {/* <Introductionv2/> */}
-        <Solutions/>
-        <WhoWeServe/>
-        <WhyAnexra/>
-        <HealthcarePartners/>
-        <VisionMission/>
-        <Footer/>
-    </>;
+
+        <main className="relative">
+          <Hero/>
+          <IntroductionOG/>
+          {/* <Introductionv2/> */}
+          <Solutions/>
+          <WhoWeServe/>
+          <WhyAnexra/>
+          <HealthcarePartners/>
+
+          <ScrollIndicator />
+
+          <VisionMission/>
+          <Footer/>
+        </main>
+      </>
+    );
 }

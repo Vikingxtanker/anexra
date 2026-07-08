@@ -146,6 +146,7 @@ export default function WhyAnexra() {
   return (
     <section
       ref={sectionRef}
+      id="why-anexra"
       className="relative bg-[#f4efee] overflow-hidden"
     >
       {/* DESKTOP */}

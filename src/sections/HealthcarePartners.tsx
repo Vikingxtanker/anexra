@@ -67,7 +67,7 @@ function TickerRow({
 
 export default function OurPartners() {
   return (
-    <section className="py-24 bg-[#f4efee]">
+    <section id="healthcare-partners" className="py-24 bg-[#f4efee]">
       <div className="container mx-auto px-6">
 
         <div className="text-center mb-14">

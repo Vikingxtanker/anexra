@@ -57,6 +57,7 @@ export default function Introduction() {
   return (
     <section
       ref={sectionRef}
+      id="introduction"
       className="relative bg-[#f4efee] px-6"
     >
       <div className="h-screen flex items-center justify-center">

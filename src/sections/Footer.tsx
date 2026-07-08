@@ -34,6 +34,7 @@ export default function Footer() {
   return (
     <footer
     data-theme="dark"
+    id="footer"
     className="
         relative
         overflow-hidden
