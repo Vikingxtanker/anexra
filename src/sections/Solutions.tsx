@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+
 import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 
@@ -183,18 +183,35 @@ export default function Solutions() {
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-7">
 
-                  <div>
-                    <h3 className="text-2xl font-semibold text-[#4c1711] group-hover:text-white transition-colors duration-300 leading-tight">
+                  <div className="flex flex-col h-full">
+
+                    <h3
+                      className="
+                        text-2xl font-semibold
+                        text-[#4c1711]
+                        group-hover:text-white
+                        transition-all
+                        duration-500
+                        leading-tight
+                      "
+                    >
                       {solution.title}
                     </h3>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileHover={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
+                    <div
+                      className="
+                        mt-4
+                        overflow-hidden
+                        opacity-0
+                        -translate-y-4
+                        transition-all
+                        duration-500
+                        ease-out
+                        group-hover:opacity-100
+                        group-hover:translate-y-0
+                      "
                     >
-                      <p className="mt-4 text-sm leading-relaxed text-white/90 max-w-sm">
+                      <p className="text-sm leading-relaxed text-white/90 max-w-sm">
                         {solution.description}
                       </p>
 
@@ -202,7 +219,8 @@ export default function Solutions() {
                         Explore More
                         <ArrowUpRight className="w-4 h-4" />
                       </div>
-                    </motion.div>
+                    </div>
+
                   </div>
                 </div>
               </Link>

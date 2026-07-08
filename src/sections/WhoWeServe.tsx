@@ -152,6 +152,38 @@ useGSAP(() => {
     };
   });
 
+  mm.add("(max-width: 767px)", () => {
+
+    gsap.utils
+      .toArray<HTMLElement>(".mobile-serve-card")
+      .forEach((card) => {
+
+        gsap.fromTo(
+          card,
+          {
+            opacity: 0,
+            y: 35,
+            scale: 0.97,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              end: "top 55%",
+              scrub: 0.6,
+            },
+          }
+        );
+
+      });
+
+  });
+
   return () => mm.revert();
 }, []);
 
@@ -298,7 +330,7 @@ useGSAP(() => {
       {/* ========================= */}
       {/* MOBILE */}
       {/* ========================= */}
-      <div className="md:hidden px-4 py-16 space-y-6">
+      <div className="md:hidden px-4 py-16">
         <div className="mb-10">
 
           <h2 className="text-5xl font-semibold leading-[0.95] tracking-tight text-[#4c1711]">
@@ -306,37 +338,52 @@ useGSAP(() => {
           </h2>
         </div>
 
-        {whoWeServe.map((item, index) => (
-          <Link
-            key={index}
-            href={item.href}
-            className="group relative overflow-hidden rounded-[30px] h-[75svh] min-h-[500px]"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${item.image})`,
-              }}
-            />
+        <div className="space-y-6">
+          {whoWeServe.map((item, index) => (
+            <Link
+              key={index}
+              href={item.href}
+              className="
+              mobile-serve-card
+              block
+              group
+              relative
+              overflow-hidden
+              rounded-[32px]
+              shadow-[0_12px_35px_rgba(76,23,17,0.08)]
+              h-[55vw] 
+              max-h-[320px]
+              min-h-[240px]
+              "
+            >
+              <div
+                className="absolute inset-0 rounded-[26px] bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${item.image})`,
+                }}
+              />
 
-            <div className="absolute inset-0 bg-gradient-to-b from-[#f4efee]/10 via-[#4c1711]/20 to-[#4c1711]/90" />
+              <div className="absolute inset-0 rounded-[26px] bg-gradient-to-b from-[#f4efee]/10 via-[#4c1711]/20 to-[#4c1711]/90" />
 
-            <div className="relative z-10 h-full flex flex-col justify-end p-6">
-              <h3 className="text-3xl font-semibold text-white leading-tight">
-                {item.title}
-              </h3>
+              <div className="relative z-10 h-full flex flex-col justify-between p-5">
+                <div>
+                  <h3 className="text-3xl font-semibold text-white leading-tight">
+                    {item.title}
+                  </h3>
 
-              <p className="mt-4 text-white/80 text-sm leading-relaxed">
-                {item.description}
-              </p>
+                  <p className="mt-4 text-white/80 text-sm leading-relaxed max-w-[90%]">
+                    {item.description}
+                  </p>
+                </div>
 
-              <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
-                Explore More
-                <ArrowUpRight className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-sm font-medium text-white">
+                  Explore More
+                  <ArrowUpRight className="w-4 h-4" />
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

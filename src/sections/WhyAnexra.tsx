@@ -102,6 +102,40 @@ export default function WhyAnexra() {
         };
       });
 
+      mm.add("(max-width: 767px)", () => {
+      
+          gsap.utils
+            .toArray<HTMLElement>(".mobile-serve-card")
+            .forEach((card) => {
+      
+              gsap.fromTo(
+                card,
+                {
+                  opacity: 0,
+                  y: 35,
+                  scale: 0.97,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  duration: 0.75,
+                  ease: "none",
+                  scrollTrigger: {
+                    trigger: card,
+                    start: "top 88%",
+                    end: "top 55%",
+                    scrub: 0.6,
+                  },
+                }
+              );
+      
+            });
+      
+        });
+
+      ScrollTrigger.refresh();
+
       return () => {
         mm.revert();
       };
@@ -221,6 +255,7 @@ export default function WhyAnexra() {
             <div
               key={index}
               className="
+                mobile-why-card
                 rounded-[28px]
                 border border-[#aa6f73]/15
                 bg-white/40
