@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
@@ -87,6 +87,41 @@ export default function Navbar() {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  const [playingLogo, setPlayingLogo] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const logoVideo = darkMode
+  ? "/anexra-wordmark-white-animation.webm"
+  : "/anexra-wordmark-animation.webm";
+
+  const playLogoAnimation = async () => {
+    if (window.innerWidth < 1024) return;
+
+    if (playingLogo) return;
+
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    video.currentTime = 0;
+
+    setPlayingLogo(true);
+
+    try {
+      await video.play();
+    } catch {}
+  };
+
+  // useEffect(() => {
+  //   setPlayingLogo(false);
+
+  //   if (videoRef.current) {
+  //     videoRef.current.pause();
+  //     videoRef.current.currentTime = 0;
+  //   }
+  // }, [darkMode]);
+
   useEffect(() => {
     const handleScroll = () => {
       const darkSections = document.querySelectorAll(
@@ -171,15 +206,46 @@ export default function Navbar() {
           <Link href="/" className="flex items-center">
             
             {/* Desktop Logo */}
-            <img
-              src={
-                darkMode
-                ? "/anexra-wordmark-white.svg"
-                : "/anexra-wordmark.svg"
-              }
-              alt="Anexra"
-              className="hidden lg:block h-11 w-auto"
-            />
+            <div
+              className="hidden lg:block relative h-11 w-fit"
+              onPointerEnter={playLogoAnimation}
+            >
+              {/* Static Logo */}
+              <img
+                draggable={false}
+                src={
+                  darkMode
+                    ? "/anexra-wordmark-white.svg"
+                    : "/anexra-wordmark.svg"
+                }
+                alt="Anexra"
+                className={`h-11 w-auto transition-opacity duration-200 ${
+                  playingLogo ? "opacity-0" : "opacity-100"
+                }`}
+              />
+
+              {/* Animated Logo */}
+              <video
+                draggable={false}
+                key={logoVideo}
+                ref={videoRef}
+                muted
+                playsInline
+                preload="auto"
+                className={`absolute inset-0 h-11 w-auto pointer-events-none transition-opacity duration-200 ${
+                  playingLogo ? "opacity-100" : "opacity-0"
+                }`}
+                onEnded={() => {
+                  setPlayingLogo(false);
+
+                  if (videoRef.current) {
+                    videoRef.current.currentTime = 0;
+                  }
+                }}
+              >
+                <source src={logoVideo} type="video/webm" />
+              </video>
+            </div>
 
             {/* Mobile Logo */}
             <img
