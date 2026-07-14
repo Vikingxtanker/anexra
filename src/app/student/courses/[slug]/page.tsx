@@ -143,7 +143,6 @@ export default async function CoursePage({
                 ) : (
                   <CoursePurchaseButton
                     courseId={course.id}
-                    amount={course.price}
                   />
                   // <ManualPurchaseDialog
                   //   courseTitle={course.title}
@@ -255,7 +254,6 @@ export default async function CoursePage({
             ) : (
               <CoursePurchaseButton
                 courseId={course.id}
-                amount={course.price}
               />
             )}
           </Button>
