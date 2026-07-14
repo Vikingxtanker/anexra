@@ -141,14 +141,14 @@ export default async function CoursePage({
                     Continue Learning
                   </Link>
                 ) : (
-                  // <CoursePurchaseButton
-                  //   courseId={course.id}
-                  //   amount={course.price}
-                  // />
-                  <ManualPurchaseDialog
-                    courseTitle={course.title}
+                  <CoursePurchaseButton
+                    courseId={course.id}
                     amount={course.price}
                   />
+                  // <ManualPurchaseDialog
+                  //   courseTitle={course.title}
+                  //   amount={course.price}
+                  // />
                 )}
               </Button>
             </div>

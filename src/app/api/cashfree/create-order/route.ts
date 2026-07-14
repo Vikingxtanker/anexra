@@ -1,0 +1,175 @@
+import { NextResponse } from "next/server";
+
+import cashfree from "@/lib/cashfree";
+import { createClient } from "@/lib/supabase/server";
+
+import crypto from "node:crypto";
+
+export async function POST(req: Request) {
+  try {
+    const { courseId } = await req.json();
+
+    if (!courseId) {
+      return NextResponse.json(
+        {
+          error: "Course ID is required.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: "Unauthorized.",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    // Check if already purchased
+    const { data: existingPurchase } = await supabase
+      .from("course_purchases")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("course_id", courseId)
+      .maybeSingle();
+
+    if (existingPurchase) {
+      return NextResponse.json(
+        {
+          error: "Course already purchased.",
+        },
+        {
+          status: 409,
+        }
+      );
+    }
+
+    // Fetch course
+    const {
+      data: course,
+      error: courseError,
+    } = await supabase
+      .from("courses")
+      .select("id,title,price")
+      .eq("id", courseId)
+      .single();
+
+    if (courseError || !course) {
+      return NextResponse.json(
+        {
+          error: "Course not found.",
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    const amount = Number(course.price);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return NextResponse.json(
+        {
+          error: "Invalid course price.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ??
+      "http://localhost:3000";
+
+    // Cashfree allows letters, numbers, _ and -
+    // Keep below 45 characters.
+    const orderId =
+        `ANX_${course.id.slice(0, 8)}_${Date.now()}`;
+
+    const customerName =
+      user.user_metadata?.full_name ??
+      user.user_metadata?.name ??
+      "Customer";
+
+    const customerEmail =
+      user.email ??
+      "customer@anexra.com";
+
+    // TODO:
+    // Replace this with the actual phone number
+    // stored in your user profile.
+    const customerPhone =
+      user.phone ?? "9999999999";
+
+    const orderRequest = {
+      order_id: orderId,
+
+      order_amount: amount,
+
+      order_currency: "INR",
+
+      customer_details: {
+        customer_id: user.id,
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone,
+      },
+
+      order_meta: {
+        return_url:
+          `${baseUrl}/student/payment-success?order_id={order_id}`,
+      },
+
+      order_note: `Purchase of ${course.title}`,
+    };
+
+    const response =
+        await cashfree.PGCreateOrder(
+            orderRequest,
+            undefined,
+            crypto.randomUUID()
+        );
+
+    return NextResponse.json({
+      success: true,
+
+      order_id: response.data.order_id,
+
+      cf_order_id:
+        response.data.cf_order_id,
+
+      payment_session_id:
+        response.data.payment_session_id,
+    });
+  } catch (error: any) {
+    console.error(
+      "Cashfree Create Order Error:",
+      error?.response?.data ?? error
+    );
+
+    return NextResponse.json(
+      {
+        error:
+          error?.response?.data?.message ??
+          error?.message ??
+          "Unable to create Cashfree order.",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}

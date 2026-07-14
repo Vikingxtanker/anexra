@@ -232,7 +232,7 @@ export default function Navbar() {
                 muted
                 playsInline
                 preload="auto"
-                className={`absolute inset-0 h-11 w-auto pointer-events-none transition-opacity duration-200 ${
+                className={`absolute left-0 top-0 h-full w-auto pointer-events-none transition-opacity duration-200 ${
                   playingLogo ? "opacity-100" : "opacity-0"
                 }`}
                 onEnded={() => {
