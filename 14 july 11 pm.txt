@@ -1,0 +1,12 @@
+## What's left?
+
+At this point, your backend is essentially ready.
+
+The remaining pieces are:
+
+1. ✅ Complete one **sandbox payment**.
+2. Capture the **real webhook payload**.
+3. I'll generate the final `src/app/api/cashfree/webhook/route.ts`.
+4. Create a `student/payment-success` page that waits until the webhook inserts the purchase, then redirects the student into the course.
+
+You're very close to having a fully automated purchase flow.

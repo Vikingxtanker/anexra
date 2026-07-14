@@ -43,6 +43,8 @@ export default function CoursePurchaseButton({
         const data =
           await response.json();
 
+        console.log("Cashfree API Response:", data);
+
         if (!response.ok) {
           throw new Error(
             data.error ??
@@ -62,7 +64,7 @@ export default function CoursePurchaseButton({
           await load({
             mode:
               process.env
-                .NODE_ENV ===
+                .NEXT_PUBLIC_CASHFREE_ENV ===
               "production"
                 ? "production"
                 : "sandbox",

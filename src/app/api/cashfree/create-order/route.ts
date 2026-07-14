@@ -184,6 +184,10 @@ export async function POST(req: Request) {
             undefined,
             crypto.randomUUID()
         );
+    
+    console.log(
+      JSON.stringify(response.data, null, 2)
+    );
 
     return NextResponse.json({
       success: true,
