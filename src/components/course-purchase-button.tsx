@@ -10,7 +10,6 @@ import { load } from "@cashfreepayments/cashfree-js";
 
 interface Props {
   courseId: string;
-  amount: number;
 }
 
 export default function CoursePurchaseButton({

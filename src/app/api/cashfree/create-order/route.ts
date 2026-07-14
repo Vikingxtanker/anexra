@@ -133,6 +133,12 @@ export async function POST(req: Request) {
           `${baseUrl}/student/payment-success?order_id={order_id}`,
       },
 
+      order_tags: {
+        user_id: user.id,
+        course_id: course.id,
+        amount: String(amount),
+      },
+
       order_note: `Purchase of ${course.title}`,
     };
 
