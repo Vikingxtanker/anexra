@@ -36,6 +36,8 @@ const MAX_WAIT = 20_000;
 
 const POLL_INTERVAL = 2_000;
 
+const REDIRECT_DELAY = 8_000;
+
 const fireConfetti = () => {
   const duration = 2200;
 
@@ -194,7 +196,7 @@ const hasCelebrated =
                   `/student/continue/${data.courseId}`
                 );
               },
-              3000
+              REDIRECT_DELAY
             );
 
           return;
