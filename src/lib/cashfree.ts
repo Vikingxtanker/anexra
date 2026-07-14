@@ -1,26 +1,42 @@
-import { Cashfree, CFEnvironment } from "cashfree-pg";
+import {
+  Cashfree,
+  CFEnvironment,
+} from "cashfree-pg";
 
-const clientId = process.env.CASHFREE_APP_ID;
-const clientSecret = process.env.CASHFREE_SECRET_KEY;
+const isProduction =
+  process.env.CASHFREE_ENV ===
+  "production";
 
-if (!clientId) {
+const clientId = isProduction
+  ? process.env
+      .CASHFREE_PRODUCTION_CLIENT_ID
+  : process.env
+      .CASHFREE_SANDBOX_CLIENT_ID;
+
+const clientSecret =
+  isProduction
+    ? process.env
+        .CASHFREE_PRODUCTION_SECRET_KEY
+    : process.env
+        .CASHFREE_SANDBOX_SECRET_KEY;
+
+if (!clientId || !clientSecret) {
   throw new Error(
-    "Missing CASHFREE_APP_ID environment variable."
+    `Missing Cashfree ${
+      isProduction
+        ? "Production"
+        : "Sandbox"
+    } credentials.`
   );
 }
 
-if (!clientSecret) {
-  throw new Error(
-    "Missing CASHFREE_SECRET_KEY environment variable."
+const cashfree =
+  new Cashfree(
+    isProduction
+      ? CFEnvironment.PRODUCTION
+      : CFEnvironment.SANDBOX,
+    clientId,
+    clientSecret
   );
-}
-
-const cashfree = new Cashfree(
-  process.env.CASHFREE_ENV === "production"
-    ? CFEnvironment.PRODUCTION
-    : CFEnvironment.SANDBOX,
-  clientId,
-  clientSecret
-);
 
 export default cashfree;
