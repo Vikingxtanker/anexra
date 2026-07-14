@@ -37,6 +37,30 @@ export async function POST(req: Request) {
       );
     }
 
+    const {
+      data: profile,
+      error: profileError,
+    } = await supabase
+      .from("profiles")
+      .select("mobile_number")
+      .eq("id", user.id)
+      .single();
+
+    if (
+      profileError ||
+      !profile?.mobile_number
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please add your mobile number to your profile before purchasing a course.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
     // Check if already purchased
     const { data: existingPurchase } = await supabase
       .from("course_purchases")
@@ -97,7 +121,7 @@ export async function POST(req: Request) {
     // Cashfree allows letters, numbers, _ and -
     // Keep below 45 characters.
     const orderId =
-        `ANX_${course.id.slice(0, 8)}_${Date.now()}`;
+      `ANX_${crypto.randomUUID().replace(/-/g, "").slice(0, 24)}`;
 
     const customerName =
       user.user_metadata?.full_name ??
@@ -108,11 +132,23 @@ export async function POST(req: Request) {
       user.email ??
       "customer@anexra.com";
 
-    // TODO:
-    // Replace this with the actual phone number
-    // stored in your user profile.
     const customerPhone =
-      user.phone ?? "9999999999";
+      profile.mobile_number
+        .replace(/\D/g, "");
+
+    if (
+      !/^[6-9]\d{9}$/.test(customerPhone)
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Invalid mobile number in your profile.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
 
     const orderRequest = {
       order_id: orderId,
@@ -163,7 +199,11 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error(
       "Cashfree Create Order Error:",
-      error?.response?.data ?? error
+      JSON.stringify(
+        error?.response?.data ?? error,
+        null,
+        2
+      )
     );
 
     return NextResponse.json(
