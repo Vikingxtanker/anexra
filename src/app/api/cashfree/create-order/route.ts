@@ -167,6 +167,9 @@ export async function POST(req: Request) {
       order_meta: {
         return_url:
           `${baseUrl}/student/payment-success?order_id={order_id}`,
+
+        notify_url:
+          `${baseUrl}/api/cashfree/webhook`,
       },
 
       order_tags: {
@@ -177,6 +180,11 @@ export async function POST(req: Request) {
 
       order_note: `Purchase of ${course.title}`,
     };
+
+    console.log(
+      "Cashfree Order Request:",
+      JSON.stringify(orderRequest, null, 2)
+    );
 
     const response =
         await cashfree.PGCreateOrder(
