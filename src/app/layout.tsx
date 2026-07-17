@@ -9,8 +9,6 @@ import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Clarity from "@/components/clarity";
 
-// import Script from "next/script";
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -33,10 +31,6 @@ export default function RootLayout({
         <SmoothScroll />
         {children}
         <Toaster richColors position="top-right" />
-        {/* <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="beforeInteractive"
-        /> */}
 
         <GoogleAnalytics
           gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
