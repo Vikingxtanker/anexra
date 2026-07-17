@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import Image from "next/image";
+
 import PharmaConnectModal from "@/components/pharma-connect-modal";
 
 import { Button } from "@/components/ui/button";
@@ -10,22 +12,45 @@ export default function Hero() {
 
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
 
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <section id="hero" className="relative overflow-hidden min-h-screen flex items-start md:items-center pt-24 md:pt-0 px-4 sm:px-6">
       
       {/* Background Video */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+
+        {/* Fallback Image */}
+        <Image
+          src="/hero_background.webp"
+          alt=""
+          fill
+          priority
+          aria-hidden
+          className={`
+            object-cover
+            object-[78%_center]
+            md:object-center
+            scale-125 md:scale-110
+            transition-opacity duration-700
+            ${videoLoaded ? "opacity-0" : "opacity-100"}
+          `}
+        />
+
+        {/* Video */}
         <video
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
+          onLoadedData={() => setVideoLoaded(true)}
           className="
+            absolute inset-0
             w-full h-full object-cover
             object-[78%_center] 
             md:object-center
             scale-125 md:scale-110
-            opacity-[0.45]
           "
         >
           <source src="/hero_background.webm" type="video/webm" />
