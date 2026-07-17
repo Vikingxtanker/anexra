@@ -9,6 +9,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+import Image from "next/image";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const solutions = [
@@ -109,43 +111,42 @@ export default function Solutions() {
   const mobileSectionRef = useRef<HTMLDivElement>(null);
   const mobileTrackRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    if (
-      !mobileTrackRef.current ||
-      !mobileSectionRef.current
-    )
-      return;
+  const sectionRef = useRef<HTMLElement>(null);
 
-    // Mobile only
-    if (window.innerWidth >= 768) return;
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
 
-    const totalWidth =
-      mobileTrackRef.current.scrollWidth -
-      window.innerWidth;
+      mm.add("(max-width: 767px)", () => {
+        if (!mobileTrackRef.current || !mobileSectionRef.current) return;
 
-    const tween = gsap.to(mobileTrackRef.current, {
-      x: -totalWidth,
-      ease: "none",
-      scrollTrigger: {
-        trigger: mobileSectionRef.current,
-        start: "top top",
-        end: () => `+=${totalWidth}`,
-        scrub: 1,
-        pin: true,
-        pinSpacing: true,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      },
-    });
+        const totalWidth =
+          mobileTrackRef.current.scrollWidth - window.innerWidth;
 
-    return () => {
-      tween.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
+        gsap.to(mobileTrackRef.current, {
+          x: () =>
+            -(mobileTrackRef.current!.scrollWidth - window.innerWidth),
+          ease: "none",
+          scrollTrigger: {
+            trigger: mobileSectionRef.current,
+            start: "top top",
+            end: () =>
+              `+=${mobileTrackRef.current!.scrollWidth - window.innerWidth}`,
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section id="solutions" className="relative py-16 md:py-20 overflow-hidden">
+    <section ref={sectionRef} id="solutions" className="relative py-16 md:py-20 overflow-hidden">
       {/* DESKTOP + TABLET */}
       <div className="max-w-7xl mx-auto relative z-10 px-6">
 
@@ -170,12 +171,19 @@ export default function Solutions() {
                 }`}
               >
                 {/* Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                  style={{
-                    backgroundImage: `url(${solution.image})`,
-                  }}
-                />
+                <div className="absolute inset-0 overflow-hidden">
+                  <Image
+                    src={solution.image}
+                    alt={solution.title}
+                    fill
+                    sizes={
+                      solution.large
+                        ? "(min-width:1024px) 50vw, (min-width:768px) 50vw, 100vw"
+                        : "(min-width:1024px) 25vw, (min-width:768px) 50vw, 100vw"
+                    }
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#f4efee]/70 via-[#f4efee]/40 to-[#4c1711]/50 group-hover:from-[#4c1711]/70 group-hover:to-[#aa6f73]/70 transition-all duration-500" />
@@ -238,11 +246,12 @@ export default function Solutions() {
                 className="group relative h-[420px] overflow-hidden rounded-[32px] border border-white/20 bg-white/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(76,23,17,0.08)]"
               >
                 {/* Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                  style={{
-                    backgroundImage: `url(${solution.image})`,
-                  }}
+                <Image
+                  src={solution.image}
+                  alt={solution.title}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
                 {/* Overlay */}
@@ -276,7 +285,7 @@ export default function Solutions() {
       >
         <div
           ref={mobileTrackRef}
-          className="flex flex-nowrap h-screen"
+          className="flex flex-nowrap h-screen will-change-transform"
         >
           {solutions.map((solution, index) => (
             <div
@@ -301,11 +310,12 @@ export default function Solutions() {
                 "
               >
                 {/* Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center scale-100 group-hover:scale-110 transition-transform duration-700"
-                  style={{
-                    backgroundImage: `url(${solution.image})`,
-                  }}
+                <Image
+                  src={solution.image}
+                  alt={solution.title}
+                  fill
+                  sizes="88vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
                 {/* Overlay */}

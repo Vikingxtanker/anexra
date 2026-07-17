@@ -17,7 +17,7 @@ export default function Introduction() {
 
     // Split text into words
     const split = new SplitType(textRef.current, {
-      types: "chars",
+      types: "words,chars",
     });
 
     if (!split.chars) return;
@@ -37,16 +37,11 @@ export default function Introduction() {
       },
     });
 
-    split.chars.forEach((char, i) => {
-      tl.to(
-        char,
-        {
-          opacity: 1,
-          duration: 0.05,
-          ease: "none",
-        },
-        i * 0.05
-      );
+    tl.to(split.chars, {
+      opacity: 1,
+      duration: 0.05,
+      stagger: 0.05,
+      ease: "none",
     });
 
     return () => {

@@ -2,12 +2,16 @@ import Navbar from "@/sections/Navbar";
 import Hero from "@/sections/Hero";
 import IntroductionOG from "@/sections/IntroductionOG";
 // import Introductionv2 from "@/sections/Introductionv2";
-import Solutions from "@/sections/Solutions";
-import WhoWeServe from "@/sections/WhoWeServe";
-import WhyAnexra from "@/sections/WhyAnexra";
-import HealthcarePartners from "@/sections/HealthcarePartners";
-import VisionMission from "@/sections/VisionMission";
-import Footer from "@/sections/Footer";
+import dynamic from "next/dynamic";
+
+const Solutions = dynamic(() => import("@/sections/Solutions"));
+const WhoWeServe = dynamic(() => import("@/sections/WhoWeServe"));
+const WhyAnexra = dynamic(() => import("@/sections/WhyAnexra"));
+const HealthcarePartners = dynamic(
+  () => import("@/sections/HealthcarePartners")
+);
+const VisionMission = dynamic(() => import("@/sections/VisionMission"));
+const Footer = dynamic(() => import("@/sections/Footer"));
 
 import ScrollIndicator from "@/components/ScrollIndicator";
 

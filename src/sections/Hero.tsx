@@ -4,13 +4,22 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import PharmaConnectModal from "@/components/pharma-connect-modal";
+import dynamic from "next/dynamic";
+
+const PharmaConnectModal = dynamic(
+  () => import("@/components/pharma-connect-modal"),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 import { Button } from "@/components/ui/button";
 
 export default function Hero() {
 
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
+  const [shouldLoadModal, setShouldLoadModal] = useState(false);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -57,7 +66,7 @@ export default function Hero() {
         </video>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-[#f4efee]/30 backdrop-blur-[1px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[#f4efee]/55 pointer-events-none" />
       </div>
 
       {/* Main Content */}
@@ -104,7 +113,10 @@ export default function Hero() {
         <div className="mt-12 flex flex-col items-center gap-5">
           <Button
             type="button"
-            onClick={() => setIsNetworkOpen(true)}
+            onClick={() => {
+              setShouldLoadModal(true);
+              setIsNetworkOpen(true);
+            }}
             size="lg"
             className="
               w-full
@@ -145,10 +157,18 @@ export default function Hero() {
           </p>
         </div>
 
-        <PharmaConnectModal
-          open={isNetworkOpen}
-          onOpenChange={setIsNetworkOpen}
-        />
+        {shouldLoadModal && (
+          <PharmaConnectModal
+            open={isNetworkOpen}
+            onOpenChange={(open) => {
+              setIsNetworkOpen(open);
+
+              if (!open) {
+                setShouldLoadModal(false);
+              }
+            }}
+          />
+        )}
 
       </div>
     </section>

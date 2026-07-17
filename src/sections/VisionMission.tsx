@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -9,6 +9,8 @@ export default function VisionMission() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const visionRef = useRef<HTMLDivElement>(null);
   const missionRef = useRef<HTMLDivElement>(null);
+
+  const [loadVideo, setLoadVideo] = useState(false);
 
   useGSAP(
     () => {
@@ -50,6 +52,26 @@ export default function VisionMission() {
     { scope: sectionRef }
   );
 
+  useEffect(() => {
+  if (!sectionRef.current) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setLoadVideo(true);
+        observer.disconnect();
+      }
+    },
+    {
+      rootMargin: "400px", // start loading 400px before visible
+    }
+  );
+
+  observer.observe(sectionRef.current);
+
+  return () => observer.disconnect();
+}, []);
+
   return (
     <section
       ref={sectionRef}
@@ -70,10 +92,11 @@ export default function VisionMission() {
     >
       {/* Background Video */}
       <video
-        autoPlay
+        autoPlay={loadVideo}
         muted
         loop
         playsInline
+        preload="none"
         className="
           absolute
           inset-0
@@ -85,8 +108,9 @@ export default function VisionMission() {
           brightness-[0.45]
         "
       >
-        {/* Replace with your own video */}
-        <source src="/healthcare.webm" type="video/webm" />
+        {loadVideo && (
+          <source src="/healthcare.webm" type="video/webm" />
+        )}
       </video>
 
       {/* Dark Overlay */}

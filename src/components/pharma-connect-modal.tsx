@@ -2,9 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 
-import { useState } from "react";
-
-import { State, City } from "country-state-city";
+import { useEffect, useState } from "react";
 
 import { SearchableLocationSelect } from "@/components/searchable-location-select";
 
@@ -53,6 +51,17 @@ export default function PharmaConnectModal({
   useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const [stateOptions, setStateOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+
+  const [cityOptions, setCityOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+
+  const [loadingLocations, setLoadingLocations] =
+    useState(false);
 
   function formatName(name: string) {
     return name
@@ -111,9 +120,9 @@ export default function PharmaConnectModal({
       const formData = new FormData(e.currentTarget);
 
       const stateName =
-        states.find(
-          (state) => state.isoCode === selectedState
-        )?.name ?? "";
+        stateOptions.find(
+          (state) => state.value === selectedState
+        )?.label ?? "";
 
       const firstName = formatName(
         String(formData.get("firstName") || "")
@@ -181,21 +190,57 @@ export default function PharmaConnectModal({
     }
   };
 
-  const states = State.getStatesOfCountry("IN");
+  useEffect(() => {
+    if (!open || stateOptions.length > 0) return;
 
-  const cities = selectedState
-    ? City.getCitiesOfState("IN", selectedState)
-    : [];
+    async function loadStates() {
+      setLoadingLocations(true);
 
-  const stateOptions = states.map((state) => ({
-    value: state.isoCode,
-    label: state.name,
-  }));
+      const countryStateCity = await import("country-state-city");
 
-  const cityOptions = cities.map((city) => ({
-    value: city.name,
-    label: city.name,
-  }));
+      const states =
+        countryStateCity.State.getStatesOfCountry("IN");
+
+      setStateOptions(
+        states.map((state) => ({
+          value: state.isoCode,
+          label: state.name,
+        }))
+      );
+
+      setLoadingLocations(false);
+    }
+
+    loadStates();
+  }, [open, stateOptions.length]);
+
+  useEffect(() => {
+    if (!selectedState) {
+      setCityOptions([]);
+      return;
+    }
+
+    async function loadCities() {
+      const countryStateCity = await import(
+        "country-state-city"
+      );
+
+      const cities =
+        countryStateCity.City.getCitiesOfState(
+          "IN",
+          selectedState
+        );
+
+      setCityOptions(
+        cities.map((city) => ({
+          value: city.name,
+          label: city.name,
+        }))
+      );
+    }
+
+    loadCities();
+  }, [selectedState]);
 
   const finalQualification =
     qualification === "Other"
@@ -446,7 +491,12 @@ export default function PharmaConnectModal({
           <SearchableLocationSelect
             options={stateOptions}
             value={selectedState}
-            placeholder="Select State"
+            placeholder={
+              loadingLocations
+                ? "Loading states..."
+                : "Select State"
+            }
+            disabled={loadingLocations}
             onChange={(value) => {
               setSelectedState(value);
               setSelectedCity("");
