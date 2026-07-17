@@ -327,7 +327,7 @@ const hasCelebrated =
             "success" && (
             <>
               <DotLottieReact
-                src="/animations/payment-success.lottie"
+                src="/animations/payment-sucessful.lottie"
                 autoplay
                 loop={false}
                 className="mx-auto h-48 w-48"
