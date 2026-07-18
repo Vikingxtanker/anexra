@@ -1,73 +1,12 @@
-"use client";
-
-import { useState } from "react";
-
-import Image from "next/image";
-
-import dynamic from "next/dynamic";
-
-const PharmaConnectModal = dynamic(
-  () => import("@/components/pharma-connect-modal"),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
-import { Button } from "@/components/ui/button";
+import HeroBackground from "./HeroBackground";
+import HeroCTA from "./HeroCTA";
 
 export default function Hero() {
-
-  const [isNetworkOpen, setIsNetworkOpen] = useState(false);
-  const [shouldLoadModal, setShouldLoadModal] = useState(false);
-
-  const [videoLoaded, setVideoLoaded] = useState(false);
 
   return (
     <section id="hero" className="relative overflow-hidden min-h-screen flex items-start md:items-center pt-24 md:pt-0 px-4 sm:px-6">
       
-      {/* Background Video */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-
-        {/* Fallback Image */}
-        <Image
-          src="/hero_background.webp"
-          alt=""
-          fill
-          priority
-          aria-hidden
-          className={`
-            object-cover
-            object-[78%_center]
-            md:object-center
-            scale-125 md:scale-110
-            transition-opacity duration-700
-            ${videoLoaded ? "opacity-0" : "opacity-100"}
-          `}
-        />
-
-        {/* Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onLoadedData={() => setVideoLoaded(true)}
-          className="
-            absolute inset-0
-            w-full h-full object-cover
-            object-[78%_center] 
-            md:object-center
-            scale-125 md:scale-110
-          "
-        >
-          <source src="/hero_background.webm" type="video/webm" />
-        </video>
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-[#f4efee]/55 pointer-events-none" />
-      </div>
+      <HeroBackground />
 
       {/* Main Content */}
       <div className="relative z-20 w-full max-w-6xl mx-auto text-center py-16 sm:py-24 md:py-32">
@@ -109,66 +48,7 @@ export default function Hero() {
           technology-driven services.
         </p>
 
-        {/* Pharma Connect CTA */}
-        <div className="mt-12 flex flex-col items-center gap-5">
-          <Button
-            type="button"
-            onClick={() => {
-              setShouldLoadModal(true);
-              setIsNetworkOpen(true);
-            }}
-            size="lg"
-            className="
-              w-full
-              max-w-sm
-              h-14
-              sm:h-16
-
-              text-base
-              sm:text-lg
-              rounded-full
-              bg-gradient-to-r
-              from-[#aa6f73]
-              to-[#c78d91]
-              text-white
-              font-semibold
-              shadow-[0_10px_35px_rgba(170,111,115,0.35)]
-              transition-all
-              duration-300
-              hover:scale-105
-              hover:shadow-[0_15px_45px_rgba(170,111,115,0.5)]
-              active:scale-95
-            "
-          >
-            Join Pharma Connect
-          </Button>
-
-          <p
-            className="
-              mt-4
-              text-sm sm:text-base
-              text-[#564740]/70
-              max-w-xl
-              text-center
-            "
-          >
-            Connect with pharmacy students, graduates, educators, and healthcare
-            professionals across India.
-          </p>
-        </div>
-
-        {shouldLoadModal && (
-          <PharmaConnectModal
-            open={isNetworkOpen}
-            onOpenChange={(open) => {
-              setIsNetworkOpen(open);
-
-              if (!open) {
-                setShouldLoadModal(false);
-              }
-            }}
-          />
-        )}
+        <HeroCTA />
 
       </div>
     </section>
