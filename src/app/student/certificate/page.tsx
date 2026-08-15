@@ -4,6 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import CertificateRequestCard from "@/components/certificate-request-card";
 import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
 export default async function CertificatesPage() {
   const supabase = await createClient();
 

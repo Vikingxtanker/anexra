@@ -1,8 +1,15 @@
+import { Suspense } from "react";
+
+import { connection } from "next/server";
 import { notFound, redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 
 import PdfViewer from "@/components/PdfViewer";
+
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
 
 interface PageProps {
   params: Promise<{
@@ -15,8 +22,6 @@ interface PageProps {
 export default async function ChapterPage({
   params,
 }: PageProps) {
-  const today = new Date().toLocaleDateString();
-
   const { year, subject, chapter } =
     await params;
 
@@ -142,12 +147,34 @@ export default async function ChapterPage({
             )}
           </div>
 
-          <PdfViewer
-            pdfUrl={data.signedUrl}
-            watermark={`ANEXRA • ${user.email} • ${today}`}
-          />
+          <Suspense fallback={null}>
+            <PdfViewerWithWatermark
+              pdfUrl={data.signedUrl}
+              email={user.email}
+            />
+          </Suspense>
         </div>
       </div>
     </section>
+  );
+}
+
+async function PdfViewerWithWatermark({
+  pdfUrl,
+  email,
+}: {
+  pdfUrl: string;
+  email: string | undefined;
+}) {
+  // TODO: Cache Components adoption. Added to unblock the build: remove this connection() to re-trigger the error and review the fix options.
+  await connection();
+
+  const today = new Date().toLocaleDateString();
+
+  return (
+    <PdfViewer
+      pdfUrl={pdfUrl}
+      watermark={`ANEXRA • ${email} • ${today}`}
+    />
   );
 }

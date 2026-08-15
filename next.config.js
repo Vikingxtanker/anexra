@@ -36,6 +36,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
+
   experimental: {
     useTypeScriptCli: true,
   },

@@ -8,8 +8,6 @@ import {
   verifyCompletion,
 } from "@/lib/certificate";
 
-export const runtime = "nodejs";
-
 export async function GET(request: NextRequest) {
   console.log("=== CERTIFICATE API HIT ===");
   const courseId = request.nextUrl.searchParams.get("courseId");
