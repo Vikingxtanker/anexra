@@ -1,10 +1,10 @@
 import { execFileSync } from "node:child_process";
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
-  renameSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -73,15 +73,16 @@ async function main() {
     }
     const tarball = join(work, `typescript-${TS_VERSION}.tgz`);
     writeFileSync(tarball, Buffer.from(await res.arrayBuffer()));
-    execFileSync("tar", ["-xzf", tarball, "-C", work], { stdio: "inherit" });
     for (const targetDir of targets) {
+      const extracted = join(work, "package");
+      rmSync(extracted, { recursive: true, force: true });
+      execFileSync("tar", ["-xzf", tarball, "-C", work], { stdio: "inherit" });
       rmSync(targetDir, { recursive: true, force: true });
       mkdirSync(dirname(targetDir), { recursive: true });
-      renameSync(join(work, "package"), targetDir);
+      cpSync(extracted, targetDir, { recursive: true });
       console.log(
         `[ensure-lint-typescript] installed typescript@${TS_VERSION} at ${targetDir}`
       );
-      execFileSync("tar", ["-xzf", tarball, "-C", work], { stdio: "inherit" });
     }
   } finally {
     rmSync(work, { recursive: true, force: true });
