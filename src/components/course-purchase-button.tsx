@@ -83,12 +83,13 @@ export default function CoursePurchaseButton({
           redirectTarget:
             "_self",
         });
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
 
         alert(
-          error.message ??
-            "Unable to start payment."
+          error instanceof Error
+            ? error.message
+            : "Unable to start payment."
         );
       } finally {
         setLoading(false);

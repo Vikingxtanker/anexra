@@ -184,7 +184,7 @@ export default function CoursesImportance() {
         {/* Skills Section */}
         <div className="mt-24 text-center">
           <h3 className="text-3xl md:text-5xl font-semibold text-[#4c1711]">
-            Skills You'll Gain
+            Skills You&apos;ll Gain
           </h3>
 
           <div className="flex flex-wrap justify-center gap-4 mt-10">

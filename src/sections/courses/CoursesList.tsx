@@ -53,47 +53,55 @@ export default function CoursesList() {
   const supabase = createClient();
 
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    let cancelled = false;
 
-  async function fetchCourses() {
-    const { data, error } = await supabase
-      .from("courses")
-      .select(`
-        id,
-        title,
-        slug,
-        short_description,
-        thumbnail_url,
-        instructor,
-        duration_hours,
-        price,
-        is_published,
-        display_order,
-
-        modules (
+    async function fetchCourses() {
+      const { data, error } = await supabase
+        .from("courses")
+        .select(`
           id,
           title,
-          position,
+          slug,
+          short_description,
+          thumbnail_url,
+          instructor,
+          duration_hours,
+          price,
+          is_published,
+          display_order,
 
-          lessons (
+          modules (
             id,
             title,
-            module_id
-          )
-        )
-      `)
-      .eq("is_published", true)
-      .order("display_order", { ascending: true });
+            position,
 
-    if (error) {
-      console.error(error);
-    } else {
-      setCourses(data || []);
+            lessons (
+              id,
+              title,
+              module_id
+            )
+          )
+        `)
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error(error);
+      } else {
+        setCourses(data || []);
+      }
+
+      setLoading(false);
     }
 
-    setLoading(false);
-  }
+    fetchCourses();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section

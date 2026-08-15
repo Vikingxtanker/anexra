@@ -200,7 +200,10 @@ export default function DegreeCards() {
 
       if (!program) return null;
 
-      const sections =
+      const sections: Record<
+        string,
+        { subjects: { name: string; slug: string }[] }
+      > =
         "years" in program
           ? program.years
           : "semesters" in program
@@ -208,7 +211,7 @@ export default function DegreeCards() {
           : {};
 
       return Object.entries(sections).map(
-        ([sectionName, sectionData]: any) => (
+        ([sectionName, sectionData]) => (
           <MenuSub key={sectionName}>
 
             {/* Year / Semester */}
@@ -233,7 +236,7 @@ export default function DegreeCards() {
             >
               {"subjects" in sectionData &&
               sectionData.subjects.length > 0 ? (
-                sectionData.subjects.map((subject: any) => (
+                sectionData.subjects.map((subject) => (
                   <MenuItem
                     key={subject.slug}
                     className="

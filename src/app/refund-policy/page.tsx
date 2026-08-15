@@ -113,7 +113,7 @@ export default function RefundPolicyPage() {
           </h2>
 
           <p className="leading-8 text-muted-foreground">
-            For products covered under a manufacturer's warranty, customers are
+            For products covered under a manufacturer&apos;s warranty, customers are
             requested to contact the manufacturer directly for warranty-related
             claims and support.
           </p>

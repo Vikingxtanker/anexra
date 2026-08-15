@@ -91,8 +91,8 @@ export default function PaymentSuccessPage() {
   );
 
   const [status, setStatus] =
-    useState<Status>(
-      "verifying"
+    useState<Status>(() =>
+      orderId ? "verifying" : "error"
     );
 
 const hasCelebrated =
@@ -114,16 +114,14 @@ const hasCelebrated =
         null
     );
 
-    const startedAt =
-    useRef(Date.now());
-
   useEffect(() => {
   if (!orderId) {
-    setStatus("error");
     return;
   }
 
   let mounted = true;
+
+  const startedAt = Date.now();
 
   const checkPayment =
     async () => {
@@ -204,7 +202,7 @@ const hasCelebrated =
 
         if (
           Date.now() -
-            startedAt.current >
+            startedAt >
           MAX_WAIT
         ) {
           clearInterval(
@@ -399,11 +397,11 @@ const hasCelebrated =
 
                 <br />
 
-                Please don't close this page.
+                Please don&apos;t close this page.
 
                 <br /><br />
 
-                We'll continue checking automatically.
+                We&apos;ll continue checking automatically.
 
               </p>
 
@@ -428,7 +426,7 @@ const hasCelebrated =
               </h1>
 
               <p className="mt-4 text-[#87565b] leading-7">
-                We couldn't verify your payment at the moment.
+                We couldn&apos;t verify your payment at the moment.
 
                 <br /><br />
 

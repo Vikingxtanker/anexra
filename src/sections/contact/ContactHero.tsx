@@ -68,7 +68,7 @@ export default function ContactPage() {
             </span>
 
             <h1 className="mt-4 text-4xl md:text-5xl font-semibold text-[#4c1711]">
-              Let's Build Better Healthcare.
+              Let&apos;s Build Better Healthcare.
             </h1>
 
             <p className="mt-6 text-lg text-[#564740] leading-relaxed">

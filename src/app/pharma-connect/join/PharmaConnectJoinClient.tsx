@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Navbar from "@/sections/Navbar";
 
@@ -11,11 +11,7 @@ import JoinHero from "@/sections/pharma-connect/join/JoinHero";
 import PharmaConnectModal from "@/components/pharma-connect-modal";
 
 export default function PharmaConnectJoinClient() {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(true);
-  }, []);
+  const [open, setOpen] = useState(true);
 
   return (
     <>

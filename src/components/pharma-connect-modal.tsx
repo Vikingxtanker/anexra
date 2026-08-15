@@ -216,7 +216,6 @@ export default function PharmaConnectModal({
 
   useEffect(() => {
     if (!selectedState) {
-      setCityOptions([]);
       return;
     }
 
@@ -246,6 +245,8 @@ export default function PharmaConnectModal({
     qualification === "Other"
       ? customQualification.trim()
       : qualification;
+
+  const shownCityOptions = selectedState ? cityOptions : [];
 
   const supabase = createClient();
 
@@ -505,7 +506,7 @@ export default function PharmaConnectModal({
 
           {/* City */}
           <SearchableLocationSelect
-            options={cityOptions}
+            options={shownCityOptions}
             value={selectedCity}
             placeholder="Select City"
             onChange={setSelectedCity}

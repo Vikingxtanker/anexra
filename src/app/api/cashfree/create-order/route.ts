@@ -208,11 +208,16 @@ export async function POST(req: Request) {
       payment_session_id:
         response.data.payment_session_id,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const apiError = error as {
+      response?: { data?: { message?: string } };
+      message?: string;
+    };
+
     console.error(
       "Cashfree Create Order Error:",
       JSON.stringify(
-        error?.response?.data ?? error,
+        apiError?.response?.data ?? error,
         null,
         2
       )
@@ -221,8 +226,8 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          error?.response?.data?.message ??
-          error?.message ??
+          apiError?.response?.data?.message ??
+          apiError?.message ??
           "Unable to create Cashfree order.",
       },
       {

@@ -111,8 +111,6 @@ export default function CertificatePreviewDialog({
       }
     }
 
-    setPreviewError(null);
-    setPreviewObjectUrl(null);
     loadPreview();
 
     return () => {
@@ -124,8 +122,17 @@ export default function CertificatePreviewDialog({
     };
   }, [open, previewUrl]);
 
+  function handleOpenChange(next: boolean) {
+    if (next) {
+      setPreviewError(null);
+      setPreviewObjectUrl(null);
+    }
+
+    setOpen(next);
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent

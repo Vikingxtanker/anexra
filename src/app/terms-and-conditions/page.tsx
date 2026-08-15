@@ -67,9 +67,9 @@ export default function TermsAndConditionsPage() {
           </p>
 
           <p className="mt-4 leading-8 text-muted-foreground">
-            Throughout these Terms, the words <strong>"Anexra"</strong>,
-            <strong>"we"</strong>, <strong>"our"</strong>, and
-            <strong>"us"</strong> refer to Anexra Solutions.
+            Throughout these Terms, the words <strong>&quot;Anexra&quot;</strong>,
+            <strong>&quot;we&quot;</strong>, <strong>&quot;our&quot;</strong>, and
+            <strong>&quot;us&quot;</strong> refer to Anexra Solutions.
           </p>
         </section>
 

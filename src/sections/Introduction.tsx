@@ -151,7 +151,7 @@ export default function Introduction() {
                 text-[#4c1711]
               "
             >
-              That's why we built Anexra.
+              That&apos;s why we built Anexra.
             </h2>
 
           </div>

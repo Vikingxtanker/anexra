@@ -6,7 +6,10 @@ interface DashboardHeroProps {
   inProgressCourses: number;
   totalCompletedLessons: number;
 
-  continueCourse?: any;
+  continueCourse?: {
+    id: string;
+    title: string;
+  };
 
   continueProgress: number;
 }

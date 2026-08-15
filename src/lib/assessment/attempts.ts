@@ -1,11 +1,8 @@
 import type { AssessmentResult } from "@/lib/assessment/score";
-
-type SupabaseClientLike = {
-  from: (table: string) => any;
-};
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getLatestAssessmentAttempt(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   assessmentId: string,
   userId: string,
 ) {
@@ -22,7 +19,7 @@ export async function getLatestAssessmentAttempt(
 }
 
 export async function getPassedAssessmentAttemptForCourse(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   userId: string,
   courseId: string,
 ) {
@@ -58,7 +55,7 @@ export async function createAssessmentAttempt({
   attemptNumber,
   result,
 }: {
-  supabase: SupabaseClientLike;
+  supabase: SupabaseClient;
   assessmentId: string;
   courseId: string;
   userId: string;
@@ -100,7 +97,7 @@ export async function saveAssessmentAnswers({
   attemptId,
   answerResults,
 }: {
-  supabase: SupabaseClientLike;
+  supabase: SupabaseClient;
   attemptId: string;
   answerResults: {
     questionId: string;

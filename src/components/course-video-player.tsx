@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube, {
+  YouTubePlayer,
+  YouTubeProps,
+} from "react-youtube";
 
 interface Props {
   lessonId: string;
@@ -16,7 +19,7 @@ export default function CourseVideoPlayer({
   initialMaxWatchedSecond = 0,
   initialCompleted = false,
 }: Props) {
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YouTubePlayer | null>(null);
 
   const completedRef =
     useRef(initialCompleted);

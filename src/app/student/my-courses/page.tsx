@@ -65,7 +65,7 @@ export default async function MyCoursesPage() {
           </h1>
 
           <p className="mt-4 text-[#87565b]">
-            You haven't enrolled in any courses yet.
+            You haven&apos;t enrolled in any courses yet.
           </p>
 
           <Button

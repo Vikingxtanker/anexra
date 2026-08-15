@@ -27,7 +27,7 @@ export default function Introduction() {
           </span>
 
           <span className="block text-[#4c1711] mt-10">
-            That's why we built Anexra.
+            That&apos;s why we built Anexra.
           </span>
         </h2>
       </div>

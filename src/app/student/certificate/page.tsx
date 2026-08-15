@@ -8,6 +8,21 @@ import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
 
+type CourseProgressData = {
+  id: string;
+  title: string;
+  slug: string | null;
+  thumbnail_url: string | null;
+  percentage: number;
+  completedLessons: number;
+  totalLessons: number;
+  request: {
+    id?: string;
+    status?: string | null;
+  } | null;
+  assessmentPassed: boolean;
+};
+
 export default async function CertificatesPage() {
   const supabase = await createClient();
 
@@ -54,8 +69,8 @@ export default async function CertificatesPage() {
       purchases?.some((purchase) => purchase.course_id === course.id),
     ) ?? [];
 
-  const eligibleCourses: any[] = [];
-  const incompleteCourses: any[] = [];
+  const eligibleCourses: CourseProgressData[] = [];
+  const incompleteCourses: CourseProgressData[] = [];
 
   for (const course of purchasedCourses) {
     const courseModules =
@@ -86,7 +101,7 @@ export default async function CertificatesPage() {
       await getPassedAssessmentAttemptForCourse(supabase, user.id, course.id),
     );
 
-    const courseData = {
+    const courseData: CourseProgressData = {
       ...course,
       percentage,
       completedLessons,
@@ -150,7 +165,7 @@ export default async function CertificatesPage() {
             {incompleteCourses.length === 0 ? (
               <div className="rounded-2xl border border-[#d8c7c9] bg-white p-8">
                 <p className="text-[#87565b]">
-                  Amazing! You've completed all of your enrolled courses.
+                  Amazing! You&apos;ve completed all of your enrolled courses.
                 </p>
               </div>
             ) : (

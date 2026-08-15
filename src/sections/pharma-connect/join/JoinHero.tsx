@@ -28,7 +28,7 @@ export default function JoinHero({
             font-bold
           "
         >
-          Join India's Pharmacy Network
+          Join India&apos;s Pharmacy Network
         </h1>
 
         <p

@@ -1,12 +1,9 @@
 import { getAssessmentForCourse } from "@/lib/assessment/questions";
 import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
-
-type SupabaseClientLike = {
-  from: (table: string) => any;
-};
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function hasPassedRequiredAssessment(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   userId: string,
   courseId: string,
 ) {

@@ -5,7 +5,7 @@ declare module "@cashfreepayments/cashfree-js" {
   }
 
   export interface Cashfree {
-    checkout(options: CheckoutOptions): Promise<any>;
+    checkout(options: CheckoutOptions): Promise<void>;
   }
 
   export function load(options: {

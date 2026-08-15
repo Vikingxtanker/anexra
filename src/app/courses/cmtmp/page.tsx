@@ -106,39 +106,47 @@ export default function CmtmpCoursePage() {
   const [course, setCourse] = useState<Course | null>(null);
 
   useEffect(() => {
-    fetchCourse();
-  }, []);
+    let cancelled = false;
 
-  async function fetchCourse() {
-    const { data } = await supabase
-      .from("courses")
-      .select(`
-        id,
-        title,
-        slug,
-        short_description,
-        thumbnail_url,
-        instructor,
-        duration_hours,
-        price,
-
-        modules (
+    async function fetchCourse() {
+      const { data } = await supabase
+        .from("courses")
+        .select(`
           id,
           title,
-          position,
+          slug,
+          short_description,
+          thumbnail_url,
+          instructor,
+          duration_hours,
+          price,
 
-          lessons (
+          modules (
             id,
             title,
-            module_id
-          )
-        )
-      `)
-      .eq("slug", "cmtmp")
-      .single();
+            position,
 
-    setCourse(data);
-  }
+            lessons (
+              id,
+              title,
+              module_id
+            )
+          )
+        `)
+        .eq("slug", "cmtmp")
+        .single();
+
+      if (!cancelled) {
+        setCourse(data);
+      }
+    }
+
+    fetchCourse();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const moduleCount = course?.modules?.length ?? 0;
 

@@ -1,9 +1,6 @@
 import { PDFDocument, PDFPage, PDFFont, RGB, StandardFonts, rgb } from "pdf-lib";
 import { hasPassedRequiredAssessment } from "@/lib/assessment/certificates";
-
-type SupabaseClientLike = {
-  from: (table: string) => any;
-};
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type CertificateCourse = {
   id: string;
@@ -18,7 +15,7 @@ export type CertificateDetails = {
 };
 
 export async function verifyCompletion(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   userId: string,
   courseId: string,
 ) {

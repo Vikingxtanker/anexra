@@ -1,9 +1,22 @@
-type SupabaseClientLike = {
-  from: (table: string) => any;
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+type AssessmentOptionRow = {
+  id: string;
+  question_id: string;
+  option_text: string;
+  position: number;
+};
+
+type AssessmentQuestionRow = {
+  id: string;
+  question: string;
+  explanation: string | null;
+  position: number;
+  options: AssessmentOptionRow[];
 };
 
 export async function getAssessmentForCourse(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   courseId: string,
 ) {
   const { data, error } = await supabase
@@ -21,7 +34,7 @@ export async function getAssessmentForCourse(
 }
 
 export async function getAssessmentQuestions(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   assessmentId: string,
 ) {
   const { data, error } = await supabase
@@ -34,14 +47,14 @@ export async function getAssessmentQuestions(
     return [];
   }
 
-  return data.map((question: any) => ({
+  return data.map((question) => ({
     ...question,
     question: question.question ?? question.question_text ?? question.title ?? "",
   }));
 }
 
 export async function getOptionsForQuestions(
-  supabase: SupabaseClientLike,
+  supabase: SupabaseClient,
   questionIds: string[],
   includeCorrectAnswers = false,
 ) {
@@ -60,12 +73,15 @@ export async function getOptionsForQuestions(
     return [];
   }
 
-  return data;
+  return data as unknown as AssessmentOptionRow[];
 }
 
-export function attachOptionsToQuestions(questions: any[], options: any[]) {
+export function attachOptionsToQuestions(
+  questions: Array<Record<string, unknown>>,
+  options: Array<Record<string, unknown>>,
+) {
   return questions.map((question) => ({
     ...question,
     options: options.filter((option) => option.question_id === question.id),
-  }));
+  })) as AssessmentQuestionRow[];
 }
