@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
+
 import { Award, RotateCcw, XCircle } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
@@ -22,6 +24,8 @@ export default async function AssessmentResultPage({
   params,
   searchParams,
 }: PageProps) {
+  await connection();
+
   const { slug } = await params;
   const { attempt } = await searchParams;
   const supabase = await createClient();

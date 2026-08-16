@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { connection } from "next/server";
+
 import { BookOpen, ArrowRight } from "lucide-react";
 import { pharmacyPrograms } from "@/data/pharmacy-programs";
 
@@ -6,7 +8,9 @@ import { pharmacyPrograms } from "@/data/pharmacy-programs";
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
 
-export default function PharmDPage() {
+export default async function PharmDPage() {
+  await connection();
+
   const program = pharmacyPrograms["Pharm.D"];
 
   const years = Object.keys(program.years);

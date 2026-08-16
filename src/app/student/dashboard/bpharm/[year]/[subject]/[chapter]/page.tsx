@@ -22,6 +22,8 @@ interface PageProps {
 export default async function ChapterPage({
   params,
 }: PageProps) {
+  await connection();
+
   const { year, subject, chapter } =
     await params;
 
@@ -166,9 +168,6 @@ async function PdfViewerWithWatermark({
   pdfUrl: string;
   email: string | undefined;
 }) {
-  // TODO: Cache Components adoption. Added to unblock the build: remove this connection() to re-trigger the error and review the fix options.
-  await connection();
-
   const today = new Date().toLocaleDateString();
 
   return (

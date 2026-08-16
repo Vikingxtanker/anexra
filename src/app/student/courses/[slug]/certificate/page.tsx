@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 import { Award, ArrowLeft, Download } from "lucide-react";
 import { getPassedAssessmentAttemptForCourse } from "@/lib/assessment/attempts";
@@ -17,6 +19,8 @@ interface PageProps {
 export default async function CertificatePage({
   params,
 }: PageProps) {
+  await connection();
+
   const { slug } = await params;
 
   const supabase = await createClient();

@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
@@ -19,6 +21,8 @@ import { Progress } from "@/components/ui/progress";
 export const instant = false;
 
 export default async function CoursesPage() {
+  await connection();
+
   const supabase = await createClient();
   
   const {

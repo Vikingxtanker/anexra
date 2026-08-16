@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
@@ -15,6 +17,8 @@ interface PageProps {
 export default async function ContinuePage({
   params,
 }: PageProps) {
+  await connection();
+
   const { courseId } = await params;
 
   const supabase = await createClient();

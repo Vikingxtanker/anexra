@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 
 import CertificateRequestCard from "@/components/certificate-request-card";
@@ -24,6 +26,8 @@ type CourseProgressData = {
 };
 
 export default async function CertificatesPage() {
+  await connection();
+
   const supabase = await createClient();
 
   const {

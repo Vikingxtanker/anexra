@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import UploadChapterForm from "@/components/admin/UploadChapterForm";
 import { createClient } from "@/lib/supabase/server";
 
@@ -8,6 +10,8 @@ import { createClient } from "@/lib/supabase/server";
 export const instant = false;
 
 export default async function UploadPage() {
+  await connection();
+
   const supabase = await createClient();
 
   const {

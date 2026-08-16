@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 
 import DashboardHero from "@/sections/student-dashboard/DashboardHero";
@@ -9,6 +11,8 @@ import DashboardHero from "@/sections/student-dashboard/DashboardHero";
 export const instant = false;
 
 export default async function StudentDashboardPage() {
+  await connection();
+
   const supabase = await createClient();
 
   const {

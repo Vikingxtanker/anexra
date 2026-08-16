@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { connection } from "next/server";
+
 import { BookOpen, ArrowRight } from "lucide-react";
 import { pharmacyPrograms } from "@/data/pharmacy-programs";
 
@@ -15,6 +17,8 @@ interface PageProps {
 export default async function BPharmSemesterPage({
   params,
 }: PageProps) {
+  await connection();
+
   const { year } = await params;
 
   const semesterMap: Record<string, string> = {

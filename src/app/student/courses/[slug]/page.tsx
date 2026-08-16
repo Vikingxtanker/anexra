@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 
 import { redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import CoursePurchaseButton
 from "@/components/course-purchase-button";
 
@@ -31,6 +33,8 @@ interface PageProps {
 export default async function CoursePage({
   params,
 }: PageProps) {
+  await connection();
+
   const { slug } = await params;
 
   const supabase = await createClient();

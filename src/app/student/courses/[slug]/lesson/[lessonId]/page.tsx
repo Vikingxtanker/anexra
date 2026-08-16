@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 
 import CourseVideoPlayer from "@/components/course-video-player";
@@ -29,6 +31,8 @@ interface PageProps {
 export default async function LessonPage({
   params,
 }: PageProps) {
+  await connection();
+
   const { slug, lessonId } = await params;
 
   const supabase = await createClient();

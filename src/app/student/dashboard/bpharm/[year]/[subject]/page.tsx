@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 
 import Link from "next/link";
+import { connection } from "next/server";
 
 import { createClient } from "@/lib/supabase/server";
 
@@ -18,6 +19,8 @@ interface PageProps {
 export default async function SubjectPage({
   params,
 }: PageProps) {
+  await connection();
+
   const supabase = await createClient();
 
   const { year, subject } = await params;

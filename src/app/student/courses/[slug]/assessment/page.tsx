@@ -1,5 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
+import { connection } from "next/server";
+
 import { createClient } from "@/lib/supabase/server";
 
 import AssessmentForm from "@/components/assessment-form";
@@ -24,6 +26,8 @@ interface PageProps {
 export default async function AssessmentPage({
   params,
 }: PageProps) {
+  await connection();
+
   const { slug } = await params;
 
   const supabase = await createClient();
